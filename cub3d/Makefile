@@ -52,7 +52,6 @@ $(LIBFT):
 	@gcc $(FLAG) $(OPTION) $< $(OPTIONOBJ) $@
 
 clean:
-	@echo 
 	$(DEL) $(OBJ)
 	cd $(LIBFT_DIR) && $(MAKE) $(CLEAN)
 	cd $(LIBMLX_DIR) && $(MAKE) $(CLEAN)
