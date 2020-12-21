@@ -27,7 +27,7 @@ typedef struct	s_parser
 	int ceilling_B;
 }				t_parser;
 
-int		checking_errors(int ac, char **av);
+void	checking_errors(int ac, char **av);
 
 void	parser(char **argv, t_parser *p, t_list	*lst_map);
 

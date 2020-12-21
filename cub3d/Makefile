@@ -38,9 +38,9 @@ all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT) #$(LIBMLX)
 	@cd  $(LIBFT_DIR) && mv ./libft.a ../../
-	@#cd  $(LIBMLX_DIR) && mv ./libmlx.dylib ../../
+	#@cd  $(LIBMLX_DIR) && mv ./libmlx.dylib ../../
 	@gcc $(FLAG) $(OBJ) -L. -lmlx -lft $(FLAGSMLX) $(OPTIONOBJ) $(NAME)
-	@./cub3d map.cub # Для тестирования
+	@./cub3d map.cub
 
 $(LIBFT):
 	@cd $(LIBFT_DIR) && $(MAKE)

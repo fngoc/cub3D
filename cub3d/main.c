@@ -11,8 +11,7 @@ int main(int argc, char **argv)
 	t_list		*lst_map;
 
 	lst_map = NULL;
-	if (checking_errors(argc, argv))
-		return (0);
+	checking_errors(argc, argv);
 	parser(argv, &p, lst_map);
 	return (0);
 }
