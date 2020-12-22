@@ -1,5 +1,9 @@
 #include "cub3d.h"
 
+/*
+** checking_errors: проверка входных данных на ошибки. 
+*/
+
 void checking_errors(int ac, char **av)
 {
     (void)av;
