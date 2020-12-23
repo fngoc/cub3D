@@ -18,7 +18,7 @@ CLEAN = clean
 
 FCLEAN = fclean
 
-SRC = main.c checking_errors.c parser.c
+SRC = main.c checking_errors_arg.c parser.c
 
 OBJ = $(SRC:.c=.o)
 
