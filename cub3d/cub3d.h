@@ -3,6 +3,7 @@
 # define CUB3D_H
 
 # include "libs/libft/libft.h"
+# include "libs/minilibx_mms/mlx.h"
 # include <fcntl.h> /* Для open */
 # include <stdio.h> /* Для printf */
 
