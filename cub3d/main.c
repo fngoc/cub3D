@@ -19,7 +19,7 @@ int	main(int argc, char **argv)
 	parser(argv, &p, lst_map);
 	// checking_errors_map(lst_map);
 	mlx = mlx_init();
-	win = mlx_new_window(mlx, 640, 480, "test");
+	win = mlx_new_window(mlx, p.resolution_w, p.resolution_l, "test");
 	mlx_loop(mlx);
 	return (0);
 }
