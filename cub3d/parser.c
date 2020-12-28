@@ -145,5 +145,5 @@ void		parser(char **argv, t_parser *p, t_list	*lst_map)
 			parser_data(line, p);
 	}
 	parser_map(fd ,lst_map);
-	printf("R: %d\nR: %d\nNO: %s\nSO: %s\nWE: %s\nEA: %s\nS: %s\nfloore_R: %d\nfloore_G: %d\nfloore_B: %d\nceilling_R: %d\nceilling_G: %d\nceilling_B: %d\n", p->resolution_w, p->resolution_l, p->north_texture, p->south_texture, p->west_texture, p->east_texture, p->sprite_texture, p->floore_R, p->floore_G, p->floore_B, p->ceilling_R, p->ceilling_G, p->ceilling_B);
+	//printf("R: %d\nR: %d\nNO: %s\nSO: %s\nWE: %s\nEA: %s\nS: %s\nfloore_R: %d\nfloore_G: %d\nfloore_B: %d\nceilling_R: %d\nceilling_G: %d\nceilling_B: %d\n", p->resolution_w, p->resolution_l, p->north_texture, p->south_texture, p->west_texture, p->east_texture, p->sprite_texture, p->floore_R, p->floore_G, p->floore_B, p->ceilling_R, p->ceilling_G, p->ceilling_B);
 }

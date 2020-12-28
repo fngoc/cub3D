@@ -6,5 +6,5 @@
 
 void    checking_errors_map(t_list *map)
 {
-    
+    (void)map;
 }

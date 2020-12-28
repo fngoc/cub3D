@@ -34,4 +34,6 @@ void	parser(char **argv, t_parser *p, t_list	*lst_map);
 
 void	checking_errors_map(t_list *lst_map);
 
+void start(void *mlx, void *win, t_parser *p);
+
 #endif

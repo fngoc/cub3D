@@ -7,8 +7,8 @@
 
 int	main(int argc, char **argv)
 {
-	void *mlx;
-	void *win;
+	void		*mlx;
+	void		*win;
 	t_parser	p;
 	t_list		*lst_map;
 
@@ -18,8 +18,7 @@ int	main(int argc, char **argv)
 	checking_errors_arg(argc, argv);
 	parser(argv, &p, lst_map);
 	// checking_errors_map(lst_map);
-	mlx = mlx_init();
-	win = mlx_new_window(mlx, p.resolution_w, p.resolution_l, "test");
-	mlx_loop(mlx);
+	start(mlx, win, &p);
+
 	return (0);
 }
