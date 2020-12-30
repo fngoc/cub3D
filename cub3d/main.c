@@ -17,7 +17,7 @@ int	main(int argc, char **argv)
 	win = NULL;
 	checking_errors_arg(argc, argv);
 	parser(argv, &p, lst_map);
-	// checking_errors_map(lst_map);
+	checking_errors_map(lst_map);
 	start(mlx, win, &p);
 
 	return (0);
