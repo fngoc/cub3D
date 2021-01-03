@@ -1,7 +1,7 @@
 #include "cub3d.h"
 
 /*
-** start: запуск.
+** start: запуск окна.
 */
 
 void start(void *mlx, void *win, t_parser *p)
