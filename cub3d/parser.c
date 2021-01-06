@@ -106,9 +106,9 @@ void make_map(t_list *lst_map, int size)
 		tmp = tmp->next;
 	}
 	/* Вывод карты */
-	i = -1;
-	while (map[++i])
-		printf("%s\n", map[i]);
+	// i = -1;
+	// while (map[++i])
+	// 	printf("%s\n", map[i]);
 }
 
 /*
