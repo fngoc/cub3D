@@ -9,23 +9,23 @@
 
 typedef struct	s_parser
 {
-	int resolution_w;
-	int resolution_l;
+	int		resolution_w;
+	int		resolution_l;
 
-	char *north_texture;
-	char *south_texture;
-	char *west_texture;
-	char *east_texture;
+	char	*north_texture;
+	char	*south_texture;
+	char	*west_texture;
+	char	*east_texture;
 
-	char *sprite_texture;
+	char	*sprite_texture;
 
-	int floore_R;
-	int floore_G;
-	int floore_B;
+	int		floore_R;
+	int		floore_G;
+	int		floore_B;
 
-	int ceilling_R;
-	int ceilling_G;
-	int ceilling_B;
+	int		ceilling_R;
+	int		ceilling_G;
+	int		ceilling_B;
 }				t_parser;
 
 void	checking_errors_arg(int ac, char **av);
@@ -34,6 +34,6 @@ void	parser(char **argv, t_parser *p, t_list	*lst_map);
 
 void	checking_errors_map(t_list *lst_map);
 
-void start(void *mlx, void *win, t_parser *p);
+void	start(void *mlx, void *win, t_parser *p);
 
 #endif

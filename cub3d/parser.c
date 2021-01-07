@@ -115,7 +115,7 @@ void make_map(t_list *lst_map, int size)
 ** parser_map: парсинг карты.
 */
 
-void parser_map(int fd , t_list *lst_map)
+void parser_map(int fd, t_list *lst_map)
 {
 	char	*line;
 
@@ -132,15 +132,15 @@ void parser_map(int fd , t_list *lst_map)
 void		parser(char **argv, t_parser *p, t_list	*lst_map)
 {
 	int		fd;
-	int		coll;
+	int		coll_line;
 	char	*line;
 
-	coll = 0;
+	coll_line = 0;
 	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &line) && coll++ != 8)
+	while (get_next_line(fd, &line) && coll_line++ != 8)
 	{
 		if (ft_strlen(line) == 0)
-			coll--;
+			coll_line--;
 		else
 			parser_data(line, p);
 	}
