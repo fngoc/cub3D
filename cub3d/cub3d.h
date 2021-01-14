@@ -26,13 +26,17 @@ typedef struct	s_parser
 	int		ceilling_R;
 	int		ceilling_G;
 	int		ceilling_B;
+
+	char	**map;
 }				t_parser;
 
 void	checking_errors_arg(int ac, char **av);
 
-void	parser(char **argv, t_parser *p, t_list	*lst_map);
+void	parser(char **argv, t_parser *p);
 
-void	checking_errors_map(t_list *lst_map);
+void	parser_map(int fd, t_parser *p);
+
+void	checking_errors_map(t_parser *p);
 
 void	start(void *mlx, void *win, t_parser *p);
 
