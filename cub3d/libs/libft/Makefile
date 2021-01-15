@@ -6,7 +6,7 @@
 #    By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/04 11:50:57 by fngoc             #+#    #+#              #
-#    Updated: 2020/12/15 17:06:36 by fngoc            ###   ########.fr        #
+#    Updated: 2021/01/15 18:10:21 by fngoc            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRC = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c\
 	ft_strnew.c ft_strclr.c ft_strcpy.c ft_lstnew.c ft_lstadd_front.c\
 	ft_lstsize.c ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c\
 	ft_lstclear.c ft_lstiter.c ft_lstmap.c ft_digit_num.c\
-	get_next_line.c get_next_line_utils.c
+	get_next_line.c get_next_line_utils.c ft_isspace.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -44,9 +44,9 @@ $(NAME): $(OBJ) $(HEADER)
 	@gcc $(FLAG) $(OPTION) $< -o $@
 
 clean:
-	rm -rf $(OBJ)
+	@rm -rf $(OBJ)
 
 fclean: clean
-	rm -rf $(NAME)
+	@rm -rf $(NAME)
 
 re: fclean all

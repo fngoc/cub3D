@@ -18,7 +18,7 @@ CLEAN = clean
 
 FCLEAN = fclean
 
-SRC = main.c checking_errors_arg.c parser.c checking_errors_map.c start.c
+SRC = main.c checking_errors_arg.c parser.c checking_errors_map.c start.c parser_map.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -34,31 +34,47 @@ OPTIONOBJ = -o
 
 DEL = rm -rf
 
+GREEN='\033[1;32m'
+
+WHITE='\033[0;37m'
+
+YELLOW='\033[1;33m'
+
+CYAN='\033[1;36m'
+
+MAGENTA='\033[1;35m'
+
 all: $(NAME)
 
-$(NAME): $(OBJ) $(LIBFT) #$(LIBMLX)
+$(NAME): $(OBJ) $(LIBFT) $(LIBMLX)
 	@cd  $(LIBFT_DIR) && mv ./libft.a ../../
-	#@cd  $(LIBMLX_DIR) && mv ./libmlx.dylib ../../
+	@cd  $(LIBMLX_DIR) && mv ./libmlx.dylib ../../
 	@gcc $(FLAG) $(OBJ) -L. -lmlx -lft $(FLAGSMLX) $(OPTIONOBJ) $(NAME)
+	@echo ${YELLOW}"Step 3 is done!"
+	@echo $(GREEN)"Start!"${WHITE}
 	@./cub3d map.cub
 
 $(LIBFT):
 	@cd $(LIBFT_DIR) && $(MAKE)
+	@echo ${MAGENTA}"Step 1 is done!"
 
-# $(LIBMLX):
-# 	cd $(LIBMLX_DIR) && $(MAKE)
+$(LIBMLX):
+	@cd $(LIBMLX_DIR) && $(MAKE)
+	@echo ${CYAN}"Step 2 is done!"
 
 %.o: %.c
 	@gcc $(FLAG) $(OPTION) $< $(OPTIONOBJ) $@
 
 clean:
-	$(DEL) $(OBJ)
-	cd $(LIBFT_DIR) && $(MAKE) $(CLEAN)
-	cd $(LIBMLX_DIR) && $(MAKE) $(CLEAN)
-
+	@$(DEL) $(OBJ)
+	@cd $(LIBFT_DIR) && $(MAKE) $(CLEAN)
+	@cd $(LIBMLX_DIR) && $(MAKE) $(CLEAN)
+	@echo $(GREEN)"All cleared."
+	
 fclean: clean
-	$(DEL) $(NAME) ./libft.a ./libmlx.dylib
-	$(DEL) $(OBJ)
-	cd $(LIBFT_DIR) && $(MAKE) $(FCLEAN)
+	@$(DEL) $(NAME) ./libft.a ./libmlx.dylib
+	@$(DEL) $(OBJ)
+	@cd $(LIBFT_DIR) && $(MAKE) $(FCLEAN)
+	@echo $(GREEN)"All libs cleared."
 
 re: fclean all

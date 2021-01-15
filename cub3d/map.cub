@@ -6,16 +6,16 @@ SO ./path_to_the_south_texture
 
 
 
-                  EA ./path_to_the_east_texture             
+                  EA ./path_to_the_east_texture
 
 
 
 
         S       ./path_to_the_sprite_texture
-  F 220,100,15        
+  F 220,33,15
 
 
-C     225,30,1923
+C     225,31,223
 
 1111111111111111111111111
 1000000000110000000000001

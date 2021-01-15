@@ -10,15 +10,12 @@ int	main(int argc, char **argv)
 	void		*mlx;
 	void		*win;
 	t_parser	p;
-	t_list		*lst_map;
 
-	lst_map = NULL;
 	mlx = NULL;
 	win = NULL;
 	checking_errors_arg(argc, argv);
-	parser(argv, &p, lst_map);
-	checking_errors_map(lst_map);
+	parser(argv, &p);
+	checking_errors_map(&p);
 	start(mlx, win, &p);
-
 	return (0);
 }

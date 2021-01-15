@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/31 16:39:49 by fngoc             #+#    #+#             */
-/*   Updated: 2020/12/16 17:58:05 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/01/15 18:09:52 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ int					ft_isdigit(int c);
 int					ft_isascii(int c);
 
 int					ft_isprint(int c);
+
+int					ft_isspace(int c);
 
 int					ft_toupper(int c);
 

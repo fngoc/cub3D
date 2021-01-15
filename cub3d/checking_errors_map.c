@@ -4,7 +4,7 @@
 ** checking_errors_map: проверка карты на ошибки. 
 */
 
-void    checking_errors_map(t_list *map)
+void	checking_errors_map(t_parser *p)
 {
-    (void)map;
+	(void)p;
 }
