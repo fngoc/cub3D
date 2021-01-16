@@ -8,7 +8,7 @@ static void floodFill(int x, int y, int oldcolor, int newcolor, t_parser *p)
 {
 	printf("%d\n", x);
 	printf("%d\n", y);
-	if(x >= 0 && y >= 0 && y < (int)ft_strlen(*p->map) && x < (int)ft_strlen(p->map[y]))
+	if(x >= 0 && y >= 0)
 	{
 		printf("%c<<<<<<\n", p->map[x][y]);
 		floodFill(x + 1, y, oldcolor, newcolor, p);
