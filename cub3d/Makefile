@@ -49,7 +49,7 @@ all: $(NAME)
 $(NAME): $(OBJ) $(LIBFT) $(LIBMLX)
 	@cd  $(LIBFT_DIR) && mv ./libft.a ../../
 	@cd  $(LIBMLX_DIR) && mv ./libmlx.dylib ../../
-	@gcc $(FLAG) $(OBJ) -L. -lmlx -lft $(FLAGSMLX) $(OPTIONOBJ) $(NAME)
+	@$(CC) $(FLAG) $(OBJ) -L. -lmlx -lft $(FLAGSMLX) $(OPTIONOBJ) $(NAME)
 	@echo ${YELLOW}"Step 3 is done!"
 	@echo $(GREEN)"Start!"${WHITE}
 	@./cub3d map.cub
@@ -63,7 +63,7 @@ $(LIBMLX):
 	@echo ${CYAN}"Step 2 is done!"
 
 %.o: %.c
-	@gcc $(FLAG) $(OPTION) $< $(OPTIONOBJ) $@
+	@$(CC) $(FLAG) $(OPTION) $< $(OPTIONOBJ) $@
 
 clean:
 	@$(DEL) $(OBJ)

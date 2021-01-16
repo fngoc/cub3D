@@ -1,7 +1,8 @@
 #include "cub3d.h"
 
 /*
-** checking_all_data: проверка на наличие всех спарсеных данных.
+** checking_all_data: проверка на наличие всех спарсеных данных
+** и что бы они встречались один раз.
 */
 
 static	void	checking_all_data(t_parser *p)
@@ -11,7 +12,7 @@ static	void	checking_all_data(t_parser *p)
 	|| ft_strlen(p->east_texture) == 0 || ft_strlen(p->sprite_texture) == 0
 	|| p->floore_flag != 1 || p->ceilling_flag != 1)
 	{
-		ft_putendl_fd("ERROR: Was set not all edificatory", 1);
+		ft_putendl_fd("ERROR: Was set not all edificatory or are there repetitions", 1);
 		exit(1);
 	}
 }
@@ -95,6 +96,68 @@ static	void	checking_R(t_parser *p)
 }
 
 /*
+** get_floore: получить floore с проверкой.
+*/
+
+static	void	get_floore(char *tmp, t_parser *p)
+{
+	if (ft_isdigit(*tmp))
+		p->floore_R = ft_atoi(tmp);
+	else
+	{
+		ft_putendl_fd("ERROR: Not set floore_R", 1);
+		exit(1);
+	}
+	tmp += ft_digit_num(p->floore_R) + 1;
+	if (ft_isdigit(*tmp))
+		p->floore_G = ft_atoi(tmp);
+	else
+	{
+		ft_putendl_fd("ERROR: Not set floore_G", 1);
+		exit(1);
+	}
+	tmp += ft_digit_num(p->floore_G) + 1;
+	if (ft_isdigit(*tmp))
+		p->floore_B = ft_atoi(tmp);
+	else
+	{
+		ft_putendl_fd("ERROR: Not set floore_B", 1);
+		exit(1);
+	}
+}
+
+/*
+** get_ceilling: получить ceilling с проверкой.
+*/
+
+static	void	get_ceilling(char *tmp, t_parser *p)
+{
+	if (ft_isdigit(*tmp))
+		p->ceilling_R = ft_atoi(tmp);
+	else
+	{
+		ft_putendl_fd("ERROR: Not set ceilling_R", 1);
+		exit(1);
+	}
+	tmp += ft_digit_num(p->ceilling_R) + 1;
+	if (ft_isdigit(*tmp))
+		p->ceilling_G = ft_atoi(tmp);
+	else
+	{
+		ft_putendl_fd("ERROR: Not set ceilling_G", 1);
+		exit(1);
+	}
+	tmp += ft_digit_num(p->ceilling_G) + 1;
+	if (ft_isdigit(*tmp))
+		p->ceilling_B = ft_atoi(tmp);
+	else
+	{
+		ft_putendl_fd("ERROR: Not set ceilling_B", 1);
+		exit(1);
+	}
+}
+
+/*
 ** parser_inf_norm: функция для нормы.
 */
 
@@ -108,21 +171,13 @@ static	void	parser_inf_norm(char *line, int id, int index, t_parser *p)
 	else if (id == 7)
 	{
 		checking_tab_in_R_F(tmp);
-		p->floore_R = ft_atoi(tmp);
-		tmp += ft_digit_num(p->floore_R) + 1;
-		p->floore_G = ft_atoi(tmp);
-		tmp += ft_digit_num(p->floore_G) + 1;
-		p->floore_B = ft_atoi(tmp);
+		get_floore(tmp, p);
 		checking_F(p);
 	}
 	else if (id == 8)
 	{
 		checking_tab_in_R_F(tmp);
-		p->ceilling_R = ft_atoi(tmp);
-		tmp += ft_digit_num(p->ceilling_R) + 1;
-		p->ceilling_G = ft_atoi(tmp);
-		tmp += ft_digit_num(p->ceilling_G) + 1;
-		p->ceilling_B = ft_atoi(tmp);
+		get_ceilling(tmp, p);
 		checking_C(p);
 	}
 }
@@ -217,8 +272,13 @@ void			parser(char **argv, t_parser *p)
 			}
 		}
 	}
+
 	/* Печать даннх */
 	printf("R: %d|\nR: %d|\nNO: %s|\nSO: %s|\nWE: %s|\nEA: %s|\nS: %s|\nfloore_R: %d|\nfloore_G: %d|\nfloore_B: %d|\nceilling_R: %d|\nceilling_G: %d|\nceilling_B: %d|\n", p->resolution_w, p->resolution_l, p->north_texture, p->south_texture, p->west_texture, p->east_texture, p->sprite_texture, p->floore_R, p->floore_G, p->floore_B, p->ceilling_R, p->ceilling_G, p->ceilling_B);
+	
+	/* Печать индекса игрока */
+	printf("Player is here: %c\n", *p->playr);
+
 	/* Печать карты */
 	int i = -1;
 	while (p->map[++i])

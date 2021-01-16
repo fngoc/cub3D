@@ -8,14 +8,14 @@
 int	main(int argc, char **argv)
 {
 	void		*mlx;
-	void		*win;
+	void		*mlx_win;
 	t_parser	p;
 
 	mlx = NULL;
-	win = NULL;
+	mlx_win = NULL;
 	checking_errors_arg(argc, argv);
 	parser(argv, &p);
 	checking_errors_map(&p);
-	start(mlx, win, &p);
+	start(mlx, mlx_win, &p);
 	return (0);
 }

@@ -30,6 +30,10 @@ typedef struct	s_parser
 	int		ceilling_flag;
 
 	char	**map;
+
+	char	*playr;
+	int		playr_x;
+	int		playr_y;
 }				t_parser;
 
 void	checking_errors_arg(int ac, char **av);
