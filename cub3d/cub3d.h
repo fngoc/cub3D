@@ -46,4 +46,6 @@ void	checking_errors_map(t_parser *p);
 
 void	start(void *mlx, void *win, t_parser *p);
 
+void	error(char *str);
+
 #endif

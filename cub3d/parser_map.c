@@ -1,20 +1,60 @@
 #include "cub3d.h"
 
 /*
-** floodFill: проверка на закрытость стенами персонажа.
+** checking_zero: проверка на отсутствие пустоты рядом с 0 в карте.
 */
 
-static void floodFill(int x, int y, int oldcolor, int newcolor, t_parser *p)
+static	void	checking_zero(int size, t_parser *p)
 {
-	printf("%d\n", x);
-	printf("%d\n", y);
-	if(x >= 0 && y >= 0)
+	int i;
+	int j;
+
+	i = 0;
+	while (i != size)
 	{
-		printf("%c<<<<<<\n", p->map[x][y]);
-		floodFill(x + 1, y, oldcolor, newcolor, p);
-		floodFill(x, y + 1, oldcolor, newcolor, p);
-		floodFill(x - 1, y, oldcolor, newcolor, p);
-		floodFill(x, y - 1, oldcolor, newcolor, p);
+		j = 0;
+		while (p->map[i][j] != '\0')
+		{
+			if ((i == 0 && p->map[i][j] == '0') || (i == size - 1 && p->map[i][j] == '0'))
+				error("ERROR: There is an empty space next to zero");
+			else if (p->map[i][j] == '0')
+			{
+				if (p->map[i][j + 1] == ' ' || p->map[i][j + 1] == '\0')
+					error("ERROR: There is an empty space next to zero");
+				if (p->map[i][j - 1] == ' ' || p->map[i][j - 1] == '\0')
+					error("ERROR: There is an empty space next to zero");
+				if (p->map[i + 1][j] == ' ' || p->map[i + 1][j] == '\0')
+					error("ERROR: There is an empty space next to zero");
+				if (p->map[i - 1][j] == ' ' || p->map[i - 1][j] == '\0')
+					error("ERROR: There is an empty space next to zero");
+			}
+			++j;
+		}
+		++i;
+	}
+}
+
+/*
+** check_closed_map: проверка на закрытость стенами персонажа
+** с помощью алгоритма flood fill.
+*/
+
+static	void	check_closed_map(int x, int y, t_parser *p)
+{
+	// printf("-----\ny: %d\nx: %d\n-----\n", y, x);
+	if (x < 0 || y < 0 || y >= (int)ft_strlen(*p->map) || x >= (int)ft_strlen(p->map[y])
+		|| p->map[y][x] == ' ')
+		error("ERROR: The player is not surrounded by walls");
+	if (ft_strchr(" 02NWES", p->map[y][x]))
+	{
+		if (p->map[y][x] == '2')
+			p->map[y][x] = 'B';
+		else
+			p->map[y][x] = '*';
+		check_closed_map(x + 1, y, p);
+		check_closed_map(x - 1, y, p);
+		check_closed_map(x, y + 1, p);
+		check_closed_map(x, y - 1, p);
 	}
 }
 
@@ -42,14 +82,11 @@ static	void	check_symbols_map(int size, t_parser *p)
 				{
 					flag = 1;
 					p->playr = &p->map[i][j];
-					p->playr_x = i;
-					p->playr_y = j;
+					p->playr_y = i;
+					p->playr_x = j;
 				}
 				else
-				{
-					ft_putendl_fd("ERROR: The player meets more than 1 time", 1);
-					exit(1);
-				}
+					error("ERROR: The player meets more than 1 time");
 			}
 			if (p->map[i][j] == ' ' || p->map[i][j] == '0'
 			|| p->map[i][j] == '1' || p->map[i][j] == '2'
@@ -57,13 +94,12 @@ static	void	check_symbols_map(int size, t_parser *p)
 			|| p->map[i][j] == 'E' || p->map[i][j] == 'W')
 				++j;
 			else
-			{
-				ft_putendl_fd("ERROR: Wrong symbol in the map", 1);
-				exit(1);
-			}
+				error("ERROR: Wrong symbol in the map");
 		}
 		++i;
 	}
+	if (flag == 0)
+		error("ERROR: The player never meets");
 }
 
 /*
@@ -102,12 +138,10 @@ static void make_map(t_list **head, int size, t_parser *p)
 		tmp= tmp->next;
 	}
 	if (all_tab_in_line(p->map[size - 1]))
-	{
-		ft_putendl_fd("ERROR: There is an empty line with spaces at the end of the map", 1);
-		exit(1);
-	}
+		error("ERROR: There is an empty line with spaces at the end of the map");
 	check_symbols_map(size, p);
-	floodFill(p->playr_x, p->playr_y, '0', 'X', p);
+	checking_zero(size, p);
+	check_closed_map(p->playr_x, p->playr_y, p);
 }
 
 /*

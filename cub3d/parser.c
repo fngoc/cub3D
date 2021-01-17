@@ -11,10 +11,7 @@ static	void	checking_all_data(t_parser *p)
 	|| ft_strlen(p->south_texture) == 0 || ft_strlen(p->west_texture) == 0
 	|| ft_strlen(p->east_texture) == 0 || ft_strlen(p->sprite_texture) == 0
 	|| p->floore_flag != 1 || p->ceilling_flag != 1)
-	{
-		ft_putendl_fd("ERROR: Was set not all edificatory or are there repetitions", 1);
-		exit(1);
-	}
+		error("ERROR: Was set not all edificatory or are there repetitions");
 }
 
 /*
@@ -29,10 +26,7 @@ static	void	checking_tab_in_R_F(char *line)
 	while (line[i] != '\0')
 	{
 		if (line[i] == ' ')
-		{
-			ft_putendl_fd("ERROR: A space was found in color", 1);
-			exit(1);
-		}
+			error("ERROR: A space was found in color");
 		++i;
 	}
 }
@@ -44,10 +38,7 @@ static	void	checking_tab_in_R_F(char *line)
 static	void	checking_tab(char *line)
 {
 	if (line[ft_strlen(line) - 1] == ' ')
-	{
-		ft_putendl_fd("ERROR: A space was found after the indexer", 1);
-		exit(1);
-	}
+		error("ERROR: A space was found after the indexer");
 }
 
 /*
@@ -59,15 +50,12 @@ static	void	checking_C(t_parser *p)
 	if ((p->ceilling_R > 255 || p->ceilling_R < 0) ||
 	(p->ceilling_G > 255 || p->ceilling_G < 0) ||
 	(p->ceilling_B > 255 || p->ceilling_B < 0))
-	{
-		ft_putendl_fd("ERROR: Not a valid ceilling color", 1);
-		exit(1);
-	}
+		error("ERROR: Not a valid ceilling color");
 	p->ceilling_flag = 1;
 }
 
 /*
-** checking_F: проверка floore .
+** checking_F: проверка floore.
 */
 
 static	void	checking_F(t_parser *p)
@@ -75,10 +63,7 @@ static	void	checking_F(t_parser *p)
 	if ((p->floore_R > 255 || p->floore_R < 0) ||
 	(p->floore_G > 255 || p->floore_G < 0) ||
 	(p->floore_B > 255 || p->floore_B < 0))
-	{
-		ft_putendl_fd("ERROR: Not a valid floor color", 1);
-		exit(1);
-	}
+		error("ERROR: Not a valid floor color");
 	p->floore_flag = 1;
 }
 
@@ -89,10 +74,9 @@ static	void	checking_F(t_parser *p)
 static	void	checking_R(t_parser *p)
 {
 	if (p->resolution_w < 0 || p->resolution_l < 0)
-	{
-		ft_putendl_fd("ERROR: Not a valid resolution", 1);
-		exit(1);
-	}
+		error("ERROR: Not a valid resolution");
+	if (p->resolution_w > 5120 || p->resolution_l > 2880)
+		error("ERROR: The screen resolution is too high");
 }
 
 /*
@@ -104,26 +88,17 @@ static	void	get_floore(char *tmp, t_parser *p)
 	if (ft_isdigit(*tmp))
 		p->floore_R = ft_atoi(tmp);
 	else
-	{
-		ft_putendl_fd("ERROR: Not set floore_R", 1);
-		exit(1);
-	}
+		error("ERROR: Not set floore_R");
 	tmp += ft_digit_num(p->floore_R) + 1;
 	if (ft_isdigit(*tmp))
 		p->floore_G = ft_atoi(tmp);
 	else
-	{
-		ft_putendl_fd("ERROR: Not set floore_G", 1);
-		exit(1);
-	}
+		error("ERROR: Not set floore_G");
 	tmp += ft_digit_num(p->floore_G) + 1;
 	if (ft_isdigit(*tmp))
 		p->floore_B = ft_atoi(tmp);
 	else
-	{
-		ft_putendl_fd("ERROR: Not set floore_B", 1);
-		exit(1);
-	}
+		error("ERROR: Not set floore_B");
 }
 
 /*
@@ -135,26 +110,17 @@ static	void	get_ceilling(char *tmp, t_parser *p)
 	if (ft_isdigit(*tmp))
 		p->ceilling_R = ft_atoi(tmp);
 	else
-	{
-		ft_putendl_fd("ERROR: Not set ceilling_R", 1);
-		exit(1);
-	}
+		error("ERROR: Not set ceilling_R");
 	tmp += ft_digit_num(p->ceilling_R) + 1;
 	if (ft_isdigit(*tmp))
 		p->ceilling_G = ft_atoi(tmp);
 	else
-	{
-		ft_putendl_fd("ERROR: Not set ceilling_G", 1);
-		exit(1);
-	}
+		error("ERROR: Not set ceilling_G");
 	tmp += ft_digit_num(p->ceilling_G) + 1;
 	if (ft_isdigit(*tmp))
 		p->ceilling_B = ft_atoi(tmp);
 	else
-	{
-		ft_putendl_fd("ERROR: Not set ceilling_B", 1);
-		exit(1);
-	}
+		error("ERROR: Not set ceilling_B");
 }
 
 /*
@@ -253,10 +219,7 @@ void			parser(char **argv, t_parser *p)
 
 	coll_line = 0;
 	if (!(fd = open(argv[1], O_RDONLY)))
-	{
-		ft_putendl_fd("ERROR: File not found or not open", 1);
-		exit(1);
-	}
+		error("ERROR: File not found or not open");
 	while (get_next_line(fd, &line) && coll_line++ != 8)
 	{
 		if (ft_strlen(line) == 0)
@@ -277,7 +240,7 @@ void			parser(char **argv, t_parser *p)
 	printf("R: %d|\nR: %d|\nNO: %s|\nSO: %s|\nWE: %s|\nEA: %s|\nS: %s|\nfloore_R: %d|\nfloore_G: %d|\nfloore_B: %d|\nceilling_R: %d|\nceilling_G: %d|\nceilling_B: %d|\n", p->resolution_w, p->resolution_l, p->north_texture, p->south_texture, p->west_texture, p->east_texture, p->sprite_texture, p->floore_R, p->floore_G, p->floore_B, p->ceilling_R, p->ceilling_G, p->ceilling_B);
 	
 	/* Печать индекса игрока */
-	printf("Player is here: %c\n", *p->playr);
+	// printf("Player is here: %c\n", *p->playr);
 
 	/* Печать карты */
 	int i = -1;
