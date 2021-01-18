@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/01/18 11:30:29 by fngoc             #+#    #+#              #
+#    Updated: 2021/01/18 14:11:53 by fngoc            ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 .PHONY: all clean bonus fclean re
 
 NAME = cub3d
@@ -18,7 +30,9 @@ CLEAN = clean
 
 FCLEAN = fclean
 
-SRC = main.c checking_errors_arg.c parser.c checking_errors_map.c start.c parser_map.c error.c
+SRC = main.c parser.c start.c parser_map.c error.c\
+	error_check_utils_one.c error_check_utils_two.c\
+	get_inf_utils.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -70,7 +84,7 @@ clean:
 	@cd $(LIBFT_DIR) && $(MAKE) $(CLEAN)
 	@cd $(LIBMLX_DIR) && $(MAKE) $(CLEAN)
 	@echo $(GREEN)"All cleared."
-	
+
 fclean: clean
 	@$(DEL) $(NAME) ./libft.a ./libmlx.dylib
 	@$(DEL) $(OBJ)
