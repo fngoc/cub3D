@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 12:24:31 by fngoc             #+#    #+#             */
-/*   Updated: 2021/01/18 17:18:07 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/01/19 13:05:59 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,19 @@ static	void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 ** print_step: печать больших пикселей.
 */
 
-// void			print_step(t_data *img, int *x, int *y, int color)
-// {
-// 	while (*y++ < SCALE)
-// 	{
-// 		*x = 0;
-// 		while (*x++ < SCALE)
-// 			my_mlx_pixel_put(img, *y, *x, color);
-// 	}
-// 	y += SCALE;
-// }
+void				print_step(t_data *img, t_point_print *point, int color)
+{
+	int y_tmp;
+	int x_tmp;
+
+	y_tmp = 0;
+	while (y_tmp++ < SCALE)
+	{
+		x_tmp = 0;
+		while (x_tmp++ < SCALE)
+			my_mlx_pixel_put(img, point->x + y_tmp, point->y + x_tmp, color);
+	}
+}
 
 /*
 ** start: запуск окна.
@@ -46,39 +49,33 @@ static	void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
 void			start(void *mlx, void *mlx_win, t_parser *p)
 {
-	int i;
-	int j;
-	int x;
-	int y;
-	t_data img;
-	int scale = 50;
+	int				i;
+	int				j;
+	t_data			img;
+	t_point_print	point;
 
-	i = 0;
-	x = 0;
-	y = 0;
+	i = -1;
+	point.x = 0;
+	point.y = 0;
 	mlx = mlx_init();
     mlx_win = mlx_new_window(mlx, p->resolution_w, p->resolution_l, "cub3d");
     img.img = mlx_new_image(mlx, p->resolution_w, p->resolution_l);
     img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	while (i != p->size_map)
+	while (++i != p->size_map)
 	{
 		j = 0;
 		while (p->map[i][j] != '\0')
 		{
 			if (p->map[i][j] == '1')
-			{
-				while (y++ < scale)
-				{
-					x = 0;
-					while (x++ < scale)
-						my_mlx_pixel_put(&img, x, y, 0x00FF0000);
-				}
-				scale += 16;
-			}
+				print_step(&img, &point, 0x00FFFFFF);
+			else if (p->map[i][j] == '*' || p->map[i][j] == '0')
+				print_step(&img, &point, 0x006300FD);
 			++j;
+			point.x += SCALE;
 		}
-		++i;
+		point.x = 0;
+		point.y += SCALE;
 	}
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 300, 150);
+	mlx_put_image_to_window(mlx, mlx_win, img.img, 50, 50);
 	mlx_loop(mlx);
 }

@@ -60,6 +60,12 @@ typedef	struct	s_data
     int         endian;
 }               t_data;
 
+typedef struct	s_point_print
+{
+	int			x;
+	int			y;
+}				t_point_print;
+
 void			check_errors_arg(int ac, char **av);
 
 void			parser(char **argv, t_parser *p);
