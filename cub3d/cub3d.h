@@ -66,6 +66,15 @@ typedef struct	s_point_print
 	int			y;
 }				t_point_print;
 
+typedef struct	s_cub3d
+{
+	void			*mlx;
+	void			*mlx_win;
+	t_parser		p;
+	t_data			data;
+	t_point_print	point;
+}					t_cub3d;
+
 void			check_errors_arg(int ac, char **av);
 
 void			parser(char **argv, t_parser *p);
@@ -92,7 +101,7 @@ void			get_floore(char *tmp, t_parser *p);
 
 void			get_ceilling(char *tmp, t_parser *p);
 
-void			start(void *mlx, void *win, t_parser *p);
+void			start(t_cub3d *cub3d);
 
 void			error(char *str);
 
