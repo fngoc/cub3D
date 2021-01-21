@@ -26,79 +26,99 @@ static	void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 }
 
 /*
+** print_player: печать персонажа.
+*/
+
+static	void	print_player(t_cub3d *cub3d)
+{
+	float y_tmp;
+	float x_tmp;
+
+	y_tmp = 0;
+	// if ((cub3d->p.map[(int)cub3d->plr.y][(int)cub3d->plr.x] + 0.2) == '1')
+	// {
+	// 	return ;
+	// }
+	while (y_tmp++ < SCALE)
+	{
+		x_tmp = 0;
+		while (x_tmp++ < SCALE)
+			my_mlx_pixel_put(&cub3d->data, cub3d->plr.x * SCALE + x_tmp, cub3d->plr.y * SCALE + y_tmp, 0x00F54242);
+	}
+}
+
+/*
 ** print_step: печать больших пикселей.
 */
 
-static	void	print_step(t_data *img, t_point_print *point, int color, int flag, t_parser *p)
+static	void	print_step(t_cub3d *cub3d, int color)
 {
 	int y_tmp;
 	int x_tmp;
-	
-	if (flag)
-	{
-		p->playr_x = point->x;
-		p->playr_y = point->y;
-	}
+
 	y_tmp = 0;
 	while (y_tmp++ < SCALE)
 	{
 		x_tmp = 0;
 		while (x_tmp++ < SCALE)
-			my_mlx_pixel_put(img, point->x + y_tmp, point->y + x_tmp, color);
+			my_mlx_pixel_put(&cub3d->data, cub3d->point.x + y_tmp, cub3d->point.y + x_tmp, color);
 	}
 }
 
 /*
-** start_map: печать карты с игроком.
+** print_map: печать карты с игроком.
 */
 
-static	void	start_map(t_data *img, void *mlx, t_parser *p, t_point_print *point)
+static	void	print_map(t_cub3d *cub3d)
 {
 	int	i;
 	int	j;
 
 	i = -1;
-	point->x = 0;
-	point->y = 0;
-	img->img = mlx_new_image(mlx, p->resolution_w, p->resolution_l);
-    img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length, &img->endian);
-	while (++i != p->size_map)
+	cub3d->point.x = 0;
+	cub3d->point.y = 0;
+	cub3d->data.img = mlx_new_image(cub3d->mlx, cub3d->p.resolution_w, cub3d->p.resolution_l);
+    cub3d->data.addr = mlx_get_data_addr(cub3d->data.img, &cub3d->data.bits_per_pixel, &cub3d->data.line_length, &cub3d->data.endian);
+	while (++i != cub3d->p.size_map)
 	{
 		j = 0;
-		while (p->map[i][j] != '\0')
+		while (cub3d->p.map[i][j] != '\0')
 		{
-			if (p->map[i][j] == '1')
-				print_step(img, point, 0x00FFFFFF, 0, p);
-			else if (i == p->playr_y && j == p->playr_x)
-				print_step(img, point, 0x00FC0330, 1, p);
-			else if (p->map[i][j] == '*' || p->map[i][j] == '0')
-				print_step(img, point, 0x006300FD, 0, p);
+			if (cub3d->p.map[i][j] == '1')
+				print_step(cub3d, 0x00FFFFFF);
+			else if (i == cub3d->p.playr_y && j == cub3d->p.playr_x)
+				print_step(cub3d, 0x006300FD);
+			else if (cub3d->p.map[i][j] == '*' || cub3d->p.map[i][j] == '0')
+				print_step(cub3d, 0x006300FD);
 			++j;
-			point->x += SCALE;
+			cub3d->point.x += SCALE;
 		}
-		point->x = 0;
-		point->y += SCALE;
+		cub3d->point.x = 0;
+		cub3d->point.y += SCALE;
 	}
+	mlx_put_image_to_window(cub3d->mlx, cub3d->mlx_win, cub3d->data.img, 50, 50);
 }
 
 /*
 ** key_hook: взаимодействие с клавиатурой.
 */
 
-// static	int		key_hook(int keycode, t_cub3d *cub3d)
-// {
-// 	start_map(cub3d->mlx, &cub3d->mlx, &cub3d->p, &cub3d->point);
-// 	if (keycode == 126)
-// 		cub3d->p.playr_y--;
-// 	if (keycode == 125)
-// 		cub3d->p.playr_y++;
-// 	if (keycode == 123)
-// 		cub3d->p.playr_x--;
-// 	if (keycode == 124)
-// 		cub3d->p.playr_x++;
-//     printf("Hello from key_hook!\n");
-// 	return (0);
-// }
+static	int		key_hook(int keycode, t_cub3d *cub3d)
+{
+	mlx_clear_window(cub3d->mlx, cub3d->mlx_win);
+	if (keycode == 126)
+		cub3d->plr.y -= 0.2;
+	if (keycode == 125)
+		cub3d->plr.y += 0.2;
+	if (keycode == 123)
+		cub3d->plr.x -= 0.2;
+	if (keycode == 124)
+		cub3d->plr.x += 0.2;
+	print_map(cub3d);
+	print_player(cub3d);
+    printf("You put: %d\n", keycode);
+	return (0);
+}
 
 /*
 ** start: запуск окна.
@@ -106,10 +126,12 @@ static	void	start_map(t_data *img, void *mlx, t_parser *p, t_point_print *point)
 
 void			start(t_cub3d *cub3d)
 {
+	cub3d->plr.y = cub3d->p.playr_y;
+	cub3d->plr.x = cub3d->p.playr_x;
 	cub3d->mlx = mlx_init();
     cub3d->mlx_win = mlx_new_window(cub3d->mlx, cub3d->p.resolution_w, cub3d->p.resolution_l, "cub3d");
-	start_map(&cub3d->data, cub3d->mlx, &cub3d->p, &cub3d->point);
-	// mlx_key_hook(cub3d->mlx_win, key_hook, cub3d);
-	mlx_put_image_to_window(cub3d->mlx, cub3d->mlx_win, cub3d->data.img, 50, 50);
+	print_map(cub3d);
+	print_player(cub3d);
+	mlx_key_hook(cub3d->mlx_win, key_hook, cub3d);
 	mlx_loop(cub3d->mlx);
 }

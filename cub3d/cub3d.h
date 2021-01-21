@@ -20,7 +20,11 @@
 # include <stdio.h> /* Для printf */
 # define SCALE 16
 
-typedef	struct		s_parser
+/*
+** t_parser: структура парсера.
+*/
+
+typedef	struct	s_parser
 {
 	int				resolution_w;
 	int				resolution_l;
@@ -30,7 +34,7 @@ typedef	struct		s_parser
 	char			*west_texture;
 	char			*east_texture;
 
-	char			*sprite_texture;
+	char			*sprite_texture; 
 
 	int				floore_r;
 	int				floore_g;
@@ -51,6 +55,10 @@ typedef	struct		s_parser
 	int				size_map;
 }					t_parser;
 
+/*
+** t_data: структура данных mlx.
+*/
+
 typedef	struct		s_data
 {
     void			*img;
@@ -58,13 +66,34 @@ typedef	struct		s_data
     int				bits_per_pixel;
     int				line_length;
     int				endian;
-}               	t_data;
+}					t_data;
+
+/*
+** t_point_print: структура печати карты.
+*/
 
 typedef struct		s_point_print
 {
-	int				x;
-	int				y;
+	float			x;
+	float			y;
 }					t_point_print;
+
+/*
+** t_plr: структура игрока.
+*/
+
+typedef struct		s_plr
+{
+	float			x;
+	float			y;
+	float			dir;
+	float			start;
+	float			end;
+}					t_plr;
+
+/*
+** t_cub3d: структура в которой находится все.
+*/
 
 typedef struct		s_cub3d
 {
@@ -73,6 +102,7 @@ typedef struct		s_cub3d
 	t_parser		p;
 	t_data			data;
 	t_point_print	point;
+	t_plr			plr;
 }					t_cub3d;
 
 void				check_errors_arg(int ac, char **av);
