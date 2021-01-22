@@ -96,10 +96,10 @@ typedef struct		s_plr
 }					t_plr;
 
 /*
-** t_cub3d: структура в которой находится все.
+** t_cub: структура в которой находится все.
 */
 
-typedef struct		s_cub3d
+typedef struct		s_cub
 {
 	void			*mlx;
 	void			*mlx_win;
@@ -107,7 +107,7 @@ typedef struct		s_cub3d
 	t_data			data;
 	t_point_print	point;
 	t_plr			plr;
-}					t_cub3d;
+}					t_cub;
 
 void				check_errors_arg(int ac, char **av);
 
@@ -135,7 +135,7 @@ void				get_floore(char *tmp, t_parser *p);
 
 void				get_ceilling(char *tmp, t_parser *p);
 
-void				start(t_cub3d *cub3d);
+void				start(t_cub *cub);
 
 void				error(char *str);
 

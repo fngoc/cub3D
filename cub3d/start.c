@@ -29,7 +29,7 @@ static	void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 ** print_player: печать персонажа.
 */
 
-static	void	print_player(t_cub3d *cub3d)
+static	void	print_player(t_cub *cub)
 {
 	float y_tmp;
 	float x_tmp;
@@ -39,18 +39,18 @@ static	void	print_player(t_cub3d *cub3d)
 	{
 		x_tmp = 0;
 		while (x_tmp++ < SCALE)
-			my_mlx_pixel_put(&cub3d->data, cub3d->plr.x * SCALE + x_tmp, cub3d->plr.y * SCALE + y_tmp, 0x00F54242);
+			my_mlx_pixel_put(&cub->data, cub->plr.x * SCALE + x_tmp, cub->plr.y * SCALE + y_tmp, 0x00F54242);
 	}
 }
 
-// static	void	print_player(t_cub3d *cub3d)
+// static	void	print_player(t_cub *cub)
 // {
 	
-// 	while (cub3d->p.map[(int)(cub3d->plr.y / SCALE)][(int)(cub3d->plr.x / SCALE)] != '1')
+// 	while (cub->p.map[(int)(cub->plr.y / SCALE)][(int)(cub->plr.x / SCALE)] != '1')
 // 	{
-// 		cub3d->plr.x += cos(cub3d->p.dir);
-// 		cub3d->plr.y += sin(cub3d->p.dir);
-// 		my_mlx_pixel_put(&cub3d->data, cub3d->plr.x, cub3d->plr.y, 0x00F54242);
+// 		cub->plr.x += cos(cub->p.dir);
+// 		cub->plr.y += sin(cub->p.dir);
+// 		my_mlx_pixel_put(&cub->data, cub->plr.x, cub->plr.y, 0x00F54242);
 // 	}
 // }
 
@@ -58,7 +58,7 @@ static	void	print_player(t_cub3d *cub3d)
 ** print_step: печать больших пикселей.
 */
 
-static	void	print_step(t_cub3d *cub3d, int color)
+static	void	print_step(t_cub *cub, int color)
 {
 	int y_tmp;
 	int x_tmp;
@@ -68,7 +68,7 @@ static	void	print_step(t_cub3d *cub3d, int color)
 	{
 		x_tmp = 0;
 		while (x_tmp++ < SCALE)
-			my_mlx_pixel_put(&cub3d->data, cub3d->point.x + y_tmp, cub3d->point.y + x_tmp, color);
+			my_mlx_pixel_put(&cub->data, cub->point.x + y_tmp, cub->point.y + x_tmp, color);
 	}
 }
 
@@ -76,43 +76,43 @@ static	void	print_step(t_cub3d *cub3d, int color)
 ** print_map: печать карты с игроком.
 */
 
-static	void	print_map(t_cub3d *cub3d)
+static	void	print_map(t_cub *cub)
 {
 	int	i;
 	int	j;
 
 	i = -1;
-	cub3d->point.x = 0;
-	cub3d->point.y = 0;
-	cub3d->data.img = mlx_new_image(cub3d->mlx, cub3d->p.resolution_w, cub3d->p.resolution_l);
-    cub3d->data.addr = mlx_get_data_addr(cub3d->data.img, &cub3d->data.bits_per_pixel, &cub3d->data.line_length, &cub3d->data.endian);
-	while (++i != cub3d->p.size_map)
+	cub->point.x = 0;
+	cub->point.y = 0;
+	cub->data.img = mlx_new_image(cub->mlx, cub->p.resolution_w, cub->p.resolution_l);
+    cub->data.addr = mlx_get_data_addr(cub->data.img, &cub->data.bits_per_pixel, &cub->data.line_length, &cub->data.endian);
+	while (++i != cub->p.size_map)
 	{
 		j = 0;
-		while (cub3d->p.map[i][j] != '\0')
+		while (cub->p.map[i][j] != '\0')
 		{
-			if (cub3d->p.map[i][j] == '1')
-				print_step(cub3d, 0x00FFFFFF);
-			else if (i == cub3d->p.playr_y && j == cub3d->p.playr_x)
-				print_step(cub3d, 0x006300FD);
-			else if (cub3d->p.map[i][j] == '*' || cub3d->p.map[i][j] == '0')
-				print_step(cub3d, 0x006300FD);
+			if (cub->p.map[i][j] == '1')
+				print_step(cub, 0x00FFFFFF);
+			else if (i == cub->p.playr_y && j == cub->p.playr_x)
+				print_step(cub, 0x006300FD);
+			else if (cub->p.map[i][j] == '*' || cub->p.map[i][j] == '0')
+				print_step(cub, 0x006300FD);
 			++j;
-			cub3d->point.x += SCALE;
+			cub->point.x += SCALE;
 		}
-		cub3d->point.x = 0;
-		cub3d->point.y += SCALE;
+		cub->point.x = 0;
+		cub->point.y += SCALE;
 	}
-	mlx_put_image_to_window(cub3d->mlx, cub3d->mlx_win, cub3d->data.img, 50, 50);
+	mlx_put_image_to_window(cub->mlx, cub->mlx_win, cub->data.img, 50, 50);
 }
 
 /*
 ** close_win: закрытие окна и выход из программы.
 */
 
-static	int	close_win(t_cub3d *cub3d)
+static	int	close_win(t_cub *cub)
 {
-	mlx_destroy_window(cub3d->mlx, cub3d->mlx_win);
+	mlx_destroy_window(cub->mlx, cub->mlx_win);
 	exit(1);
 	return (0);
 }
@@ -121,22 +121,22 @@ static	int	close_win(t_cub3d *cub3d)
 ** key_hook: взаимодействие с клавиатурой.
 */
 
-static	int		key_hook(int keycode, t_cub3d *cub3d)
+static	int		key_hook(int keycode, t_cub *cub)
 {
-	// if ((cub3d->p.map[(int)cub3d->plr.y][(int)cub3d->plr.x]) == '1')
-	mlx_clear_window(cub3d->mlx, cub3d->mlx_win);
+	// if ((cub->p.map[(int)cub->plr.y][(int)cub->plr.x]) == '1')
+	mlx_clear_window(cub->mlx, cub->mlx_win);
 	if (keycode == 126)
-		cub3d->plr.y -= 0.1;
+		cub->plr.y -= 0.1;
 	if (keycode == 125)
-		cub3d->plr.y += 0.1;
+		cub->plr.y += 0.1;
 	if (keycode == 123)
-		cub3d->plr.x -= 0.1;
+		cub->plr.x -= 0.1;
 	if (keycode == 124)
-		cub3d->plr.x += 0.1;
+		cub->plr.x += 0.1;
 	if (keycode == 53)
-		close_win(cub3d);
-	print_map(cub3d);
-	print_player(cub3d);
+		close_win(cub);
+	print_map(cub);
+	print_player(cub);
     printf("You put: %d\n", keycode);
 	return (0);
 }
@@ -145,15 +145,15 @@ static	int		key_hook(int keycode, t_cub3d *cub3d)
 ** start: запуск окна.
 */
 
-void			start(t_cub3d *cub3d)
+void			start(t_cub *cub)
 {
-	cub3d->plr.y = cub3d->p.playr_y;
-	cub3d->plr.x = cub3d->p.playr_x;
-	cub3d->mlx = mlx_init();
-    cub3d->mlx_win = mlx_new_window(cub3d->mlx, cub3d->p.resolution_w, cub3d->p.resolution_l, "cub3d");
-	print_map(cub3d);
-	print_player(cub3d);
-	mlx_hook(cub3d->mlx_win, 2, 1L<<0, key_hook, cub3d);
-	mlx_hook(cub3d->mlx_win, 17, 1L<<0, close_win, cub3d);
-	mlx_loop(cub3d->mlx);
+	cub->plr.y = cub->p.playr_y;
+	cub->plr.x = cub->p.playr_x;
+	cub->mlx = mlx_init();
+    cub->mlx_win = mlx_new_window(cub->mlx, cub->p.resolution_w, cub->p.resolution_l, "cub");
+	print_map(cub);
+	print_player(cub);
+	mlx_hook(cub->mlx_win, 2, 1L<<0, key_hook, cub);
+	mlx_hook(cub->mlx_win, 17, 1L<<0, close_win, cub);
+	mlx_loop(cub->mlx);
 }

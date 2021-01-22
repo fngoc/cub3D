@@ -19,23 +19,23 @@
 
 int	main(int argc, char **argv)
 {
-	t_cub3d		cub3d;
+	t_cub		cub;
 
 	check_errors_arg(argc, argv);
-	parser(argv, &cub3d.p);
+	parser(argv, &cub.p);
 
 	/* Печать даннх */
-	printf("R: %d|\nR: %d|\nNO: %s|\nSO: %s|\nWE: %s|\nEA: %s|\nS: %s|\nfloore_r: %d|\nfloore_g: %d|\nfloore_B: %d|\nceilling_r: %d|\nceilling_g: %d|\nceilling_b: %d|\nsize_map: %d|\n", cub3d.p.resolution_w, cub3d.p.resolution_l, cub3d.p.north_texture, cub3d.p.south_texture, cub3d.p.west_texture, cub3d.p.east_texture, cub3d.p.sprite_texture, cub3d.p.floore_r, cub3d.p.floore_g, cub3d.p.floore_b, cub3d.p.ceilling_r, cub3d.p.ceilling_g, cub3d.p.ceilling_b, cub3d.p.size_map);
+	printf("R: %d|\nR: %d|\nNO: %s|\nSO: %s|\nWE: %s|\nEA: %s|\nS: %s|\nfloore_r: %d|\nfloore_g: %d|\nfloore_B: %d|\nceilling_r: %d|\nceilling_g: %d|\nceilling_b: %d|\nsize_map: %d|\n", cub.p.resolution_w, cub.p.resolution_l, cub.p.north_texture, cub.p.south_texture, cub.p.west_texture, cub.p.east_texture, cub.p.sprite_texture, cub.p.floore_r, cub.p.floore_g, cub.p.floore_b, cub.p.ceilling_r, cub.p.ceilling_g, cub.p.ceilling_b, cub.p.size_map);
 
 	/* Печать индекса игрока */
-	printf("Player is here: y:%d x:%d\n", cub3d.p.playr_y, cub3d.p.playr_x);
+	printf("Player is here: y:%d x:%d\n", cub.p.playr_y, cub.p.playr_x);
 
 	/* Печать карты */
 	int i = -1;
-	while (cub3d.p.map[++i])
-		ft_putendl_fd(cub3d.p.map[i], 1);
+	while (cub.p.map[++i])
+		ft_putendl_fd(cub.p.map[i], 1);
 
-	start(&cub3d);
-	free(&cub3d);
+	start(&cub);
+	free(&cub);
 	return (0);
 }
