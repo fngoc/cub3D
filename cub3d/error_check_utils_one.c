@@ -24,14 +24,14 @@ void	check_all_data(t_cub *cub)
 	|| ft_strlen(cub->p.south_texture) == 0 || ft_strlen(cub->p.west_texture) == 0
 	|| ft_strlen(cub->p.east_texture) == 0 || ft_strlen(cub->p.sprite_texture) == 0
 	|| cub->p.floore_flag != 1 || cub->p.ceilling_flag != 1)
-		error("ERROR: Was set not all edificatory or are there repetitions");
+		error("ERROR: Was set not all edificatory or are there repetitions", cub);
 }
 
 /*
 ** check_tab_in_r_f: проверка на пробелы в цветах.
 */
 
-void	check_tab_in_r_f(char *line)
+void	check_tab_in_r_f(char *line, t_cub *cub)
 {
 	int	i;
 
@@ -39,7 +39,7 @@ void	check_tab_in_r_f(char *line)
 	while (line[i] != '\0')
 	{
 		if (line[i] == ' ')
-			error("ERROR: A space was found in color");
+			error("ERROR: A space was found in color", cub);
 		++i;
 	}
 }
@@ -53,7 +53,7 @@ void	check_c(t_cub *cub)
 	if ((cub->p.ceilling_r > 255 || cub->p.ceilling_r < 0) ||
 	(cub->p.ceilling_g > 255 || cub->p.ceilling_g < 0) ||
 	(cub->p.ceilling_b > 255 || cub->p.ceilling_b < 0))
-		error("ERROR: Not a valid ceilling color");
+		error("ERROR: Not a valid ceilling color", cub);
 	cub->p.ceilling_flag = 1;
 }
 
@@ -66,7 +66,7 @@ void	check_f(t_cub *cub)
 	if ((cub->p.floore_r > 255 || cub->p.floore_r < 0) ||
 	(cub->p.floore_g > 255 || cub->p.floore_g < 0) ||
 	(cub->p.floore_b > 255 || cub->p.floore_b < 0))
-		error("ERROR: Not a valid floor color");
+		error("ERROR: Not a valid floor color", cub);
 	cub->p.floore_flag = 1;
 }
 
@@ -77,7 +77,7 @@ void	check_f(t_cub *cub)
 void	check_r(t_cub *cub)
 {
 	if (cub->p.resolution_w < 0 || cub->p.resolution_l < 0)
-		error("ERROR: Not a valid resolution");
+		error("ERROR: Not a valid resolution", cub);
 	if (cub->p.resolution_w > 5120 || cub->p.resolution_l > 2880)
-		error("ERROR: The screen resolution is too high");
+		error("ERROR: The screen resolution is too high", cub);
 }

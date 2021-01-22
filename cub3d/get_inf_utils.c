@@ -21,17 +21,17 @@ void	get_floore(char *tmp, t_cub *cub)
 	if (ft_isdigit(*tmp))
 		cub->p.floore_r = ft_atoi(tmp);
 	else
-		error("ERROR: Not set floore_r");
+		error("ERROR: Not set floore_r", cub);
 	tmp += ft_digit_num(cub->p.floore_r) + 1;
 	if (ft_isdigit(*tmp))
 		cub->p.floore_g = ft_atoi(tmp);
 	else
-		error("ERROR: Not set floore_g");
+		error("ERROR: Not set floore_g", cub);
 	tmp += ft_digit_num(cub->p.floore_g) + 1;
 	if (ft_isdigit(*tmp))
 		cub->p.floore_b = ft_atoi(tmp);
 	else
-		error("ERROR: Not set floore_b");
+		error("ERROR: Not set floore_b", cub);
 }
 
 /*
@@ -43,15 +43,15 @@ void	get_ceilling(char *tmp, t_cub *cub)
 	if (ft_isdigit(*tmp))
 		cub->p.ceilling_r = ft_atoi(tmp);
 	else
-		error("ERROR: Not set ceilling_r");
+		error("ERROR: Not set ceilling_r", cub);
 	tmp += ft_digit_num(cub->p.ceilling_r) + 1;
 	if (ft_isdigit(*tmp))
 		cub->p.ceilling_g = ft_atoi(tmp);
 	else
-		error("ERROR: Not set ceilling_g");
+		error("ERROR: Not set ceilling_g", cub);
 	tmp += ft_digit_num(cub->p.ceilling_g) + 1;
 	if (ft_isdigit(*tmp))
 		cub->p.ceilling_b = ft_atoi(tmp);
 	else
-		error("ERROR: Not set ceilling_b");
+		error("ERROR: Not set ceilling_b", cub);
 }

@@ -25,13 +25,13 @@ static	void	parser_inf_norm(char *line, int id, int index, t_cub *cub)
 		cub->p.sprite_texture = ft_substr(line, index, ft_strlen(tmp));
 	else if (id == 7)
 	{
-		check_tab_in_r_f(tmp);
+		check_tab_in_r_f(tmp, cub);
 		get_floore(tmp, cub);
 		check_f(cub);
 	}
 	else if (id == 8)
 	{
-		check_tab_in_r_f(tmp);
+		check_tab_in_r_f(tmp, cub);
 		get_ceilling(tmp, cub);
 		check_c(cub);
 	}
@@ -108,14 +108,14 @@ void			parser(char **argv, t_cub *cub)
 
 	coll_line = 0;
 	if (!(fd = open(argv[1], O_RDONLY)))
-		error("ERROR: File not found or not open");
+		error("ERROR: File not found or not open", cub);
 	while (get_next_line(fd, &line) && coll_line++ != 8)
 	{
 		if (ft_strlen(line) == 0)
 			coll_line--;
 		else
 		{
-			check_tab(line);
+			check_tab(line, cub);
 			parser_data(line, cub);
 			if (coll_line == 8)
 			{

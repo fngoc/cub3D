@@ -16,8 +16,9 @@
 ** error: печатает текст ошибки и выходит из программы.
 */
 
-void	error(char *str)
+void	error(char *str, t_cub *cub)
 {
 	ft_putendl_fd(str, 1);
-	exit(1);
+	free(&cub);
+	exit(0);
 }

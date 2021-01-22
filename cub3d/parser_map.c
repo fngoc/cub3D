@@ -29,14 +29,14 @@ static	void	check_zero(int size, t_cub *cub)
 		{
 			if ((i == 0 && cub->p.map[i][j] == '0')
 			|| (i == size - 1 && cub->p.map[i][j] == '0'))
-				error("ERROR: There is an empty space next to zero");
+				error("ERROR: There is an empty space next to zero", cub);
 			else if (cub->p.map[i][j] == '0')
 			{
 				if (cub->p.map[i][j + 1] == ' ' || cub->p.map[i][j + 1] == '\0'
 				|| cub->p.map[i][j - 1] == ' ' || cub->p.map[i][j - 1] == '\0'
 				|| cub->p.map[i + 1][j] == ' ' || cub->p.map[i + 1][j] == '\0'
 				|| cub->p.map[i - 1][j] == ' ' || cub->p.map[i - 1][j] == '\0')
-					error("ERROR: There is an empty space next to zero");
+					error("ERROR: There is an empty space next to zero", cub);
 			}
 			++j;
 		}
@@ -67,7 +67,7 @@ static	void	set_dir(int x, int y, t_cub *cub)
 static	void	check_closed_map(int x, int y, t_cub *cub, int size_map)
 {
 	if (x < 0 || y < 0 || y >= size_map || x >= (int)ft_strlen(cub->p.map[y]))
-		error("ERROR: The player is not surrounded by walls");
+		error("ERROR: The player is not surrounded by walls", cub);
 	if (ft_strchr(" 02NWES", cub->p.map[y][x]))
 	{
 		if (cub->p.map[y][x] == 'N' || cub->p.map[y][x] == 'W'
@@ -101,7 +101,7 @@ static	void	make_map(t_list **head, int size, t_cub *cub)
 		cub->p.map[++i] = tmp->content;
 		tmp = tmp->next;
 	}
-	all_tab_in_line(cub->p.map[size - 1]);
+	all_tab_in_line(cub->p.map[size - 1], cub);
 	check_symbols_map(size, cub);
 	check_zero(size, cub);
 	check_closed_map(cub->p.playr_x, cub->p.playr_y, cub, size);

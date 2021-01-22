@@ -16,29 +16,29 @@
 ** check_errors_arg: проверка входных данных на ошибки.
 */
 
-void			check_errors_arg(int ac, char **av)
+void			check_errors_arg(int ac, char **av, t_cub *cub)
 {
 	if (ac != 2)
-		error("ERROR: No more than 2 arguments were submitted");
+		error("ERROR: No more than 2 arguments were submitted", cub);
 	else if (ft_strncmp(av[1], "map.cub", ft_strlen(av[1])))
-		error("ERROR: The card is not called 'map.cub'");
+		error("ERROR: The card is not called 'map.cub'", cub);
 }
 
 /*
 ** check_tab: проверка на пробелы в конце строки.
 */
 
-void			check_tab(char *line)
+void			check_tab(char *line, t_cub *cub)
 {
 	if (line[ft_strlen(line) - 1] == ' ')
-		error("ERROR: A space was found after the indexer");
+		error("ERROR: A space was found after the indexer", cub);
 }
 
 /*
 ** all_tab_in_line: проверка, состоит ли строка только из пробелов.
 */
 
-void			all_tab_in_line(char *str)
+void			all_tab_in_line(char *str, t_cub *cub)
 {
 	int i;
 
@@ -49,7 +49,7 @@ void			all_tab_in_line(char *str)
 			return ;
 		++i;
 	}
-	error("ERROR: There is an empty line with spaces at the end of the map");
+	error("ERROR: There is an empty line with spaces at the end of the map", cub);
 }
 
 /*
@@ -69,7 +69,7 @@ static	void	check_symbols_map_norm(int *flag, int *i, int *j, t_cub *cub)
 			cub->p.playr_x = *j;
 		}
 		else
-			error("ERROR: The player meets more than 1 time");
+			error("ERROR: The player meets more than 1 time", cub);
 	}
 }
 
@@ -97,9 +97,9 @@ void			check_symbols_map(int size, t_cub *cub)
 			|| cub->p.map[i][j] == 'E' || cub->p.map[i][j] == 'W')
 				++j;
 			else
-				error("ERROR: Wrong symbol in the map");
+				error("ERROR: Wrong symbol in the map", cub);
 		}
 	}
 	if (flag == 0)
-		error("ERROR: The player never meets");
+		error("ERROR: The player never meets", cub);
 }

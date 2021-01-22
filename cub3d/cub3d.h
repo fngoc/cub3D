@@ -108,7 +108,7 @@ typedef struct		s_cub
 	t_plr			plr;
 }					t_cub;
 
-void				check_errors_arg(int ac, char **av);
+void				check_errors_arg(int ac, char **av, t_cub *cub);
 
 void				parser(char **argv, t_cub *cub);
 
@@ -116,9 +116,9 @@ void				parser_map(int fd, t_cub *cub);
 
 void				check_all_data(t_cub *cub);
 
-void				check_tab_in_r_f(char *line);
+void				check_tab_in_r_f(char *line, t_cub *cub);
 
-void				check_tab(char *line);
+void				check_tab(char *line, t_cub *cub);
 
 void				check_c(t_cub *cub);
 
@@ -126,7 +126,7 @@ void				check_f(t_cub *cub);
 
 void				check_r(t_cub *cub);
 
-void				all_tab_in_line(char *str);
+void				all_tab_in_line(char *str, t_cub *cub);
 
 void				check_symbols_map(int size, t_cub *cub);
 
@@ -136,6 +136,6 @@ void				get_ceilling(char *tmp, t_cub *cub);
 
 void				start(t_cub *cub);
 
-void				error(char *str);
+void				error(char *str, t_cub *cub);
 
 #endif

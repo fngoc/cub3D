@@ -113,7 +113,8 @@ static	void	print_map(t_cub *cub)
 static	int	close_win(t_cub *cub)
 {
 	mlx_destroy_window(cub->mlx, cub->mlx_win);
-	exit(1);
+	free(&cub);
+	exit(0);
 	return (0);
 }
 
