@@ -17,13 +17,13 @@
 ** и что бы они встречались один раз.
 */
 
-void	check_all_data(t_parser *p)
+void	check_all_data(t_cub *cub)
 {
-	if (p->resolution_l == 0 || p->resolution_w == 0
-	|| ft_strlen(p->north_texture) == 0
-	|| ft_strlen(p->south_texture) == 0 || ft_strlen(p->west_texture) == 0
-	|| ft_strlen(p->east_texture) == 0 || ft_strlen(p->sprite_texture) == 0
-	|| p->floore_flag != 1 || p->ceilling_flag != 1)
+	if (cub->p.resolution_l == 0 || cub->p.resolution_w == 0
+	|| ft_strlen(cub->p.north_texture) == 0
+	|| ft_strlen(cub->p.south_texture) == 0 || ft_strlen(cub->p.west_texture) == 0
+	|| ft_strlen(cub->p.east_texture) == 0 || ft_strlen(cub->p.sprite_texture) == 0
+	|| cub->p.floore_flag != 1 || cub->p.ceilling_flag != 1)
 		error("ERROR: Was set not all edificatory or are there repetitions");
 }
 
@@ -48,36 +48,36 @@ void	check_tab_in_r_f(char *line)
 ** check_C: проверка resolution, floore и ceilling.
 */
 
-void	check_c(t_parser *p)
+void	check_c(t_cub *cub)
 {
-	if ((p->ceilling_r > 255 || p->ceilling_r < 0) ||
-	(p->ceilling_g > 255 || p->ceilling_g < 0) ||
-	(p->ceilling_b > 255 || p->ceilling_b < 0))
+	if ((cub->p.ceilling_r > 255 || cub->p.ceilling_r < 0) ||
+	(cub->p.ceilling_g > 255 || cub->p.ceilling_g < 0) ||
+	(cub->p.ceilling_b > 255 || cub->p.ceilling_b < 0))
 		error("ERROR: Not a valid ceilling color");
-	p->ceilling_flag = 1;
+	cub->p.ceilling_flag = 1;
 }
 
 /*
 ** check_F: проверка floore.
 */
 
-void	check_f(t_parser *p)
+void	check_f(t_cub *cub)
 {
-	if ((p->floore_r > 255 || p->floore_r < 0) ||
-	(p->floore_g > 255 || p->floore_g < 0) ||
-	(p->floore_b > 255 || p->floore_b < 0))
+	if ((cub->p.floore_r > 255 || cub->p.floore_r < 0) ||
+	(cub->p.floore_g > 255 || cub->p.floore_g < 0) ||
+	(cub->p.floore_b > 255 || cub->p.floore_b < 0))
 		error("ERROR: Not a valid floor color");
-	p->floore_flag = 1;
+	cub->p.floore_flag = 1;
 }
 
 /*
 ** check_R: проверка resolution.
 */
 
-void	check_r(t_parser *p)
+void	check_r(t_cub *cub)
 {
-	if (p->resolution_w < 0 || p->resolution_l < 0)
+	if (cub->p.resolution_w < 0 || cub->p.resolution_l < 0)
 		error("ERROR: Not a valid resolution");
-	if (p->resolution_w > 5120 || p->resolution_l > 2880)
+	if (cub->p.resolution_w > 5120 || cub->p.resolution_l > 2880)
 		error("ERROR: The screen resolution is too high");
 }

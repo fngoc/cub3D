@@ -56,17 +56,17 @@ void			all_tab_in_line(char *str)
 ** check_symbols_map_norm: функция для нормы.
 */
 
-static	void	check_symbols_map_norm(int *flag, int *i, int *j, t_parser *p)
+static	void	check_symbols_map_norm(int *flag, int *i, int *j, t_cub *cub)
 {
-	if (p->map[*i][*j] == 'N' || p->map[*i][*j] == 'S'
-	|| p->map[*i][*j] == 'E' || p->map[*i][*j] == 'W')
+	if (cub->p.map[*i][*j] == 'N' || cub->p.map[*i][*j] == 'S'
+	|| cub->p.map[*i][*j] == 'E' || cub->p.map[*i][*j] == 'W')
 	{
 		if (*flag == 0)
 		{
 			*flag = 1;
-			p->playr = &p->map[*i][*j];
-			p->playr_y = *i;
-			p->playr_x = *j;
+			cub->p.playr = &cub->p.map[*i][*j];
+			cub->p.playr_y = *i;
+			cub->p.playr_x = *j;
 		}
 		else
 			error("ERROR: The player meets more than 1 time");
@@ -77,7 +77,7 @@ static	void	check_symbols_map_norm(int *flag, int *i, int *j, t_parser *p)
 ** check_symbols_map: проверка символов карты.
 */
 
-void			check_symbols_map(int size, t_parser *p)
+void			check_symbols_map(int size, t_cub *cub)
 {
 	int i;
 	int j;
@@ -88,13 +88,13 @@ void			check_symbols_map(int size, t_parser *p)
 	while (++i != size)
 	{
 		j = 0;
-		while (p->map[i][j] != '\0')
+		while (cub->p.map[i][j] != '\0')
 		{
-			check_symbols_map_norm(&flag, &i, &j, p);
-			if (p->map[i][j] == ' ' || p->map[i][j] == '0'
-			|| p->map[i][j] == '1' || p->map[i][j] == '2'
-			|| p->map[i][j] == 'N' || p->map[i][j] == 'S'
-			|| p->map[i][j] == 'E' || p->map[i][j] == 'W')
+			check_symbols_map_norm(&flag, &i, &j, cub);
+			if (cub->p.map[i][j] == ' ' || cub->p.map[i][j] == '0'
+			|| cub->p.map[i][j] == '1' || cub->p.map[i][j] == '2'
+			|| cub->p.map[i][j] == 'N' || cub->p.map[i][j] == 'S'
+			|| cub->p.map[i][j] == 'E' || cub->p.map[i][j] == 'W')
 				++j;
 			else
 				error("ERROR: Wrong symbol in the map");

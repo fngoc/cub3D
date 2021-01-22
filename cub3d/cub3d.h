@@ -56,8 +56,6 @@ typedef	struct	s_parser
 	int				playr_y;
 
 	int				size_map;
-
-	float			dir;
 }					t_parser;
 
 /*
@@ -91,6 +89,7 @@ typedef struct		s_plr
 {
 	float			x;
 	float			y;
+	float			dir;
 	float			start;
 	float			end;
 }					t_plr;
@@ -111,29 +110,29 @@ typedef struct		s_cub
 
 void				check_errors_arg(int ac, char **av);
 
-void				parser(char **argv, t_parser *p);
+void				parser(char **argv, t_cub *cub);
 
-void				parser_map(int fd, t_parser *p);
+void				parser_map(int fd, t_cub *cub);
 
-void				check_all_data(t_parser *p);
+void				check_all_data(t_cub *cub);
 
 void				check_tab_in_r_f(char *line);
 
 void				check_tab(char *line);
 
-void				check_c(t_parser *p);
+void				check_c(t_cub *cub);
 
-void				check_f(t_parser *p);
+void				check_f(t_cub *cub);
 
-void				check_r(t_parser *p);
+void				check_r(t_cub *cub);
 
 void				all_tab_in_line(char *str);
 
-void				check_symbols_map(int size, t_parser *p);
+void				check_symbols_map(int size, t_cub *cub);
 
-void				get_floore(char *tmp, t_parser *p);
+void				get_floore(char *tmp, t_cub *cub);
 
-void				get_ceilling(char *tmp, t_parser *p);
+void				get_ceilling(char *tmp, t_cub *cub);
 
 void				start(t_cub *cub);
 

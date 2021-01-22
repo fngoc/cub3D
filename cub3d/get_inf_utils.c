@@ -16,20 +16,20 @@
 ** get_floore: получить floore с проверкой.
 */
 
-void	get_floore(char *tmp, t_parser *p)
+void	get_floore(char *tmp, t_cub *cub)
 {
 	if (ft_isdigit(*tmp))
-		p->floore_r = ft_atoi(tmp);
+		cub->p.floore_r = ft_atoi(tmp);
 	else
 		error("ERROR: Not set floore_r");
-	tmp += ft_digit_num(p->floore_r) + 1;
+	tmp += ft_digit_num(cub->p.floore_r) + 1;
 	if (ft_isdigit(*tmp))
-		p->floore_g = ft_atoi(tmp);
+		cub->p.floore_g = ft_atoi(tmp);
 	else
 		error("ERROR: Not set floore_g");
-	tmp += ft_digit_num(p->floore_g) + 1;
+	tmp += ft_digit_num(cub->p.floore_g) + 1;
 	if (ft_isdigit(*tmp))
-		p->floore_b = ft_atoi(tmp);
+		cub->p.floore_b = ft_atoi(tmp);
 	else
 		error("ERROR: Not set floore_b");
 }
@@ -38,20 +38,20 @@ void	get_floore(char *tmp, t_parser *p)
 ** get_ceilling: получить ceilling с проверкой.
 */
 
-void	get_ceilling(char *tmp, t_parser *p)
+void	get_ceilling(char *tmp, t_cub *cub)
 {
 	if (ft_isdigit(*tmp))
-		p->ceilling_r = ft_atoi(tmp);
+		cub->p.ceilling_r = ft_atoi(tmp);
 	else
 		error("ERROR: Not set ceilling_r");
-	tmp += ft_digit_num(p->ceilling_r) + 1;
+	tmp += ft_digit_num(cub->p.ceilling_r) + 1;
 	if (ft_isdigit(*tmp))
-		p->ceilling_g = ft_atoi(tmp);
+		cub->p.ceilling_g = ft_atoi(tmp);
 	else
 		error("ERROR: Not set ceilling_g");
-	tmp += ft_digit_num(p->ceilling_g) + 1;
+	tmp += ft_digit_num(cub->p.ceilling_g) + 1;
 	if (ft_isdigit(*tmp))
-		p->ceilling_b = ft_atoi(tmp);
+		cub->p.ceilling_b = ft_atoi(tmp);
 	else
 		error("ERROR: Not set ceilling_b");
 }

@@ -22,7 +22,7 @@ int	main(int argc, char **argv)
 	t_cub		cub;
 
 	check_errors_arg(argc, argv);
-	parser(argv, &cub.p);
+	parser(argv, &cub);
 
 	/* Печать даннх */
 	printf("R: %d|\nR: %d|\nNO: %s|\nSO: %s|\nWE: %s|\nEA: %s|\nS: %s|\nfloore_r: %d|\nfloore_g: %d|\nfloore_B: %d|\nceilling_r: %d|\nceilling_g: %d|\nceilling_b: %d|\nsize_map: %d|\n", cub.p.resolution_w, cub.p.resolution_l, cub.p.north_texture, cub.p.south_texture, cub.p.west_texture, cub.p.east_texture, cub.p.sprite_texture, cub.p.floore_r, cub.p.floore_g, cub.p.floore_b, cub.p.ceilling_r, cub.p.ceilling_g, cub.p.ceilling_b, cub.p.size_map);
