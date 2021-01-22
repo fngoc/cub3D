@@ -29,30 +29,30 @@ static	void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 ** print_player: печать персонажа.
 */
 
-// static	void	print_player(t_cub3d *cub3d)
-// {
-// 	float y_tmp;
-// 	float x_tmp;
-
-// 	y_tmp = 0;
-// 	while (y_tmp++ < SCALE)
-// 	{
-// 		x_tmp = 0;
-// 		while (x_tmp++ < SCALE)
-// 			my_mlx_pixel_put(&cub3d->data, cub3d->plr.x * SCALE + x_tmp, cub3d->plr.y * SCALE + y_tmp, 0x00F54242);
-// 	}
-// }
-
 static	void	print_player(t_cub3d *cub3d)
 {
-	
-	while (cub3d->p.map[(int)(cub3d->plr.y / SCALE)][(int)(cub3d->plr.x / SCALE)] != '1')
+	float y_tmp;
+	float x_tmp;
+
+	y_tmp = 0;
+	while (y_tmp++ < SCALE)
 	{
-		cub3d->plr.x += cos(cub3d->p.dir);
-		cub3d->plr.y += sin(cub3d->p.dir);
-		my_mlx_pixel_put(&cub3d->data, cub3d->plr.x, cub3d->plr.y, 0x00F54242);
+		x_tmp = 0;
+		while (x_tmp++ < SCALE)
+			my_mlx_pixel_put(&cub3d->data, cub3d->plr.x * SCALE + x_tmp, cub3d->plr.y * SCALE + y_tmp, 0x00F54242);
 	}
 }
+
+// static	void	print_player(t_cub3d *cub3d)
+// {
+	
+// 	while (cub3d->p.map[(int)(cub3d->plr.y / SCALE)][(int)(cub3d->plr.x / SCALE)] != '1')
+// 	{
+// 		cub3d->plr.x += cos(cub3d->p.dir);
+// 		cub3d->plr.y += sin(cub3d->p.dir);
+// 		my_mlx_pixel_put(&cub3d->data, cub3d->plr.x, cub3d->plr.y, 0x00F54242);
+// 	}
+// }
 
 /*
 ** print_step: печать больших пикселей.
@@ -147,8 +147,8 @@ static	int		key_hook(int keycode, t_cub3d *cub3d)
 
 void			start(t_cub3d *cub3d)
 {
-	cub3d->plr.y = 200;
-	cub3d->plr.x = 200;
+	cub3d->plr.y = cub3d->p.playr_y;
+	cub3d->plr.x = cub3d->p.playr_x;
 	cub3d->mlx = mlx_init();
     cub3d->mlx_win = mlx_new_window(cub3d->mlx, cub3d->p.resolution_w, cub3d->p.resolution_l, "cub3d");
 	print_map(cub3d);
