@@ -44,7 +44,23 @@ static	void	check_zero(int size, t_parser *p)
 }
 
 /*
-** check_closed_map: проверка на закрытость стенами персонажа
+** set_dir: установка направления движения игрока.
+*/
+
+static	void	set_dir(int x, int y, t_parser *p)
+{
+	if (p->map[y][x] == 'N')
+		p->dir = PI / 2;
+	if (p->map[y][x] == 'W')
+		p->dir = PI;
+	if (p->map[y][x] == 'E')
+		p->dir = 2 * PI;
+	if (p->map[y][x] == 'S')
+		p->dir = (3 * PI) / 2;
+}
+
+/*
+** check_cset_dirlosed_map: проверка на закрытость стенами персонажа
 ** с помощью алгоритма flood fill.
 */
 
@@ -54,6 +70,9 @@ static	void	check_closed_map(int x, int y, t_parser *p, int size_map)
 		error("ERROR: The player is not surrounded by walls");
 	if (ft_strchr(" 02NWES", p->map[y][x]))
 	{
+		if (p->map[y][x] == 'N' || p->map[y][x] == 'W'
+		|| p->map[y][x] == 'E' || p->map[y][x] == 'S')
+			set_dir(x, y, p);
 		if (p->map[y][x] == '2')
 			p->map[y][x] = 'B';
 		else

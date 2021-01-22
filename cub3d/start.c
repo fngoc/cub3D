@@ -29,21 +29,28 @@ static	void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 ** print_player: печать персонажа.
 */
 
+// static	void	print_player(t_cub3d *cub3d)
+// {
+// 	float y_tmp;
+// 	float x_tmp;
+
+// 	y_tmp = 0;
+// 	while (y_tmp++ < SCALE)
+// 	{
+// 		x_tmp = 0;
+// 		while (x_tmp++ < SCALE)
+// 			my_mlx_pixel_put(&cub3d->data, cub3d->plr.x * SCALE + x_tmp, cub3d->plr.y * SCALE + y_tmp, 0x00F54242);
+// 	}
+// }
+
 static	void	print_player(t_cub3d *cub3d)
 {
-	float y_tmp;
-	float x_tmp;
-
-	y_tmp = 0;
-	// if ((cub3d->p.map[(int)cub3d->plr.y][(int)cub3d->plr.x] + 0.2) == '1')
-	// {
-	// 	return ;
-	// }
-	while (y_tmp++ < SCALE)
+	
+	while (cub3d->p.map[(int)(cub3d->plr.y / SCALE)][(int)(cub3d->plr.x / SCALE)] != '1')
 	{
-		x_tmp = 0;
-		while (x_tmp++ < SCALE)
-			my_mlx_pixel_put(&cub3d->data, cub3d->plr.x * SCALE + x_tmp, cub3d->plr.y * SCALE + y_tmp, 0x00F54242);
+		cub3d->plr.x += cos(cub3d->p.dir);
+		cub3d->plr.y += sin(cub3d->p.dir);
+		my_mlx_pixel_put(&cub3d->data, cub3d->plr.x, cub3d->plr.y, 0x00F54242);
 	}
 }
 
@@ -100,20 +107,34 @@ static	void	print_map(t_cub3d *cub3d)
 }
 
 /*
+** close_win: закрытие окна и выход из программы.
+*/
+
+static	int	close_win(t_cub3d *cub3d)
+{
+	mlx_destroy_window(cub3d->mlx, cub3d->mlx_win);
+	exit(1);
+	return (0);
+}
+
+/*
 ** key_hook: взаимодействие с клавиатурой.
 */
 
 static	int		key_hook(int keycode, t_cub3d *cub3d)
 {
+	// if ((cub3d->p.map[(int)cub3d->plr.y][(int)cub3d->plr.x]) == '1')
 	mlx_clear_window(cub3d->mlx, cub3d->mlx_win);
 	if (keycode == 126)
-		cub3d->plr.y -= 0.2;
+		cub3d->plr.y -= 0.1;
 	if (keycode == 125)
-		cub3d->plr.y += 0.2;
+		cub3d->plr.y += 0.1;
 	if (keycode == 123)
-		cub3d->plr.x -= 0.2;
+		cub3d->plr.x -= 0.1;
 	if (keycode == 124)
-		cub3d->plr.x += 0.2;
+		cub3d->plr.x += 0.1;
+	if (keycode == 53)
+		close_win(cub3d);
 	print_map(cub3d);
 	print_player(cub3d);
     printf("You put: %d\n", keycode);
@@ -126,12 +147,13 @@ static	int		key_hook(int keycode, t_cub3d *cub3d)
 
 void			start(t_cub3d *cub3d)
 {
-	cub3d->plr.y = cub3d->p.playr_y;
-	cub3d->plr.x = cub3d->p.playr_x;
+	cub3d->plr.y = 200;
+	cub3d->plr.x = 200;
 	cub3d->mlx = mlx_init();
     cub3d->mlx_win = mlx_new_window(cub3d->mlx, cub3d->p.resolution_w, cub3d->p.resolution_l, "cub3d");
 	print_map(cub3d);
 	print_player(cub3d);
-	mlx_key_hook(cub3d->mlx_win, key_hook, cub3d);
+	mlx_hook(cub3d->mlx_win, 2, 1L<<0, key_hook, cub3d);
+	mlx_hook(cub3d->mlx_win, 17, 1L<<0, close_win, cub3d);
 	mlx_loop(cub3d->mlx);
 }

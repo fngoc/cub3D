@@ -16,9 +16,12 @@
 
 # include "libs/libft/libft.h"
 # include "libs/minilibx_mms/mlx.h"
+# include <math.h> /* Для sin и cos */
 # include <fcntl.h> /* Для open */
 # include <stdio.h> /* Для printf */
+
 # define SCALE 16
+# define PI 3.14159265359
 
 /*
 ** t_parser: структура парсера.
@@ -53,6 +56,8 @@ typedef	struct	s_parser
 	int				playr_y;
 
 	int				size_map;
+
+	float			dir;
 }					t_parser;
 
 /*
@@ -86,7 +91,6 @@ typedef struct		s_plr
 {
 	float			x;
 	float			y;
-	float			dir;
 	float			start;
 	float			end;
 }					t_plr;
