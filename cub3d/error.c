@@ -18,7 +18,8 @@
 
 void	error(char *str, t_cub *cub)
 {
+	(void)cub;
 	ft_putendl_fd(str, 1);
-	free(&cub);
-	exit(0);
+	// free(&cub);
+	exit(1);
 }

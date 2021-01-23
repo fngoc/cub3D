@@ -50,13 +50,13 @@ static	void	check_zero(int size, t_cub *cub)
 static	void	set_dir(int x, int y, t_cub *cub)
 {
 	if (cub->p.map[y][x] == 'N')
-		cub->plr.dir = PI / 2;
+		cub->plr.dir = (3 * PI) / 2;
 	if (cub->p.map[y][x] == 'W')
 		cub->plr.dir = PI;
 	if (cub->p.map[y][x] == 'E')
 		cub->plr.dir = 2 * PI;
 	if (cub->p.map[y][x] == 'S')
-		cub->plr.dir = (3 * PI) / 2;
+		cub->plr.dir = PI / 2;
 }
 
 /*

@@ -13,6 +13,18 @@
 #include "cub3d.h"
 
 /*
+** close_win: закрытие окна и выход из программы.
+*/
+
+static	int	close_win(t_cub *cub)
+{
+	mlx_destroy_window(cub->mlx, cub->mlx_win);
+	// free(cub);
+	exit(0);
+	return (0);
+}
+
+/*
 ** my_mlx_pixel_put: измененная функция mlx_pixel_put
 ** для увеличения скорости работы.
 */
@@ -26,36 +38,58 @@ static	void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 }
 
 /*
-** print_player: печать персонажа.
+** print_player_cub: печать персонажа квадратного.
 */
 
-static	void	print_player(t_cub *cub)
-{
-	float y_tmp;
-	float x_tmp;
-
-	y_tmp = 0;
-	while (y_tmp++ < SCALE)
-	{
-		x_tmp = 0;
-		while (x_tmp++ < SCALE)
-			my_mlx_pixel_put(&cub->data, cub->plr.x * SCALE + x_tmp, cub->plr.y * SCALE + y_tmp, 0x00F54242);
-	}
-}
-
-// static	void	print_player(t_cub *cub)
+// static	void	print_player_cub(t_cub *cub)
 // {
-	
-// 	while (cub->p.map[(int)(cub->plr.y / SCALE)][(int)(cub->plr.x / SCALE)] != '1')
+// 	int y_tmp;
+// 	int x_tmp;
+
+// 	y_tmp = 0;
+// 	while (y_tmp++ < SCALE)
 // 	{
-// 		cub->plr.x += cos(cub->p.dir);
-// 		cub->plr.y += sin(cub->p.dir);
-// 		my_mlx_pixel_put(&cub->data, cub->plr.x, cub->plr.y, 0x00F54242);
+// 		x_tmp = 0;
+// 		while (x_tmp++ < SCALE)
+// 			my_mlx_pixel_put(&cub->data, cub->plr.x + y_tmp, cub->plr.y + x_tmp, 0x00F54242);
 // 	}
 // }
 
 /*
-** print_step: печать больших пикселей.
+** print_player_pix: печать персонажа в пиксель
+*/
+
+// static	void	print_player_pix(t_cub *cub)
+// {
+// 	my_mlx_pixel_put(&cub->data, cub->plr.x, cub->plr.y, 0x0000FF00);
+// }
+
+/*
+** print_ray: печать луча.
+*/
+
+static	void	print_ray(t_cub *cub)
+{
+	t_plr	ray = cub->plr; // задаем координаты и направление луча равные координатам игрока
+	ray.start = ray.dir - (PI / 4); // начало веера лучей \|/
+  	ray.end = ray.dir + (PI / 4); // край веера лучей
+
+ 	while (ray.start <= ray.end)
+	{
+		ray.x = cub->plr.x; // каждый раз возвращаемся в точку начала
+		ray.y = cub->plr.y;
+		while (cub->p.map[(int)(ray.y / SCALE)][(int)(ray.x / SCALE)] != '1')
+		{
+			ray.x += cos(ray.start);
+			ray.y += sin(ray.start);
+			my_mlx_pixel_put(&cub->data, ray.x, ray.y, 0x0000FF00);
+		}
+		ray.start += (PI / 2) / 90;
+	}
+}
+
+/*
+** print_step: печать отмаштабированых кубов для карты.
 */
 
 static	void	print_step(t_cub *cub, int color)
@@ -107,37 +141,32 @@ static	void	print_map(t_cub *cub)
 }
 
 /*
-** close_win: закрытие окна и выход из программы.
-*/
-
-static	int	close_win(t_cub *cub)
-{
-	mlx_destroy_window(cub->mlx, cub->mlx_win);
-	free(&cub);
-	exit(0);
-	return (0);
-}
-
-/*
 ** key_hook: взаимодействие с клавиатурой.
 */
 
 static	int		key_hook(int keycode, t_cub *cub)
 {
-	// if ((cub->p.map[(int)cub->plr.y][(int)cub->plr.x]) == '1')
 	mlx_clear_window(cub->mlx, cub->mlx_win);
 	if (keycode == 126)
-		cub->plr.y -= 0.1;
+	{
+		cub->plr.x += cos(cub->plr.dir);
+		cub->plr.y += sin(cub->plr.dir);
+	}
 	if (keycode == 125)
-		cub->plr.y += 0.1;
+	{
+		cub->plr.x -= cos(cub->plr.dir);
+		cub->plr.y -= sin(cub->plr.dir);
+	}
 	if (keycode == 123)
-		cub->plr.x -= 0.1;
+		cub->plr.dir -= 0.1;
 	if (keycode == 124)
-		cub->plr.x += 0.1;
+		cub->plr.dir += 0.1;
 	if (keycode == 53)
 		close_win(cub);
 	print_map(cub);
-	print_player(cub);
+	// print_player_cub(cub);
+	// print_player_pix(cub);
+	print_ray(cub);
     printf("You put: %d\n", keycode);
 	return (0);
 }
@@ -148,12 +177,14 @@ static	int		key_hook(int keycode, t_cub *cub)
 
 void			start(t_cub *cub)
 {
-	cub->plr.y = cub->p.playr_y;
-	cub->plr.x = cub->p.playr_x;
+	cub->plr.y = cub->p.playr_y * SCALE;
+	cub->plr.x = cub->p.playr_x * SCALE;
 	cub->mlx = mlx_init();
     cub->mlx_win = mlx_new_window(cub->mlx, cub->p.resolution_w, cub->p.resolution_l, "cub");
 	print_map(cub);
-	print_player(cub);
+	// print_player_cub(cub);
+	// print_player_pix(cub);
+	print_ray(cub);
 	mlx_hook(cub->mlx_win, 2, 1L<<0, key_hook, cub);
 	mlx_hook(cub->mlx_win, 17, 1L<<0, close_win, cub);
 	mlx_loop(cub->mlx);
