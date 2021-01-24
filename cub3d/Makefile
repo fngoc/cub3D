@@ -30,9 +30,9 @@ CLEAN = clean
 
 FCLEAN = fclean
 
-SRC = main.c parser.c start.c parser_map.c error.c\
+SRC = main.c parser.c start_cub2d.c parser_map.c error.c\
 	error_check_utils_one.c error_check_utils_two.c\
-	get_inf_utils.c
+	get_inf_utils.c start_cub3d.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -61,8 +61,8 @@ MAGENTA='\033[1;35m'
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT) $(LIBMLX)
-	@cd  $(LIBFT_DIR) && mv ./libft.a ../../
-	@cd  $(LIBMLX_DIR) && mv ./libmlx.dylib ../../
+	@cd $(LIBFT_DIR) && mv ./libft.a ../../
+	@cd $(LIBMLX_DIR) && mv ./libmlx.dylib ../../
 	@$(CC) $(FLAG) $(OBJ) -L. -lmlx -lft $(FLAGSMLX) $(OPTIONOBJ) $(NAME)
 	@echo ${YELLOW}"Step 3 is done!"
 	@echo $(GREEN)"Start!"${WHITE}

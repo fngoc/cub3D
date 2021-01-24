@@ -16,13 +16,13 @@
 ** close_win: закрытие окна и выход из программы.
 */
 
-static	int	close_win(t_cub *cub)
-{
-	mlx_destroy_window(cub->mlx, cub->mlx_win);
-	// free(cub);
-	exit(0);
-	return (0);
-}
+ static	int	close_win(t_cub *cub)
+ {
+ 	mlx_destroy_window(cub->mlx, cub->mlx_win);
+ 	// free(cub);
+ 	exit(0);
+ 	return (0);
+ }
 
 /*
 ** my_mlx_pixel_put: измененная функция mlx_pixel_put
@@ -37,46 +37,46 @@ static	void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
     *(unsigned int*)dst = color;
 }
 
-/*
-** print_player_cub: печать персонажа квадратного.
-*/
+ /*
+ ** print_player_cub: печать персонажа квадратного.
+ */
 
-// static	void	print_player_cub(t_cub *cub)
-// {
-// 	int y_tmp;
-// 	int x_tmp;
-
-// 	y_tmp = 0;
-// 	while (y_tmp++ < SCALE)
-// 	{
-// 		x_tmp = 0;
-// 		while (x_tmp++ < SCALE)
-// 			my_mlx_pixel_put(&cub->data, cub->plr.x + y_tmp, cub->plr.y + x_tmp, 0x00F54242);
-// 	}
-// }
-
-/*
-** print_player_pix: печать персонажа в пиксель
-*/
-
-// static	void	print_player_pix(t_cub *cub)
-// {
-// 	my_mlx_pixel_put(&cub->data, cub->plr.x, cub->plr.y, 0x0000FF00);
-// }
-
-/*
-** print_ray: печать луча.
-*/
-
-static	void	print_ray(t_cub *cub)
+static	void	print_player_cub(t_cub *cub)
 {
-	t_plr	ray = cub->plr; // задаем координаты и направление луча равные координатам игрока
-	ray.start = ray.dir - (PI / 4); // начало веера лучей \|/
-  	ray.end = ray.dir + (PI / 4); // край веера лучей
+	int y_tmp;
+	int x_tmp;
+
+	y_tmp = 0;
+	while (y_tmp++ < SCALE)
+	{
+		x_tmp = 0;
+		while (x_tmp++ < SCALE)
+			my_mlx_pixel_put(&cub->data, cub->plr.x + y_tmp, cub->plr.y + x_tmp, 0x00F54242);
+	}
+}
+
+ /*
+ ** print_player_pix: печать персонажа в пиксель
+ */
+
+static	void	print_player_pix(t_cub *cub)
+{
+	my_mlx_pixel_put(&cub->data, cub->plr.x, cub->plr.y, 0x0000FF00);
+}
+
+ /*
+ ** print_rays: печать лучей.
+ */
+
+static	void	print_rays(t_cub *cub)
+{
+	t_plr	ray = cub->plr;  //задаем координаты и направление луча равные координатам игрока
+	ray.start = ray.dir - (PI / 4);  //начало веера лучей \|/
+  	ray.end = ray.dir + (PI / 4);  //край веера лучей
 
  	while (ray.start <= ray.end)
 	{
-		ray.x = cub->plr.x; // каждый раз возвращаемся в точку начала
+		ray.x = cub->plr.x;  //каждый раз возвращаемся в точку начала
 		ray.y = cub->plr.y;
 		while (cub->p.map[(int)(ray.y / SCALE)][(int)(ray.x / SCALE)] != '1')
 		{
@@ -85,6 +85,22 @@ static	void	print_ray(t_cub *cub)
 			my_mlx_pixel_put(&cub->data, ray.x, ray.y, 0x0000FF00);
 		}
 		ray.start += (PI / 2) / 90;
+	}
+}
+
+/*
+** print_ray: печать луча.
+*/
+
+static	void	print_ray(t_cub *cub)
+{
+	t_plr	ray = cub->plr;
+
+	while (cub->p.map[(int)(ray.y / SCALE)][(int)(ray.x / SCALE)] != '1')
+	{
+		ray.x += cos(ray.dir);
+		ray.y += sin(ray.dir);
+		my_mlx_pixel_put(&cub->data, ray.x, ray.y, 0x990099);
 	}
 }
 
@@ -106,9 +122,9 @@ static	void	print_step(t_cub *cub, int color)
 	}
 }
 
-/*
-** print_map: печать карты с игроком.
-*/
+ /*
+ ** print_map: печать карты с игроком.
+ */
 
 static	void	print_map(t_cub *cub)
 {
@@ -164,27 +180,30 @@ static	int		key_hook(int keycode, t_cub *cub)
 	if (keycode == 53)
 		close_win(cub);
 	print_map(cub);
-	// print_player_cub(cub);
-	// print_player_pix(cub);
-	print_ray(cub);
+	print_player_cub(cub);
+	print_player_pix(cub);
+	 print_ray(cub);
+	print_rays(cub);
     printf("You put: %d\n", keycode);
 	return (0);
 }
 
 /*
-** start: запуск окна.
+** start_cub2d: запуск окна, работа в 2D.
 */
 
-void			start(t_cub *cub)
+void			start_cub2d(t_cub *cub)
 {
+
 	cub->plr.y = cub->p.playr_y * SCALE;
 	cub->plr.x = cub->p.playr_x * SCALE;
 	cub->mlx = mlx_init();
-    cub->mlx_win = mlx_new_window(cub->mlx, cub->p.resolution_w, cub->p.resolution_l, "cub");
+    cub->mlx_win = mlx_new_window(cub->mlx, cub->p.resolution_w, cub->p.resolution_l, "cub2d");
 	print_map(cub);
-	// print_player_cub(cub);
-	// print_player_pix(cub);
+	print_player_cub(cub);
+	print_player_pix(cub);
 	print_ray(cub);
+	print_rays(cub);
 	mlx_hook(cub->mlx_win, 2, 1L<<0, key_hook, cub);
 	mlx_hook(cub->mlx_win, 17, 1L<<0, close_win, cub);
 	mlx_loop(cub->mlx);

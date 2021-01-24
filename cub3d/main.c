@@ -35,7 +35,8 @@ int	main(int argc, char **argv)
 	while (cub.p.map[++i])
 		ft_putendl_fd(cub.p.map[i], 1);
 
-	start(&cub);
+	// start_cub2d(&cub);
+	start_cub3d(&cub);
 	free(&cub);
 	return (0);
 }

@@ -134,7 +134,9 @@ void				get_floore(char *tmp, t_cub *cub);
 
 void				get_ceilling(char *tmp, t_cub *cub);
 
-void				start(t_cub *cub);
+void				start_cub2d(t_cub *cub);
+
+void				start_cub3d(t_cub *cub);
 
 void				error(char *str, t_cub *cub);
 
