@@ -1,182 +1,67 @@
 #include "cub3d.h"
 
-#define screenWidth 640
-#define screenHeight 480
-
 /*
-** close_win: закрытие окна и выход из программы.
+** print_map: печать карты.
 */
 
-static	int	close_win(t_cub *cub)
+static  void    print_map(t_cub *cub)
 {
-    mlx_destroy_window(cub->mlx, cub->mlx_win);
-    // free(cub);
-    exit(0);
-    return (0);
-}
-
-/*
-** my_mlx_pixel_put: измененная функция mlx_pixel_put
-** для увеличения скорости работы.
-*/
-
-static	void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-    char    *dst;
-
-    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-    *(unsigned int*)dst = color;
-}
-
-int worldMap[24][24] =
-{
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
-
-
-/*
-** key_hook: взаимодействие с клавиатурой.
-*/
-
-// static	int		key_hook(int keycode, t_cub *cub)
-// {
-// 	// mlx_clear_window(cub->mlx, cub->mlx_win);
-// 	if (keycode == 53)
-// 		close_win(cub);
-// 	 //speed modifiers
-//     double moveSpeed = 2; //the constant value is in squares/second
-//     double rotSpeed = 2; //the constant value is in radians/second
-
-//     // move forward if no wall in front of you
-//     if(keycode == 126)
-//     {
-//       if(worldMap[(int)(posX + dirX * moveSpeed)][(int)(posY)] == '0') posX += dirX * moveSpeed;
-//       if(worldMap[(int)(posX)][(int)(posY + dirY * moveSpeed)] == '0') posY += dirY * moveSpeed;
-//     }
-//     //move backwards if no wall behind you
-//     if(keycode == 125)
-//     {
-//       if(worldMap[(int)(posX - dirX * moveSpeed)][(int)(posY)] == '0') posX -= dirX * moveSpeed;
-//       if(worldMap[(int)(posX)][(int)(posY - dirY * moveSpeed)] == '0') posY -= dirY * moveSpeed;
-//     }
-//     //rotate to the right
-//     if(keycode == 124)
-//     {
-//       //both camera direction and camera plane must be rotated
-//       double oldDirX = dirX;
-//       dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
-//       dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
-//       double oldPlaneX = planeX;
-//       planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
-//       planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
-//     }
-//     //rotate to the left
-//     if(keycode == 123)
-//     {
-//       //both camera direction and camera plane must be rotated
-//       double oldDirX = dirX;
-//       dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
-//       dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
-//       double oldPlaneX = planeX;
-//       planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
-//       planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
-//     }
-//     printf("You put: %d\n", keycode);
-// 	return (0);
-// }
-
-/*
-** start_cub3d: запуск окна, работа в 3D.
-*/
-
-void    start_cub3d(t_cub *cub)
-{
-    cub->mlx = mlx_init();
-    cub->mlx_win = mlx_new_window(cub->mlx, cub->p.resolution_w, cub->p.resolution_l, "cub3d");
     cub->data.img = mlx_new_image(cub->mlx, cub->p.resolution_w, cub->p.resolution_l);
     cub->data.addr = mlx_get_data_addr(cub->data.img, &cub->data.bits_per_pixel, &cub->data.line_length, &cub->data.endian);
-    mlx_put_image_to_window(cub->mlx, cub->mlx_win, cub->data.img, 0, 0);
 
-    double posX = 22, posY = 12;  //начальное положение x и y
-    double dirX = -1, dirY = 0; //начальный вектор направления
-    double planeX = 0, planeY = 0.66; //2d рейкастинг версия плоскости камеры
-
-    int h = cub->p.resolution_l;
-    int w = cub->p.resolution_w;
-    for(int x = 0; x < w; x++)
+    int x = 0;
+    while (x++ < cub->p.resolution_w)
     {
-      //calculate ray position and direction
-      double cameraX = 2 * x / (double)w - 1; //x-coordinate in camera space
-      double rayDirX = dirX + planeX * cameraX;
-      double rayDirY = dirY + planeY * cameraX;
-      //which box of the map we're in
-      int mapX = (int)(posX);
-      int mapY = (int)(posY);
+        //вычислить положение и направление луча
+        double cameraX = 2 * x / (double)cub->p.resolution_w - 1; //x-координата в пространстве камеры
+        double rayDirX = cub->plr.dirX + cub->plr.planeX * cameraX;
+        double rayDirY = cub->plr.dirY + cub->plr.planeY * cameraX;
 
-      //length of ray from current position to next x or y-side
-      double sideDistX;
-      double sideDistY;
+        //в каком квадрате карты мы находимся
+        int mapX = (int)(cub->plr.y);
+        int mapY = (int)(cub->plr.x);
 
-       //length of ray from one x or y-side to next x or y-side
-      double deltaDistX = sqrt (1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
-      double deltaDistY = sqrt (1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
-      double perpWallDist;
+        //длина луча от текущей позиции до следующей стороны x или y
+        double sideDistX;
+        double sideDistY;
 
-      //what direction to step in x or y-direction (either +1 or -1)
-      int stepX;
-      int stepY;
+        //длина луча от одной стороны x или y до следующей стороны x или y
+        double deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
+        double deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
+        double perpWallDist;
 
-      int hit = 0; //was there a wall hit?
-      int side; //was a NS or a EW wall hit?
-      //calculate step and initial sideDist
-      if(rayDirX < 0)
-      {
-        stepX = -1;
-        sideDistX = (posX - mapX) * deltaDistX;
-      }
-      else
-      {
-        stepX = 1;
-        sideDistX = (mapX + 1.0 - posX) * deltaDistX;
-      }
-      if(rayDirY < 0)
-      {
-        stepY = -1;
-        sideDistY = (posY - mapY) * deltaDistY;
-      }
-      else
-      {
-        stepY = 1;
-        sideDistY = (mapY + 1.0 - posY) * deltaDistY;
-      }
-      //perform DDA
+        //в каком направлении делать шаг в направлении x или y (либо +1, либо -1)
+        int stepX;
+        int stepY;
+
+        int hit = 0; //был ли удар в стену?
+        int side; //была ли поражена стена НС или РЭБ?
+        //вычислить шаг и начальную сторону Dist
+        if (rayDirX < 0)
+        {
+            stepX = -1;
+            sideDistX = (cub->plr.y - mapX) * deltaDistX;
+        }
+        else
+        {
+            stepX = 1;
+            sideDistX = (mapX + 1.0 - cub->plr.y) * deltaDistX;
+        }
+        if (rayDirY < 0)
+        {
+            stepY = -1;
+            sideDistY = (cub->plr.x - mapY) * deltaDistY;
+        }
+        else
+        {
+            stepY = 1;
+            sideDistY = (mapY + 1.0 - cub->plr.x) * deltaDistY;
+        }
+        //проанализировать ДВР
         while (hit == 0)
         {
-            //jump to next map square, OR in x-direction, OR in y-direction
-            if(sideDistX < sideDistY)
+            //переход к следующему квадрату карты, ИЛИ в направлении x, ИЛИ в направлении y
+            if (sideDistX < sideDistY)
             {
                 sideDistX += deltaDistX;
                 mapX += stepX;
@@ -188,36 +73,123 @@ void    start_cub3d(t_cub *cub)
                 mapY += stepY;
                 side = 1;
             }
-            //Check if ray has hit a wall
-            if(worldMap[mapX][mapY] > 0)
+            //Проверьте, не ударился ли луч об стену
+            if (cub->p.map[mapX][mapY] == '1')
                 hit = 1;
         }
-        //Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
+        //Вычислите расстояние, проецируемое на направление камеры (Евклидово расстояние даст эффект рыбьего глаза!)
         if (side == 0)
-            perpWallDist = (mapX - posX + (1 - stepX) / 2) / rayDirX;
+            perpWallDist = (mapX - cub->plr.y + (1 - stepX) / 2) / rayDirX;
         else
-            perpWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY;
+            perpWallDist = (mapY - cub->plr.x + (1 - stepY) / 2) / rayDirY;
 
-        //Calculate height of line to draw on screen
-        int lineHeight = (int)(h / perpWallDist);
+        //Вычислите высоту линии для рисования на экране
+        int lineHeight = (int)(cub->p.resolution_l / perpWallDist);
 
-        //calculate lowest and highest pixel to fill in current stripe
-        int drawStart = -lineHeight / 2 + h / 2;
+        //вычислите самый низкий и самый высокий пиксель для заполнения текущей полосы
+        int drawStart = - lineHeight / 2 + cub->p.resolution_l / 2;
 
-        if(drawStart < 0)
+        if (drawStart < 0)
             drawStart = 0;
 
-        int drawEnd = lineHeight / 2 + h / 2;
+        int drawEnd = lineHeight / 2 + cub->p.resolution_l / 2;
 
-        if(drawEnd >= h)
-            drawEnd = h - 1;
+        if (drawEnd >= cub->p.resolution_l)
+            drawEnd = cub->p.resolution_l - 1;
 
-        for(int y = drawStart; y < drawEnd; y++)
-        {
-            my_mlx_pixel_put(&cub->data, x, y, 0x00F54242);
-        }
+        int y = drawStart;
+        while (y++ < drawEnd)
+            my_mlx_pixel_put(&cub->data, x, y, 0x00038CFC);
     }
-    // mlx_hook(cub->mlx_win, 2, 1L<<0, key_hook, cub);
+    mlx_put_image_to_window(cub->mlx, cub->mlx_win, cub->data.img, 0, 0);
+}
+
+/*
+** key_hook: взаимодействие с клавиатурой.
+*/
+
+static	int		key_hook(int keycode, t_cub *cub)
+{
+    mlx_destroy_image(cub->mlx, cub->data.img);
+	if (keycode == 53)
+		close_win(cub);
+	 //модификаторы скорости
+    double moveSpeed = 0.1; //постоянное значение выражается в квадратах в секунду
+    double rotSpeed = 0.1; //постоянное значение находится в радианах/секунде
+
+    //двигайтесь вперед, если перед вами нет стены
+    if(keycode == 13)
+    {
+        printf("1 cub->plr.y: %f\n", cub->plr.y);
+        if(cub->p.map[(int)(cub->plr.y + cub->plr.dirY * moveSpeed)][(int)(cub->plr.x)] == '*')
+            cub->plr.y += cub->plr.dirY * moveSpeed;
+        if(cub->p.map[(int)(cub->plr.y)][(int)(cub->plr.x + cub->plr.dirX * moveSpeed)] == '*')
+            cub->plr.x += cub->plr.dirX * moveSpeed;
+        printf("1 cub->plr.y: %f\n", cub->plr.y);
+    }
+    //движение назад, если за вами нет стены
+    if(keycode == 1)
+    {
+        printf("2 cub->plr.y: %f\n", cub->plr.y);
+        printf("2 cub->plr.x: %f\n", cub->plr.x);
+        printf("2 plr.dirY: %f\n", cub->plr.dirY);
+        if(cub->p.map[(int)(cub->plr.y - cub->plr.dirY * moveSpeed)][(int)(cub->plr.x)] == '*')
+            cub->plr.y -= cub->plr.dirY * moveSpeed;
+        if(cub->p.map[(int)(cub->plr.y)][(int)(cub->plr.x - cub->plr.dirX * moveSpeed)] == '*')
+            cub->plr.x -= cub->plr.dirX * moveSpeed;
+        printf("2 plr.dirY: %f\n", cub->plr.dirY);
+        printf("2 cub->plr.y: %f\n", cub->plr.y);
+        printf("2 cub->plr.x: %f\n", cub->plr.x);
+    }
+    //поворот вправо
+    if(keycode == 124)
+    {
+        //как направление камеры, так и плоскость камеры должны быть повернуты
+        double oldDirX = cub->plr.dirX;
+        cub->plr.dirX = cub->plr.dirX * cos(-rotSpeed) - cub->plr.dirY * sin(-rotSpeed);
+        cub->plr.dirY = oldDirX * sin(-rotSpeed) + cub->plr.dirY * cos(-rotSpeed);
+        double oldPlaneX = cub->plr.planeX;
+        cub->plr.planeX = cub->plr.planeX * cos(-rotSpeed) - cub->plr.planeY * sin(-rotSpeed);
+        cub->plr.planeY = oldPlaneX * sin(-rotSpeed) + cub->plr.planeY * cos(-rotSpeed);
+    }
+    //поварот влево
+    if(keycode == 123)
+    {
+        //как направление камеры, так и плоскость камеры должны быть повернуты
+        double oldDirX = cub->plr.dirX;
+        cub->plr.dirX = cub->plr.dirX * cos(rotSpeed) - cub->plr.dirY * sin(rotSpeed);
+        cub->plr.dirY = oldDirX * sin(rotSpeed) + cub->plr.dirY * cos(rotSpeed);
+        double oldPlaneX = cub->plr.planeX;
+        cub->plr.planeX = cub->plr.planeX * cos(rotSpeed) - cub->plr.planeY * sin(rotSpeed);
+        cub->plr.planeY = oldPlaneX * sin(rotSpeed) + cub->plr.planeY * cos(rotSpeed);
+    }
+    print_map(cub);
+    printf("You put: %d\n", keycode);
+	return (0);
+}
+
+/*
+** start_cub3d: запуск окна, работа в 3D.
+*/
+
+void    start_cub3d(t_cub *cub)
+{
+    //начальный расположение игрока
+    cub->plr.x = cub->p.playr_x;
+    cub->plr.y = cub->p.playr_y;
+
+    //начальный вектор направления
+    cub->plr.dirX = -1;
+    cub->plr.dirY = 0;
+    cub->plr.planeX = 0;
+    cub->plr.planeY = 0.66; //2d рейкастинг версия плоскости камеры
+
+    cub->mlx = mlx_init();
+    cub->mlx_win = mlx_new_window(cub->mlx, cub->p.resolution_w, cub->p.resolution_l, "cub3d");
+
+    print_map(cub);
+
+    mlx_hook(cub->mlx_win, 2, 1L<<0, key_hook, cub);
 	mlx_hook(cub->mlx_win, 17, 1L<<0, close_win, cub);
     mlx_loop(cub->mlx);
 }

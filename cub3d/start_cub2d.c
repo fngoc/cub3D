@@ -12,31 +12,6 @@
 
 #include "cub3d.h"
 
-/*
-** close_win: закрытие окна и выход из программы.
-*/
-
- static	int	close_win(t_cub *cub)
- {
- 	mlx_destroy_window(cub->mlx, cub->mlx_win);
- 	// free(cub);
- 	exit(0);
- 	return (0);
- }
-
-/*
-** my_mlx_pixel_put: измененная функция mlx_pixel_put
-** для увеличения скорости работы.
-*/
-
-static	void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-    char    *dst;
-
-    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-    *(unsigned int*)dst = color;
-}
-
  /*
  ** print_player_cub: печать персонажа квадратного.
  */
@@ -162,7 +137,7 @@ static	void	print_map(t_cub *cub)
 
 static	int		key_hook(int keycode, t_cub *cub)
 {
-	mlx_clear_window(cub->mlx, cub->mlx_win);
+	mlx_destroy_image(cub->mlx, cub->data.img);
 	if (keycode == 126)
 	{
 		cub->plr.x += cos(cub->plr.dir);
@@ -182,7 +157,7 @@ static	int		key_hook(int keycode, t_cub *cub)
 	print_map(cub);
 	print_player_cub(cub);
 	print_player_pix(cub);
-	 print_ray(cub);
+	print_ray(cub);
 	print_rays(cub);
     printf("You put: %d\n", keycode);
 	return (0);
@@ -194,7 +169,6 @@ static	int		key_hook(int keycode, t_cub *cub)
 
 void			start_cub2d(t_cub *cub)
 {
-
 	cub->plr.y = cub->p.playr_y * SCALE;
 	cub->plr.x = cub->p.playr_x * SCALE;
 	cub->mlx = mlx_init();

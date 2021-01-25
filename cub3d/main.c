@@ -37,6 +37,7 @@ int	main(int argc, char **argv)
 
 	// start_cub2d(&cub);
 	start_cub3d(&cub);
+	// start_cub3d_v2(&cub);
 	free(&cub);
 	return (0);
 }

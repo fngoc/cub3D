@@ -77,8 +77,8 @@ typedef	struct		s_data
 
 typedef struct		s_point_print
 {
-	float			x;
-	float			y;
+	double			x;
+	double			y;
 }					t_point_print;
 
 /*
@@ -87,11 +87,15 @@ typedef struct		s_point_print
 
 typedef struct		s_plr
 {
-	float			x;
-	float			y;
-	float			dir;
-	float			start;
-	float			end;
+	double			x;
+	double			y;
+	double			dir;
+	double			dirX;
+	double			dirY;
+	double			planeX;
+	double			planeY;
+	double			start;
+	double			end;
 }					t_plr;
 
 /*
@@ -138,6 +142,12 @@ void				start_cub2d(t_cub *cub);
 
 void				start_cub3d(t_cub *cub);
 
+void				start_cub3d_v2(t_cub *cub);
+
+void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
+
 void				error(char *str, t_cub *cub);
+
+int					close_win(t_cub *cub);
 
 #endif
