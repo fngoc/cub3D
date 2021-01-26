@@ -142,8 +142,6 @@ void				start_cub2d(t_cub *cub);
 
 void				start_cub3d(t_cub *cub);
 
-void				start_cub3d_v2(t_cub *cub);
-
 void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 void				error(char *str, t_cub *cub);

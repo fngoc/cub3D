@@ -119,7 +119,12 @@ void			parser_map(int fd, t_cub *cub)
 
 	head = NULL;
 	while (get_next_line(fd, &line))
-		ft_lstadd_back(&head, ft_lstnew(line));
+	{
+		// if (ft_strlen(line) == 0)
+		// 	continue ;
+		// else
+			ft_lstadd_back(&head, ft_lstnew(line));
+	}
 	ft_lstadd_back(&head, ft_lstnew(line));
 	make_map(&head, ft_lstsize(head), cub);
 }
