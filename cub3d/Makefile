@@ -33,7 +33,7 @@ FCLEAN = fclean
 SRC = main.c parser.c start_cub2d.c parser_map.c error.c\
 	error_check_utils_one.c error_check_utils_two.c\
 	get_inf_utils.c start_cub3d.c close_win.c\
-	my_mlx_pixel_put.c
+	my_mlx_pixel_put.c get_pixel.c create_rgb.c
 
 OBJ = $(SRC:.c=.o)
 

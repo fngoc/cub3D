@@ -59,19 +59,6 @@ typedef	struct	s_parser
 }					t_parser;
 
 /*
-** t_data: структура данных mlx.
-*/
-
-typedef	struct		s_data
-{
-    void			*img;
-    char			*addr;
-    int				bits_per_pixel;
-    int				line_length;
-    int				endian;
-}					t_data;
-
-/*
 ** t_point_print: структура печати карты.
 */
 
@@ -99,6 +86,19 @@ typedef struct		s_plr
 }					t_plr;
 
 /*
+** t_data: структура данных mlx.
+*/
+
+typedef	struct		s_data
+{
+    void			*img;
+    char			*addr;
+    int				bits_per_pixel;
+    int				line_length;
+    int				endian;
+}					t_data;
+
+/*
 ** t_cub: структура в которой находится все.
 */
 
@@ -107,6 +107,7 @@ typedef struct		s_cub
 	void			*mlx;
 	void			*mlx_win;
 	t_parser		p;
+	t_data			texture;
 	t_data			data;
 	t_point_print	point;
 	t_plr			plr;
@@ -147,5 +148,9 @@ void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void				error(char *str, t_cub *cub);
 
 int					close_win(t_cub *cub);
+
+int					create_rgb(int r, int g, int b);
+
+unsigned int		get_pixel(t_data *data, int x, int y);
 
 #endif
