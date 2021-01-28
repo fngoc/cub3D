@@ -50,13 +50,25 @@ static	void	check_zero(int size, t_cub *cub)
 static	void	set_dir(int x, int y, t_cub *cub)
 {
 	if (cub->p.map[y][x] == 'N')
+	{
 		cub->plr.dir = (3 * PI) / 2;
+		cub->plr.dir_symbol = 'N';
+	}
 	if (cub->p.map[y][x] == 'W')
+	{
 		cub->plr.dir = PI;
+		cub->plr.dir_symbol = 'W';
+	}
 	if (cub->p.map[y][x] == 'E')
+	{
 		cub->plr.dir = 2 * PI;
+		cub->plr.dir_symbol = 'E';
+	}
 	if (cub->p.map[y][x] == 'S')
+	{
 		cub->plr.dir = PI / 2;
+		cub->plr.dir_symbol = 'S';
+	}
 }
 
 /*
@@ -106,6 +118,7 @@ static	void	make_map(t_list **head, int size, t_cub *cub)
 	check_zero(size, cub);
 	check_closed_map(cub->p.playr_x, cub->p.playr_y, cub, size);
 	cub->p.size_map = size;
+	// free(*head);
 }
 
 /*
@@ -119,12 +132,7 @@ void			parser_map(int fd, t_cub *cub)
 
 	head = NULL;
 	while (get_next_line(fd, &line))
-	{
-		// if (ft_strlen(line) == 0)
-		// 	continue ;
-		// else
-			ft_lstadd_back(&head, ft_lstnew(line));
-	}
+		ft_lstadd_back(&head, ft_lstnew(line));
 	ft_lstadd_back(&head, ft_lstnew(line));
 	make_map(&head, ft_lstsize(head), cub);
 }

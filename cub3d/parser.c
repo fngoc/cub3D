@@ -123,5 +123,6 @@ void			parser(char **argv, t_cub *cub)
 				parser_map(fd, cub);
 			}
 		}
+		free(line);
 	}
 }

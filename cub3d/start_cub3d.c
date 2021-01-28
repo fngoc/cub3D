@@ -1,8 +1,5 @@
 #include "cub3d.h"
 
-#define texWidth 64
-#define texHeight 64
-
 /*
 ** print_map: печать карты.
 */
@@ -37,8 +34,8 @@ static  void  print_map(t_cub *cub)
         int stepX;
         int stepY;
 
-        int hit = 0; //был ли удар в стену?
-        int side; //была ли поражена стена НС или РЭБ?
+        int hit = 0; //был ли удар об стену?
+        int side; //была ли поражена стена NS или WE?
 
         //вычислить шаг и начальную сторону sideDist
         if(rayDirX < 0)
@@ -99,53 +96,48 @@ static  void  print_map(t_cub *cub)
         if (drawEnd >= cub->p.resolution_l)
             drawEnd = cub->p.resolution_l - 1;
 
-        //расчеты текстурирования
-        // int texNum = cub->p.map[mapX][mapY] = '*'; //1 вычитается из него так, что текстура 0 может быть использована
-
         //вычислите значение wallxoven
         double wallX; //куда именно ударилась стена
-        if (side == 0) wallX = cub->plr.x + perpWallDist * rayDirY;
-        else           wallX = cub->plr.y + perpWallDist * rayDirX;
+        if (side == 0)
+            wallX = cub->plr.x + perpWallDist * rayDirY;
+        else
+            wallX = cub->plr.y + perpWallDist * rayDirX;
         wallX -= floor((wallX));
     
         //координата x на текстуре
-        int texX = (int)(wallX * (double)(texWidth));
-        if(side == 0 && rayDirX > 0) texX = texWidth - texX - 1;
-        if(side == 1 && rayDirY < 0) texX = texWidth - texX - 1;
+        int texX = (int)(wallX * (double)(TEXWIDTH));
+        if (side == 0 && rayDirX > 0)
+            texX = TEXWIDTH - texX - 1;
+        if (side == 1 && rayDirY < 0)
+            texX = TEXWIDTH - texX - 1;
 
         // Насколько увеличить координату текстуры на пиксель экрана
-        double step = 1.0 * texHeight / lineHeight;
+        double step = 1.0 * TEXHEIGHT / lineHeight;
         // Начальная координата текстуры
         double texPos = (drawStart - cub->p.resolution_l / 2 + lineHeight / 2) * step;  
 
         int y = 0;
         while (y++ < cub->p.resolution_l)
         {
-            // Приведите координату текстуры к целому числу и замаскируйте ее с помощью (texHeight - 1) в случае переполнения
-            int texY = (int)texPos & (texHeight - 1);
-            texPos += step;
-            unsigned int color;
-            color = get_pixel(&cub->texture, texX, texY);
-            if (y < drawStart) //ceilling
+            if (y < drawStart) //поталок
                 my_mlx_pixel_put(&cub->data, x, y, create_rgb(cub->p.ceilling_r, cub->p.ceilling_g, cub->p.ceilling_b));
-            if (y > drawStart && y < drawEnd)
+            if (y >= drawStart && y <= drawEnd) //стена
             {
+                // Приведите координату текстуры к целому числу и замаскируйте ее с помощью (TEXHEIGHT - 1) в случае переполнения
+                int texY = (int)texPos & (TEXHEIGHT - 1);
+                texPos += step;
                 if (side == 0) //N и S
-                {
                     if (stepX > 0) //S
-                        my_mlx_pixel_put(&cub->data, x, y, color);
+                        my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->texture_s, texX, texY));
                     else // N
-                        my_mlx_pixel_put(&cub->data, x, y, 0x000099FF);
-                }
+                        my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->texture_n, texX, texY));
                 else //W и E
-                {
                     if (stepY > 0) //E
-                        my_mlx_pixel_put(&cub->data, x, y, 0x00E2FF05);
+                        my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->texture_e, texX, texY));
                     else // W
-                        my_mlx_pixel_put(&cub->data, x, y, 0x0027FF05);
-                }
+                        my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->texture_w, texX, texY));
             }
-            if (y > drawEnd && y < cub->p.resolution_l) //floore
+            if (y > drawEnd && y < cub->p.resolution_l) //пол
                  my_mlx_pixel_put(&cub->data, x, y, create_rgb(cub->p.floore_r, cub->p.floore_g, cub->p.floore_b));
         }
     }
@@ -223,6 +215,10 @@ static int key_hook(int keycode, t_cub *cub)
 		close_win(cub);
     print_map(cub);
     printf("You put: %d\n", keycode);
+    printf("cub->plr.dirY: %f\n", cub->plr.dirY);
+    printf("cub->plr.dirX: %f\n", cub->plr.dirX);
+    printf("cub->plr.planeY: %f\n", cub->plr.planeY);
+    printf("cub->plr.planeX: %f\n", cub->plr.planeX);
     return (0);
 }
 
@@ -239,13 +235,24 @@ void  start_cub3d(t_cub *cub)
     cub->plr.y = cub->p.playr_y;
     cub->plr.x = cub->p.playr_x;
 
-    //начальный вектор направления
-    cub->plr.dirY = -1; 
-    cub->plr.dirX = 0;
-
-    //плоскость камеры игрока
-    cub->plr.planeY = 0;
-    cub->plr.planeX = 0.66; //2d рейкастинг версия плоскости камеры
+    if (cub->plr.dir_symbol == 'N')
+    {
+        //начальный вектор направления
+        cub->plr.dirY = -1; 
+        cub->plr.dirX = 0;
+        //плоскость камеры игрока
+        cub->plr.planeY = 0;
+        cub->plr.planeX = 0.66; //2d рейкастинг версия плоскости камеры
+    }
+    // if (cub->plr.dir_symbol == 'S')
+    // {
+    //     //начальный вектор направления
+    //     cub->plr.dirY = -1; 
+    //     cub->plr.dirX = 0;
+    //     //плоскость камеры игрока
+    //     cub->plr.planeY = -0.6;
+    //     cub->plr.planeX = -0.2; //2d рейкастинг версия плоскости камеры
+    // }
     
     //установка последнего пикселя, что бы не былло Segmentation fault
     cub->p.resolution_l = cub->p.resolution_l - 1;
@@ -253,12 +260,28 @@ void  start_cub3d(t_cub *cub)
     cub->mlx = mlx_init();
     cub->mlx_win = mlx_new_window(cub->mlx, cub->p.resolution_w, cub->p.resolution_l, "cub3d");
 
-    //схватываем текстуры
-    cub->texture.img = mlx_xpm_file_to_image(cub->mlx, cub->p.north_texture, &width, &height);
-	cub->texture.addr = mlx_get_data_addr(cub->texture.img, &cub->texture.bits_per_pixel, &cub->texture.line_length, &cub->texture.endian);
+    //схватываем текстуры N
+    if (!(cub->texture_n.img = mlx_xpm_file_to_image(cub->mlx, cub->p.north_texture, &width, &height)))
+        error("ERROR: No texture found for North", cub);
+	cub->texture_n.addr = mlx_get_data_addr(cub->texture_n.img, &cub->texture_n.bits_per_pixel, &cub->texture_n.line_length, &cub->texture_n.endian);
+    //схватываем текстуры S
+    if (!(cub->texture_s.img = mlx_xpm_file_to_image(cub->mlx, cub->p.south_texture, &width, &height)))
+        error("ERROR: No texture found for the South", cub);
+	cub->texture_s.addr = mlx_get_data_addr(cub->texture_s.img, &cub->texture_s.bits_per_pixel, &cub->texture_s.line_length, &cub->texture_s.endian);
+    //схватываем текстуры W
+    if (!(cub->texture_w.img = mlx_xpm_file_to_image(cub->mlx, cub->p.west_texture, &width, &height)))
+        error("ERROR: No texture found for the West", cub);
+	cub->texture_w.addr = mlx_get_data_addr(cub->texture_w.img, &cub->texture_w.bits_per_pixel, &cub->texture_w.line_length, &cub->texture_w.endian);
+    //схватываем текстуры E
+    if (!(cub->texture_e.img = mlx_xpm_file_to_image(cub->mlx, cub->p.east_texture, &width, &height)))
+        error("ERROR: No texture found for the East", cub);
+	cub->texture_e.addr = mlx_get_data_addr(cub->texture_e.img, &cub->texture_e.bits_per_pixel, &cub->texture_e.line_length, &cub->texture_e.endian);
 
     //печать карты
     print_map(cub);
+
+    //музыка
+    // system("afplay .mp3 & ");
 
     //управление
     mlx_hook(cub->mlx_win, 2, 1L<<0, key_hook, cub);

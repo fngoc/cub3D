@@ -138,12 +138,12 @@ static	void	print_map(t_cub *cub)
 static	int		key_hook(int keycode, t_cub *cub)
 {
 	mlx_destroy_image(cub->mlx, cub->data.img);
-	if (keycode == 126)
+	if (keycode == 13)
 	{
 		cub->plr.x += cos(cub->plr.dir);
 		cub->plr.y += sin(cub->plr.dir);
 	}
-	if (keycode == 125)
+	if (keycode == 1)
 	{
 		cub->plr.x -= cos(cub->plr.dir);
 		cub->plr.y -= sin(cub->plr.dir);

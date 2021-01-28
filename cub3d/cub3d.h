@@ -22,6 +22,8 @@
 
 # define SCALE 16
 # define PI 3.14159265359
+# define TEXWIDTH 64
+# define TEXHEIGHT 64
 
 /*
 ** t_parser: структура парсера.
@@ -77,6 +79,7 @@ typedef struct		s_plr
 	double			x;
 	double			y;
 	double			dir;
+	char			dir_symbol;
 	double			dirX;
 	double			dirY;
 	double			planeX;
@@ -107,7 +110,10 @@ typedef struct		s_cub
 	void			*mlx;
 	void			*mlx_win;
 	t_parser		p;
-	t_data			texture;
+	t_data			texture_n;
+	t_data			texture_s;
+	t_data			texture_w;
+	t_data			texture_e;
 	t_data			data;
 	t_point_print	point;
 	t_plr			plr;

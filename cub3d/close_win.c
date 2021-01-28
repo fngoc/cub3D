@@ -7,6 +7,7 @@
 int close_win(t_cub *cub)
 {
     mlx_destroy_window(cub->mlx, cub->mlx_win);
+    // system("killall afplay");
     // free(cub);
     exit(0);
     return (0);
