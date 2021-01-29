@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 /*
 ** check_errors_arg: проверка входных данных на ошибки.
@@ -21,7 +21,10 @@ void			check_errors_arg(int ac, char **av, t_cub *cub)
 	if (ac != 2)
 		error("ERROR: No more than 2 arguments were submitted", cub);
 	else if (ft_strncmp(av[1], "map.cub", ft_strlen(av[1])))
-		error("ERROR: The card is not called 'map.cub'", cub);
+	{
+		ft_putstr_fd("ERROR: The map is not called 'map.cub' ", 1);
+		error("or it is called from another folder'", cub);
+	}
 }
 
 /*
@@ -49,7 +52,8 @@ void			all_tab_in_line(char *str, t_cub *cub)
 			return ;
 		++i;
 	}
-	error("ERROR: There is an empty line with spaces at the end of the map", cub);
+	ft_putstr_fd("ERROR: There is an empty line ", 1);
+	error("with spaces at the end of the map", cub);
 }
 
 /*

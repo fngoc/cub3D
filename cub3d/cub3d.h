@@ -58,6 +58,8 @@ typedef	struct	s_parser
 	int				playr_y;
 
 	int				size_map;
+
+	int				coll_sprite;
 }					t_parser;
 
 /*
@@ -114,9 +116,12 @@ typedef struct		s_cub
 	t_data			texture_s;
 	t_data			texture_w;
 	t_data			texture_e;
+	t_data			texture_sprite;
 	t_data			data;
 	t_point_print	point;
 	t_plr			plr;
+	float			*x;
+	float			*y;
 }					t_cub;
 
 void				check_errors_arg(int ac, char **av, t_cub *cub);

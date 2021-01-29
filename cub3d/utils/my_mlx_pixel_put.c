@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "../cub3d.h"
 
 /*
 ** my_mlx_pixel_put: измененная функция mlx_pixel_put

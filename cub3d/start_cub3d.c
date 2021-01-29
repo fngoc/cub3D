@@ -1,6 +1,116 @@
 #include "cub3d.h"
 
 /*
+** malloc_arrays: выделение памяти под масив спрайтов.
+*/
+
+static void malloc_arrays(t_cub *cub)
+{
+    cub->x = malloc(sizeof(float) * cub->p.coll_sprite);
+    cub->y = malloc(sizeof(float) * cub->p.coll_sprite);
+}
+
+/*
+** save_position_sprites: сохранить позицию спрайтов
+** и вернуть их количество.
+*/
+
+static int save_position_sprites(t_cub *cub)
+{
+    int i;
+    int j;
+    int coll;
+
+    i = 0;
+    coll = 0;
+    while (cub->p.map[i] != NULL)
+    {
+        j = 0;
+        while (cub->p.map[i][j] != '\0')
+        {
+            if (cub->p.map[i][j] == 'B')
+            {
+                cub->x[coll] = j + 0.5;
+                cub->y[coll] = i + 0.5;
+                coll++;
+            }
+            ++j;
+        }
+        ++i;
+    }
+    return (coll);
+}
+
+/*
+** print_sprite: печать спрайта.
+*/
+
+static void print_sprite(t_cub *cub)
+{
+    int i;
+
+    i = 0;
+    while (i < cub->p.coll_sprite)
+    {
+        //перевести положение спрайта относительно камеры
+        double spriteX = cub->x[i] - cub->plr.x;
+        double spriteY = cub->y[i] - cub->plr.y;
+    
+        //требуется для правильного умножения матриц
+        double invDet = 1.0 / (cub->plr.planeX * cub->plr.dirY - cub->plr.dirX * cub->plr.planeY);
+
+        double transformX = invDet * (cub->plr.dirY * spriteX - cub->plr.dirX * spriteY);
+
+        //это на самом деле глубина внутри экрана, то, что Z есть в 3D
+        double transformY = invDet * (-cub->plr.planeY * spriteX + cub->plr.planeX * spriteY); 
+
+        int spriteScreenX = (int)((cub->p.resolution_w / 2) * (1 + transformX / transformY));
+
+        //вычислите высоту спрайта на экране
+        int spriteHeight = abs((int)(cub->p.resolution_l / (transformY))); //с помощью transformY' вместо реального расстояния предотвращает рыбий глаз
+        //вычислите самый низкий и самый высокий пиксель для заполнения текущей полосы
+        int drawStartY = -spriteHeight / 2 + cub->p.resolution_l / 2;
+        if (drawStartY < 0)
+            drawStartY = 0;
+        int drawEndY = spriteHeight / 2 + cub->p.resolution_l / 2;
+        if (drawEndY >= cub->p.resolution_l)
+            drawEndY = cub->p.resolution_l - 1;
+
+        //вычислить ширину спрайта
+        int spriteWidth = abs((int)(cub->p.resolution_l / (transformY)));
+        int drawStartX = -spriteWidth / 2 + spriteScreenX;
+        if (drawStartX < 0) drawStartX = 0;
+            int drawEndX = spriteWidth / 2 + spriteScreenX;
+        if (drawEndX >= cub->p.resolution_w)
+            drawEndX = cub->p.resolution_w - 1;
+
+        //петля через каждую вертикальную полосу спрайта на экране
+        int stripe;
+        int y;
+
+        stripe = drawStartX;
+        while (stripe < drawEndX)
+        {
+            int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * TEXWIDTH / spriteWidth) / 256;
+            if (transformY > 0 && stripe > 0 && stripe < cub->p.resolution_w)
+            
+            y = drawStartY;
+            while (y < drawEndY) //для каждого пикселя текущей полосы
+            {
+                int d = (y) * 256 - cub->p.resolution_l * 128 + spriteHeight * 128;
+                int texY = ((d * TEXHEIGHT) / spriteHeight) / 256;
+                int color = get_pixel(&cub->texture_sprite, texX, texY);
+                if (color != 0)
+                    my_mlx_pixel_put(&cub->data, stripe, y, color);
+                y++;
+            }
+            ++stripe;
+        }
+        ++i;
+    }
+}
+
+/*
 ** print_map: печать карты.
 */
 
@@ -129,18 +239,19 @@ static  void  print_map(t_cub *cub)
                 if (side == 0) //N и S
                     if (stepX > 0) //S
                         my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->texture_s, texX, texY));
-                    else // N
+                    else //N
                         my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->texture_n, texX, texY));
                 else //W и E
                     if (stepY > 0) //E
                         my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->texture_e, texX, texY));
-                    else // W
+                    else //W
                         my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->texture_w, texX, texY));
             }
             if (y > drawEnd && y < cub->p.resolution_l) //пол
                  my_mlx_pixel_put(&cub->data, x, y, create_rgb(cub->p.floore_r, cub->p.floore_g, cub->p.floore_b));
         }
     }
+    print_sprite(cub);
     mlx_put_image_to_window(cub->mlx, cub->mlx_win, cub->data.img, 0, 0);
 }
 
@@ -215,10 +326,6 @@ static int key_hook(int keycode, t_cub *cub)
 		close_win(cub);
     print_map(cub);
     printf("You put: %d\n", keycode);
-    printf("cub->plr.dirY: %f\n", cub->plr.dirY);
-    printf("cub->plr.dirX: %f\n", cub->plr.dirX);
-    printf("cub->plr.planeY: %f\n", cub->plr.planeY);
-    printf("cub->plr.planeX: %f\n", cub->plr.planeX);
     return (0);
 }
 
@@ -235,6 +342,10 @@ void  start_cub3d(t_cub *cub)
     cub->plr.y = cub->p.playr_y;
     cub->plr.x = cub->p.playr_x;
 
+    //количество спрайтов
+    malloc_arrays(cub);
+    cub->p.coll_sprite = save_position_sprites(cub);
+
     if (cub->plr.dir_symbol == 'N')
     {
         //начальный вектор направления
@@ -244,16 +355,34 @@ void  start_cub3d(t_cub *cub)
         cub->plr.planeY = 0;
         cub->plr.planeX = 0.66; //2d рейкастинг версия плоскости камеры
     }
-    // if (cub->plr.dir_symbol == 'S')
-    // {
-    //     //начальный вектор направления
-    //     cub->plr.dirY = -1; 
-    //     cub->plr.dirX = 0;
-    //     //плоскость камеры игрока
-    //     cub->plr.planeY = -0.6;
-    //     cub->plr.planeX = -0.2; //2d рейкастинг версия плоскости камеры
-    // }
-    
+    if (cub->plr.dir_symbol == 'S')
+    {
+        //начальный вектор направления
+        cub->plr.dirY = 0.998295; 
+        cub->plr.dirX = 0.058374;
+        //плоскость камеры игрока
+        cub->plr.planeY = 0.038527;
+        cub->plr.planeX = -0.658875; //2d рейкастинг версия плоскости камеры
+    }
+    if (cub->plr.dir_symbol == 'W')
+    {
+        //начальный вектор направления
+        cub->plr.dirY = 0.029199; 
+        cub->plr.dirX = -0.999574;
+        //плоскость камеры игрока
+        cub->plr.planeY = -0.659719;
+        cub->plr.planeX = -0.019272; //2d рейкастинг версия плоскости камеры
+    }
+    if (cub->plr.dir_symbol == 'E')
+    {
+        //начальный вектор направления
+        cub->plr.dirY = 0.029200; 
+        cub->plr.dirX = 0.999574;
+        //плоскость камеры игрока
+        cub->plr.planeY = 0.659719;
+        cub->plr.planeX = -0.019272; //2d рейкастинг версия плоскости камеры
+    }
+
     //установка последнего пикселя, что бы не былло Segmentation fault
     cub->p.resolution_l = cub->p.resolution_l - 1;
 
@@ -276,12 +405,16 @@ void  start_cub3d(t_cub *cub)
     if (!(cub->texture_e.img = mlx_xpm_file_to_image(cub->mlx, cub->p.east_texture, &width, &height)))
         error("ERROR: No texture found for the East", cub);
 	cub->texture_e.addr = mlx_get_data_addr(cub->texture_e.img, &cub->texture_e.bits_per_pixel, &cub->texture_e.line_length, &cub->texture_e.endian);
+    //схватываем текстуры sprite
+    if (!(cub->texture_sprite.img = mlx_xpm_file_to_image(cub->mlx, cub->p.sprite_texture, &width, &height)))
+        error("ERROR: No texture found for the sprite", cub);
+	cub->texture_sprite.addr = mlx_get_data_addr(cub->texture_sprite.img, &cub->texture_sprite.bits_per_pixel, &cub->texture_sprite.line_length, &cub->texture_sprite.endian);
 
     //печать карты
     print_map(cub);
 
     //музыка
-    // system("afplay .mp3 & ");
+    system("afplay ./sounds/C418-Door.mp3 & ");
 
     //управление
     mlx_hook(cub->mlx_win, 2, 1L<<0, key_hook, cub);

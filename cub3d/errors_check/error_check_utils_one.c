@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../cub3d.h"
 
 /*
 ** check_all_data: проверка на наличие всех спарсеных данных
@@ -45,7 +45,7 @@ void	check_tab_in_r_f(char *line, t_cub *cub)
 }
 
 /*
-** check_C: проверка resolution, floore и ceilling.
+** check_c: проверка resolution, floore и ceilling.
 */
 
 void	check_c(t_cub *cub)
@@ -58,7 +58,7 @@ void	check_c(t_cub *cub)
 }
 
 /*
-** check_F: проверка floore.
+** check_f: проверка floore.
 */
 
 void	check_f(t_cub *cub)
@@ -71,13 +71,17 @@ void	check_f(t_cub *cub)
 }
 
 /*
-** check_R: проверка resolution.
+** check_r: проверка resolution.
 */
 
 void	check_r(t_cub *cub)
 {
+	int width;
+	int height;
+
+	mlx_get_screen_size(&cub->mlx, &width, &height);
 	if (cub->p.resolution_w < 0 || cub->p.resolution_l < 0)
 		error("ERROR: Not a valid resolution", cub);
-	if (cub->p.resolution_w > 5120 || cub->p.resolution_l > 2880)
+	if (cub->p.resolution_w > width || cub->p.resolution_l > height)
 		error("ERROR: The screen resolution is too high", cub);
 }

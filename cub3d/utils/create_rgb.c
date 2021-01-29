@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "../cub3d.h"
 
 /*
 ** create_trgb: преобразование RGB в hex.

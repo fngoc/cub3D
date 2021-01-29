@@ -30,10 +30,19 @@ CLEAN = clean
 
 FCLEAN = fclean
 
-SRC = main.c parser.c start_cub2d.c parser_map.c error.c\
-	error_check_utils_one.c error_check_utils_two.c\
-	get_inf_utils.c start_cub3d.c close_win.c\
-	my_mlx_pixel_put.c get_pixel.c create_rgb.c
+SRC = main.c\
+	start_cub2d.c\
+	start_cub3d.c\
+	parser/parser.c\
+	parser/parser_map.c\
+	errors_check/error.c\
+	errors_check/error_check_utils_one.c\
+	errors_check/error_check_utils_two.c\
+	utils/get_inf_utils.c\
+	utils/close_win.c\
+	utils/my_mlx_pixel_put.c\
+	utils/get_pixel.c\
+	utils/create_rgb.c\
 
 OBJ = $(SRC:.c=.o)
 
@@ -49,15 +58,15 @@ OPTIONOBJ = -o
 
 DEL = rm -rf
 
-GREEN='\033[1;32m'
+GREEN ='\033[1;32m'
 
-WHITE='\033[0;37m'
+WHITE ='\033[0;37m'
 
-YELLOW='\033[1;33m'
+YELLOW ='\033[1;33m'
 
-CYAN='\033[1;36m'
+CYAN ='\033[1;36m'
 
-MAGENTA='\033[1;35m'
+MAGENTA ='\033[1;35m'
 
 all: $(NAME)
 
