@@ -414,7 +414,7 @@ void  start_cub3d(t_cub *cub)
     print_map(cub);
 
     //музыка
-    system("afplay ./sounds/C418-Door.mp3 & ");
+    // system("afplay ./sounds/C418-Door.mp3 & ");
 
     //управление
     mlx_hook(cub->mlx_win, 2, 1L<<0, key_hook, cub);
