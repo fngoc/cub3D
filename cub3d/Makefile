@@ -43,12 +43,17 @@ SRC = main.c\
 	utils/my_mlx_pixel_put.c\
 	utils/get_pixel.c\
 	utils/create_rgb.c\
+	utils/key_hook_utils_one.c\
+	utils/key_hook_utils_two.c\
+	utils/get_sprite.c\
+	utils/set_dir_plr.c\
+	utils/sprite_utils.c
 
 OBJ = $(SRC:.c=.o)
 
 CC = gcc
 
-FLAG = -Wall -Werror -Wextra
+FLAG = -Wall -Werror -Wextra -g -O0
 
 FLAGMLX = -framework OpenGL -framework AppKit
 

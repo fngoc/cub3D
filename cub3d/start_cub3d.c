@@ -1,5 +1,64 @@
 #include "cub3d.h"
 
+
+/*
+** fill_screen: заполнить скриншот.
+*/
+
+static void fill_screen(int fd, t_cub *cub)
+{
+    int i;
+    int j;
+    int color;
+
+    i = cub->p.res_l;
+    while (--i >= 0)
+    {
+        j = -1;
+        while (++j < cub->p.res_w)
+        {
+            color = *(int*)(cub->data.addr + (i * cub->data.line_length
+            + j * (cub->data.bits_per_pixel / 8)));
+            write(fd, &color, 4);
+        }
+    }
+    exit(0);
+}
+
+/*
+** screenshot: сделать скриншот.
+*/
+
+static void screenshot(t_cub *cub)
+{
+    int fd = open("screen.bmp", O_CREAT | O_RDWR, 0666);
+    int all_pix = cub->p.res_w * cub->p.res_l * 4 + 54;
+    int zero = 0;
+    int pos_pix = 54;
+    short plane = 1;
+    int size = cub->p.res_w * cub->p.res_l;
+
+    write(fd, "BM", 2);
+    write(fd, &all_pix, 4);
+    write(fd, &zero, 4);
+    write(fd, &pos_pix, 4);
+    pos_pix = 40;
+    write(fd, &pos_pix, 4);
+    write(fd, &cub->p.res_w, 4);
+    write(fd, &cub->p.res_l, 4);
+    write(fd, &plane, 2);
+    plane = 32;
+    write(fd, &plane, 2);
+    write(fd, &zero, 4);
+    write(fd, &size, 4);
+    all_pix = 1000;
+    write(fd, &all_pix, 4);
+    write(fd, &all_pix, 4);
+    write(fd, &zero, 4);
+    write(fd, &zero, 4);
+    fill_screen(fd, cub);
+}
+
 /*
 ** malloc_arrays: выделение памяти под масив спрайтов.
 */
@@ -8,37 +67,8 @@ static void malloc_arrays(t_cub *cub)
 {
     cub->x = malloc(sizeof(float) * cub->p.coll_sprite);
     cub->y = malloc(sizeof(float) * cub->p.coll_sprite);
-}
-
-/*
-** save_position_sprites: сохранить позицию спрайтов
-** и вернуть их количество.
-*/
-
-static int save_position_sprites(t_cub *cub)
-{
-    int i;
-    int j;
-    int coll;
-
-    i = 0;
-    coll = 0;
-    while (cub->p.map[i] != NULL)
-    {
-        j = 0;
-        while (cub->p.map[i][j] != '\0')
-        {
-            if (cub->p.map[i][j] == 'B')
-            {
-                cub->x[coll] = j + 0.5;
-                cub->y[coll] = i + 0.5;
-                coll++;
-            }
-            ++j;
-        }
-        ++i;
-    }
-    return (coll);
+    cub->dist = malloc(sizeof(float) * cub->p.coll_sprite);
+    // cub->perDis = malloc(sizeof(double) * cub->p.res_w);
 }
 
 /*
@@ -49,8 +79,8 @@ static void print_sprite(t_cub *cub)
 {
     int i;
 
-    i = 0;
-    while (i < cub->p.coll_sprite)
+    i = -1;
+    while (++i < cub->p.coll_sprite)
     {
         //перевести положение спрайта относительно камеры
         double spriteX = cub->x[i] - cub->plr.x;
@@ -64,25 +94,25 @@ static void print_sprite(t_cub *cub)
         //это на самом деле глубина внутри экрана, то, что Z есть в 3D
         double transformY = invDet * (-cub->plr.planeY * spriteX + cub->plr.planeX * spriteY); 
 
-        int spriteScreenX = (int)((cub->p.resolution_w / 2) * (1 + transformX / transformY));
+        int spriteScreenX = (int)((cub->p.res_w / 2) * (1 + transformX / transformY));
 
         //вычислите высоту спрайта на экране
-        int spriteHeight = abs((int)(cub->p.resolution_l / (transformY))); //с помощью transformY' вместо реального расстояния предотвращает рыбий глаз
+        int spriteHeight = abs((int)(cub->p.res_l / (transformY))); //с помощью transformY' вместо реального расстояния предотвращает рыбий глаз
         //вычислите самый низкий и самый высокий пиксель для заполнения текущей полосы
-        int drawStartY = -spriteHeight / 2 + cub->p.resolution_l / 2;
+        int drawStartY = -spriteHeight / 2 + cub->p.res_l / 2;
         if (drawStartY < 0)
             drawStartY = 0;
-        int drawEndY = spriteHeight / 2 + cub->p.resolution_l / 2;
-        if (drawEndY >= cub->p.resolution_l)
-            drawEndY = cub->p.resolution_l - 1;
+        int drawEndY = spriteHeight / 2 + cub->p.res_l / 2;
+        if (drawEndY >= cub->p.res_l)
+            drawEndY = cub->p.res_l - 1;
 
         //вычислить ширину спрайта
-        int spriteWidth = abs((int)(cub->p.resolution_l / (transformY)));
+        int spriteWidth = abs((int)(cub->p.res_l / (transformY)));
         int drawStartX = -spriteWidth / 2 + spriteScreenX;
         if (drawStartX < 0) drawStartX = 0;
             int drawEndX = spriteWidth / 2 + spriteScreenX;
-        if (drawEndX >= cub->p.resolution_w)
-            drawEndX = cub->p.resolution_w - 1;
+        if (drawEndX >= cub->p.res_w)
+            drawEndX = cub->p.res_w - 1;
 
         //петля через каждую вертикальную полосу спрайта на экране
         int stripe;
@@ -92,21 +122,21 @@ static void print_sprite(t_cub *cub)
         while (stripe < drawEndX)
         {
             int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * TEXWIDTH / spriteWidth) / 256;
-            if (transformY > 0 && stripe > 0 && stripe < cub->p.resolution_w)
-            
-            y = drawStartY;
-            while (y < drawEndY) //для каждого пикселя текущей полосы
+            if (transformY > 0 && stripe > 0 && stripe < cub->p.res_w) //&& transformY < cub->perDis[stripe])
             {
-                int d = (y) * 256 - cub->p.resolution_l * 128 + spriteHeight * 128;
-                int texY = ((d * TEXHEIGHT) / spriteHeight) / 256;
-                int color = get_pixel(&cub->texture_sprite, texX, texY);
-                if (color != 0)
+                y = drawStartY;
+                while (y < drawEndY) //для каждого пикселя текущей полосы
+                {
+                    int d = (y) * 256 - cub->p.res_l * 128 + spriteHeight * 128;
+                    int texY = ((d * TEXHEIGHT) / spriteHeight) / 256;
+                    int color = get_pixel(&cub->t_spr, texX, texY);
+                    if (color != 0)
                     my_mlx_pixel_put(&cub->data, stripe, y, color);
-                y++;
+                    y++;
+                }
             }
             ++stripe;
         }
-        ++i;
     }
 }
 
@@ -116,14 +146,14 @@ static void print_sprite(t_cub *cub)
 
 static  void  print_map(t_cub *cub)
 {
-    cub->data.img = mlx_new_image(cub->mlx, cub->p.resolution_w, cub->p.resolution_l);
+    cub->data.img = mlx_new_image(cub->mlx, cub->p.res_w, cub->p.res_l);
     cub->data.addr = mlx_get_data_addr(cub->data.img, &cub->data.bits_per_pixel, &cub->data.line_length, &cub->data.endian);
 
-    int x = 0;
-    while (x++ < cub->p.resolution_w)
+    int x = -1;
+    while (++x < cub->p.res_w)
     {
         //вычислить положение и направление луча
-        double cameraX = 2 * x / (double)cub->p.resolution_w - 1; //x-coordinate in camera space
+        double cameraX = 2 * x / (double)cub->p.res_w - 1; //x-coordinate in camera space
         double rayDirX = cub->plr.dirY + cub->plr.planeY * cameraX;
         double rayDirY = cub->plr.dirX + cub->plr.planeX * cameraX;
 
@@ -193,18 +223,18 @@ static  void  print_map(t_cub *cub)
             perpWallDist = (mapX - cub->plr.y + (1 - stepX) / 2) / rayDirX;
         else
             perpWallDist = (mapY - cub->plr.x + (1 - stepY) / 2) / rayDirY;
-
+        // cub->perDis[x] = perpWallDist;
         //Вычислите высоту линии для рисования на экране
-        int lineHeight = (int)(cub->p.resolution_l / perpWallDist);
+        int lineHeight = (int)(cub->p.res_l / perpWallDist);
 
         //вычислите самый низкий и самый высокий пиксель для заполнения текущей полосы
-        int drawStart = -lineHeight / 2 + cub->p.resolution_l / 2;
+        int drawStart = -lineHeight / 2 + cub->p.res_l / 2;
         if (drawStart < 0)
             drawStart = 0;
 
-        int drawEnd = lineHeight / 2 + cub->p.resolution_l / 2;
-        if (drawEnd >= cub->p.resolution_l)
-            drawEnd = cub->p.resolution_l - 1;
+        int drawEnd = lineHeight / 2 + cub->p.res_l / 2;
+        if (drawEnd >= cub->p.res_l)
+            drawEnd = cub->p.res_l - 1;
 
         //вычислите значение wallxoven
         double wallX; //куда именно ударилась стена
@@ -224,33 +254,34 @@ static  void  print_map(t_cub *cub)
         // Насколько увеличить координату текстуры на пиксель экрана
         double step = 1.0 * TEXHEIGHT / lineHeight;
         // Начальная координата текстуры
-        double texPos = (drawStart - cub->p.resolution_l / 2 + lineHeight / 2) * step;  
+        double texPos = (drawStart - cub->p.res_l / 2 + lineHeight / 2) * step;  
 
-        int y = 0;
-        while (y++ < cub->p.resolution_l)
+        int y = -1;
+        while (++y < cub->p.res_l)
         {
-            if (y < drawStart) //поталок
+            if (y < drawStart)
                 my_mlx_pixel_put(&cub->data, x, y, create_rgb(cub->p.ceilling_r, cub->p.ceilling_g, cub->p.ceilling_b));
-            if (y >= drawStart && y <= drawEnd) //стена
+            if (y >= drawStart && y <= drawEnd)
             {
                 // Приведите координату текстуры к целому числу и замаскируйте ее с помощью (TEXHEIGHT - 1) в случае переполнения
                 int texY = (int)texPos & (TEXHEIGHT - 1);
                 texPos += step;
                 if (side == 0) //N и S
                     if (stepX > 0) //S
-                        my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->texture_s, texX, texY));
+                        my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->t_s, texX, texY));
                     else //N
-                        my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->texture_n, texX, texY));
+                        my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->t_n, texX, texY));
                 else //W и E
                     if (stepY > 0) //E
-                        my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->texture_e, texX, texY));
+                        my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->t_e, texX, texY));
                     else //W
-                        my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->texture_w, texX, texY));
+                        my_mlx_pixel_put(&cub->data, x, y, get_pixel(&cub->t_w, texX, texY));
             }
-            if (y > drawEnd && y < cub->p.resolution_l) //пол
+            if (y > drawEnd && y < cub->p.res_l)
                  my_mlx_pixel_put(&cub->data, x, y, create_rgb(cub->p.floore_r, cub->p.floore_g, cub->p.floore_b));
         }
     }
+    sort_sprite(cub);
     print_sprite(cub);
     mlx_put_image_to_window(cub->mlx, cub->mlx_win, cub->data.img, 0, 0);
 }
@@ -261,71 +292,27 @@ static  void  print_map(t_cub *cub)
 
 static int key_hook(int keycode, t_cub *cub)
 {
+    double moveSpeed = 0.1;
+    double rotSpeed = 0.1;
+
     mlx_destroy_image(cub->mlx, cub->data.img);
-
-    //модификаторы скорости
-    double moveSpeed = 0.1; //постоянное значение выражается в квадратах в секунду
-    double rotSpeed = 0.1; //постоянное значение находится в радианах/секунде
-
-    //движение вперед, если перед вами нет стены
     if(keycode == 13)
-    {
-        if(cub->p.map[(int)(cub->plr.y + cub->plr.dirY * moveSpeed)][(int)(cub->plr.x)] == '*')
-            cub->plr.y += cub->plr.dirY * moveSpeed;
-        if(cub->p.map[(int)(cub->plr.y)][(int)(cub->plr.x + cub->plr.dirX * moveSpeed)] == '*')
-            cub->plr.x += cub->plr.dirX * moveSpeed;
-    }
-    //движение назад, если за вами нет стены
+        move_up(cub, moveSpeed);
     if(keycode == 1)
-    {
-        if(cub->p.map[(int)(cub->plr.y - cub->plr.dirY * moveSpeed)][(int)(cub->plr.x)] == '*')
-            cub->plr.y -= cub->plr.dirY * moveSpeed;
-        if(cub->p.map[(int)(cub->plr.y)][(int)(cub->plr.x - cub->plr.dirX * moveSpeed)] == '*')
-            cub->plr.x -= cub->plr.dirX * moveSpeed;
-    }
-     //движение влево
+        move_back(cub, moveSpeed);
     if(keycode == 0)
-    {
-        if(cub->p.map[(int)(cub->plr.y - cub->plr.dirX * moveSpeed)][(int)(cub->plr.x)] == '*')
-            cub->plr.y -= cub->plr.dirX * moveSpeed;
-        if(cub->p.map[(int)(cub->plr.y)][(int)(cub->plr.x + cub->plr.dirY * moveSpeed)] == '*')
-            cub->plr.x += cub->plr.dirY * moveSpeed;
-    }
-    //движение вправо
+        move_left(cub, moveSpeed);
     if(keycode == 2)
-    {
-        if(cub->p.map[(int)(cub->plr.y + cub->plr.dirX * moveSpeed)][(int)(cub->plr.x)] == '*')
-            cub->plr.y += cub->plr.dirX * moveSpeed;
-        if(cub->p.map[(int)(cub->plr.y)][(int)(cub->plr.x - cub->plr.dirY * moveSpeed)] == '*')
-            cub->plr.x -= cub->plr.dirY * moveSpeed;
-    }
-    //поворот вправо
+        move_right(cub, moveSpeed);
     if(keycode == 124)
-    {
-        //как направление камеры, так и плоскость камеры должны быть повернуты
-        double oldDirX = cub->plr.dirY;
-        cub->plr.dirY = cub->plr.dirY * cos(-rotSpeed) - cub->plr.dirX * sin(-rotSpeed);
-        cub->plr.dirX = oldDirX * sin(-rotSpeed) + cub->plr.dirX * cos(-rotSpeed);
-        double oldPlaneX = cub->plr.planeY;
-        cub->plr.planeY = cub->plr.planeY * cos(-rotSpeed) - cub->plr.planeX * sin(-rotSpeed);
-        cub->plr.planeX = oldPlaneX * sin(-rotSpeed) + cub->plr.planeX * cos(-rotSpeed);
-    }
-    //поварот влево
+        turn_right(cub, rotSpeed);
     if(keycode == 123)
-    {
-        //как направление камеры, так и плоскость камеры должны быть повернуты
-        double oldDirX = cub->plr.dirY;
-        cub->plr.dirY = cub->plr.dirY * cos(rotSpeed) - cub->plr.dirX * sin(rotSpeed);
-        cub->plr.dirX = oldDirX * sin(rotSpeed) + cub->plr.dirX * cos(rotSpeed);
-        double oldPlaneX = cub->plr.planeY;
-        cub->plr.planeY = cub->plr.planeY * cos(rotSpeed) - cub->plr.planeX * sin(rotSpeed);
-        cub->plr.planeX = oldPlaneX * sin(rotSpeed) + cub->plr.planeX * cos(rotSpeed);
-    }
-    //закрытие окна на esc
+        turn_left(cub, rotSpeed);
+    if(keycode == 48)
+        system("afplay ./sounds/minecraft-death-sound.mp3 & ");
     if (keycode == 53)
 		close_win(cub);
     print_map(cub);
-    printf("You put: %d\n", keycode);
     return (0);
 }
 
@@ -333,91 +320,26 @@ static int key_hook(int keycode, t_cub *cub)
 ** start_cub3d: запуск окна, работа в 3D.
 */
 
-void  start_cub3d(t_cub *cub)
+void  start_cub3d(t_cub *cub, int argc)
 {
-    int width;
-	int height;
-
-    //начальный расположение игрока
     cub->plr.y = cub->p.playr_y;
     cub->plr.x = cub->p.playr_x;
-
-    //количество спрайтов
+    cub->p.coll_sprite = save_position_sprites2(cub);
     malloc_arrays(cub);
-    cub->p.coll_sprite = save_position_sprites(cub);
-
-    if (cub->plr.dir_symbol == 'N')
-    {
-        //начальный вектор направления
-        cub->plr.dirY = -1; 
-        cub->plr.dirX = 0;
-        //плоскость камеры игрока
-        cub->plr.planeY = 0;
-        cub->plr.planeX = 0.66; //2d рейкастинг версия плоскости камеры
-    }
-    if (cub->plr.dir_symbol == 'S')
-    {
-        //начальный вектор направления
-        cub->plr.dirY = 0.998295; 
-        cub->plr.dirX = 0.058374;
-        //плоскость камеры игрока
-        cub->plr.planeY = 0.038527;
-        cub->plr.planeX = -0.658875; //2d рейкастинг версия плоскости камеры
-    }
-    if (cub->plr.dir_symbol == 'W')
-    {
-        //начальный вектор направления
-        cub->plr.dirY = 0.029199; 
-        cub->plr.dirX = -0.999574;
-        //плоскость камеры игрока
-        cub->plr.planeY = -0.659719;
-        cub->plr.planeX = -0.019272; //2d рейкастинг версия плоскости камеры
-    }
-    if (cub->plr.dir_symbol == 'E')
-    {
-        //начальный вектор направления
-        cub->plr.dirY = 0.029200; 
-        cub->plr.dirX = 0.999574;
-        //плоскость камеры игрока
-        cub->plr.planeY = 0.659719;
-        cub->plr.planeX = -0.019272; //2d рейкастинг версия плоскости камеры
-    }
-
-    //установка последнего пикселя, что бы не былло Segmentation fault
-    cub->p.resolution_l = cub->p.resolution_l - 1;
-
+    save_position_sprites(cub);
+    set_dir_plr(cub);
+    // cub->p.res_l = cub->p.res_l - 1;
     cub->mlx = mlx_init();
-    cub->mlx_win = mlx_new_window(cub->mlx, cub->p.resolution_w, cub->p.resolution_l, "cub3d");
-
-    //схватываем текстуры N
-    if (!(cub->texture_n.img = mlx_xpm_file_to_image(cub->mlx, cub->p.north_texture, &width, &height)))
-        error("ERROR: No texture found for North", cub);
-	cub->texture_n.addr = mlx_get_data_addr(cub->texture_n.img, &cub->texture_n.bits_per_pixel, &cub->texture_n.line_length, &cub->texture_n.endian);
-    //схватываем текстуры S
-    if (!(cub->texture_s.img = mlx_xpm_file_to_image(cub->mlx, cub->p.south_texture, &width, &height)))
-        error("ERROR: No texture found for the South", cub);
-	cub->texture_s.addr = mlx_get_data_addr(cub->texture_s.img, &cub->texture_s.bits_per_pixel, &cub->texture_s.line_length, &cub->texture_s.endian);
-    //схватываем текстуры W
-    if (!(cub->texture_w.img = mlx_xpm_file_to_image(cub->mlx, cub->p.west_texture, &width, &height)))
-        error("ERROR: No texture found for the West", cub);
-	cub->texture_w.addr = mlx_get_data_addr(cub->texture_w.img, &cub->texture_w.bits_per_pixel, &cub->texture_w.line_length, &cub->texture_w.endian);
-    //схватываем текстуры E
-    if (!(cub->texture_e.img = mlx_xpm_file_to_image(cub->mlx, cub->p.east_texture, &width, &height)))
-        error("ERROR: No texture found for the East", cub);
-	cub->texture_e.addr = mlx_get_data_addr(cub->texture_e.img, &cub->texture_e.bits_per_pixel, &cub->texture_e.line_length, &cub->texture_e.endian);
-    //схватываем текстуры sprite
-    if (!(cub->texture_sprite.img = mlx_xpm_file_to_image(cub->mlx, cub->p.sprite_texture, &width, &height)))
-        error("ERROR: No texture found for the sprite", cub);
-	cub->texture_sprite.addr = mlx_get_data_addr(cub->texture_sprite.img, &cub->texture_sprite.bits_per_pixel, &cub->texture_sprite.line_length, &cub->texture_sprite.endian);
-
-    //печать карты
+    cub->mlx_win = mlx_new_window(cub->mlx, cub->p.res_w, cub->p.res_l, "cub3d");
+    get_sprite(cub);
     print_map(cub);
-
-    //музыка
-    // system("afplay ./sounds/C418-Door.mp3 & ");
-
-    //управление
-    mlx_hook(cub->mlx_win, 2, 1L<<0, key_hook, cub);
-    mlx_hook(cub->mlx_win, 17, 1L<<0, close_win, cub);
-    mlx_loop(cub->mlx);
+    if (argc == 3)
+		screenshot(cub);
+    else
+    {
+        system("afplay ./sounds/C418-Door.mp3 & ");
+        mlx_hook(cub->mlx_win, 2, 1L<<0, key_hook, cub);
+        mlx_hook(cub->mlx_win, 17, 1L<<0, close_win, cub);
+        mlx_loop(cub->mlx);
+    }
 }

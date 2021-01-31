@@ -22,7 +22,7 @@ static	void	parser_inf_norm(char *line, int id, int index, t_cub *cub)
 
 	tmp = &line[index];
 	if (id == 6)
-		cub->p.sprite_texture = ft_substr(line, index, ft_strlen(tmp));
+		cub->p.spr_tex = ft_substr(line, index, ft_strlen(tmp));
 	else if (id == 7)
 	{
 		check_tab_in_r_f(tmp, cub);
@@ -50,19 +50,19 @@ static	void	parser_inf(char *line, int id, int index, t_cub *cub)
 	tmp = &line[index];
 	if (id == 1)
 	{
-		cub->p.resolution_w = ft_atoi(tmp);
-		tmp += ft_digit_num(cub->p.resolution_w);
-		cub->p.resolution_l = ft_atoi(tmp);
+		cub->p.res_w = ft_atoi(tmp);
+		tmp += ft_digit_num(cub->p.res_w);
+		cub->p.res_l = ft_atoi(tmp);
 		check_r(cub);
 	}
 	else if (id == 2)
-		cub->p.north_texture = ft_substr(line, index, ft_strlen(tmp));
+		cub->p.nor_tex = ft_substr(line, index, ft_strlen(tmp));
 	else if (id == 3)
-		cub->p.south_texture = ft_substr(line, index, ft_strlen(tmp));
+		cub->p.sou_tex = ft_substr(line, index, ft_strlen(tmp));
 	else if (id == 4)
-		cub->p.west_texture = ft_substr(line, index, ft_strlen(tmp));
+		cub->p.wes_tex = ft_substr(line, index, ft_strlen(tmp));
 	else if (id == 5)
-		cub->p.east_texture = ft_substr(line, index, ft_strlen(tmp));
+		cub->p.eas_tex = ft_substr(line, index, ft_strlen(tmp));
 	else
 		parser_inf_norm(line, id, index, cub);
 }

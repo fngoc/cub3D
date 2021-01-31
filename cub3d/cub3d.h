@@ -31,15 +31,15 @@
 
 typedef	struct	s_parser
 {
-	int				resolution_w;
-	int				resolution_l;
+	int				res_w;
+	int				res_l;
 
-	char			*north_texture;
-	char			*south_texture;
-	char			*west_texture;
-	char			*east_texture;
+	char			*nor_tex;
+	char			*sou_tex;
+	char			*wes_tex;
+	char			*eas_tex;
 
-	char			*sprite_texture; 
+	char			*spr_tex; 
 
 	int				floore_r;
 	int				floore_g;
@@ -112,16 +112,18 @@ typedef struct		s_cub
 	void			*mlx;
 	void			*mlx_win;
 	t_parser		p;
-	t_data			texture_n;
-	t_data			texture_s;
-	t_data			texture_w;
-	t_data			texture_e;
-	t_data			texture_sprite;
+	t_data			t_n;
+	t_data			t_s;
+	t_data			t_w;
+	t_data			t_e;
+	t_data			t_spr;
 	t_data			data;
 	t_point_print	point;
 	t_plr			plr;
 	float			*x;
 	float			*y;
+	float			*dist;
+	// double			*perDis;
 }					t_cub;
 
 void				check_errors_arg(int ac, char **av, t_cub *cub);
@@ -152,13 +154,39 @@ void				get_ceilling(char *tmp, t_cub *cub);
 
 void				start_cub2d(t_cub *cub);
 
-void				start_cub3d(t_cub *cub);
+void				start_cub3d(t_cub *cub, int argc);
 
 void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 void				error(char *str, t_cub *cub);
 
+void				move_up(t_cub *cub, double s);
+
+void				move_back(t_cub *cub, double s);
+
+void				move_left(t_cub *cub, double s);
+
+void				move_right(t_cub *cub, double s);
+
+void				turn_right(t_cub *cub, double r);
+
+void				turn_left(t_cub *cub, double r);
+
+void				get_sprite(t_cub *cub);
+
+void				set_dir_plr(t_cub *cub);
+
+void				swap_sprite(t_cub *cub, int *j);
+
+// void				bubble_sort(t_cub *cub);
+
+void				sort_sprite(t_cub *cub);
+
+void				save_position_sprites(t_cub *cub);
+
 int					close_win(t_cub *cub);
+
+int					save_position_sprites2(t_cub *cub);
 
 int					create_rgb(int r, int g, int b);
 

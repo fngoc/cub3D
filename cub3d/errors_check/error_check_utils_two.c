@@ -18,12 +18,17 @@
 
 void			check_errors_arg(int ac, char **av, t_cub *cub)
 {
-	if (ac != 2)
-		error("ERROR: No more than 2 arguments were submitted", cub);
+	if (ac != 2 && ac != 3)
+		error("ERROR: No more than 2 or 3 arguments were submitted", cub);
 	else if (ft_strncmp(av[1], "map.cub", ft_strlen(av[1])))
 	{
 		ft_putstr_fd("ERROR: The map is not called 'map.cub' ", 1);
 		error("or it is called from another folder'", cub);
+	}
+	else if (ac == 3)
+	{
+		if (ft_strncmp(av[2], "--save", ft_strlen(av[2])))
+			error("ERROR: 3 the argument is not '--save'", cub);
 	}
 }
 

@@ -45,13 +45,14 @@ static	void	print_player_pix(t_cub *cub)
 
 static	void	print_rays(t_cub *cub)
 {
-	t_plr	ray = cub->plr;  //задаем координаты и направление луча равные координатам игрока
-	ray.start = ray.dir - (PI / 4);  //начало веера лучей \|/
-  	ray.end = ray.dir + (PI / 4);  //край веера лучей
+	t_plr	ray;
 
+	ray = cub->plr;
+	ray.start = ray.dir - (PI / 4);
+  	ray.end = ray.dir + (PI / 4);
  	while (ray.start <= ray.end)
 	{
-		ray.x = cub->plr.x;  //каждый раз возвращаемся в точку начала
+		ray.x = cub->plr.x;
 		ray.y = cub->plr.y;
 		while (cub->p.map[(int)(ray.y / SCALE)][(int)(ray.x / SCALE)] != '1')
 		{
@@ -69,8 +70,9 @@ static	void	print_rays(t_cub *cub)
 
 static	void	print_ray(t_cub *cub)
 {
-	t_plr	ray = cub->plr;
+	t_plr	ray;
 
+	ray = cub->plr;
 	while (cub->p.map[(int)(ray.y / SCALE)][(int)(ray.x / SCALE)] != '1')
 	{
 		ray.x += cos(ray.dir);
@@ -109,7 +111,7 @@ static	void	print_map(t_cub *cub)
 	i = -1;
 	cub->point.x = 0;
 	cub->point.y = 0;
-	cub->data.img = mlx_new_image(cub->mlx, cub->p.resolution_w, cub->p.resolution_l);
+	cub->data.img = mlx_new_image(cub->mlx, cub->p.res_w, cub->p.res_l);
     cub->data.addr = mlx_get_data_addr(cub->data.img, &cub->data.bits_per_pixel, &cub->data.line_length, &cub->data.endian);
 	while (++i != cub->p.size_map)
 	{
@@ -159,7 +161,6 @@ static	int		key_hook(int keycode, t_cub *cub)
 	print_player_pix(cub);
 	print_ray(cub);
 	print_rays(cub);
-    printf("You put: %d\n", keycode);
 	return (0);
 }
 
@@ -172,7 +173,7 @@ void			start_cub2d(t_cub *cub)
 	cub->plr.y = cub->p.playr_y * SCALE;
 	cub->plr.x = cub->p.playr_x * SCALE;
 	cub->mlx = mlx_init();
-    cub->mlx_win = mlx_new_window(cub->mlx, cub->p.resolution_w, cub->p.resolution_l, "cub2d");
+    cub->mlx_win = mlx_new_window(cub->mlx, cub->p.res_w, cub->p.res_l, "cub2d");
 	print_map(cub);
 	print_player_cub(cub);
 	print_player_pix(cub);

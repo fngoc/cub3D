@@ -116,7 +116,6 @@ static	void	make_map(t_list **head, int size, t_cub *cub)
 	all_tab_in_line(cub->p.map[size - 1], cub);
 	check_symbols_map(size, cub);
 	check_zero(size, cub);
-	cub->p.coll_sprite = 0;
 	check_closed_map(cub->p.playr_x, cub->p.playr_y, cub, size);
 	cub->p.size_map = size;
 	// free(*head);

@@ -19,10 +19,10 @@
 
 void	check_all_data(t_cub *cub)
 {
-	if (cub->p.resolution_l == 0 || cub->p.resolution_w == 0
-	|| ft_strlen(cub->p.north_texture) == 0
-	|| ft_strlen(cub->p.south_texture) == 0 || ft_strlen(cub->p.west_texture) == 0
-	|| ft_strlen(cub->p.east_texture) == 0 || ft_strlen(cub->p.sprite_texture) == 0
+	if (cub->p.res_l == 0 || cub->p.res_w == 0
+	|| ft_strlen(cub->p.nor_tex) == 0
+	|| ft_strlen(cub->p.sou_tex) == 0 || ft_strlen(cub->p.wes_tex) == 0
+	|| ft_strlen(cub->p.eas_tex) == 0 || ft_strlen(cub->p.spr_tex) == 0
 	|| cub->p.floore_flag != 1 || cub->p.ceilling_flag != 1)
 		error("ERROR: Was set not all edificatory or are there repetitions", cub);
 }
@@ -80,8 +80,8 @@ void	check_r(t_cub *cub)
 	int height;
 
 	mlx_get_screen_size(&cub->mlx, &width, &height);
-	if (cub->p.resolution_w < 0 || cub->p.resolution_l < 0)
+	if (cub->p.res_w < 0 || cub->p.res_l < 0)
 		error("ERROR: Not a valid resolution", cub);
-	if (cub->p.resolution_w > width || cub->p.resolution_l > height)
+	if (cub->p.res_w > width || cub->p.res_l > height)
 		error("ERROR: The screen resolution is too high", cub);
 }

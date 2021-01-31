@@ -16,7 +16,7 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# define BUFFER_SIZE 32
+# define BUFFER_SIZE 1
 
 typedef struct		s_list
 {
