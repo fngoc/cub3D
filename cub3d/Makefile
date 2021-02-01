@@ -47,7 +47,8 @@ SRC = main.c\
 	utils/key_hook_utils_two.c\
 	utils/get_sprite.c\
 	utils/set_dir_plr.c\
-	utils/sprite_utils.c
+	utils/sprite_utils.c\
+	utils/screenshot.c
 
 OBJ = $(SRC:.c=.o)
 

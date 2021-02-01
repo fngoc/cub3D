@@ -1,64 +1,5 @@
 #include "cub3d.h"
 
-
-/*
-** fill_screen: заполнить скриншот.
-*/
-
-static void fill_screen(int fd, t_cub *cub)
-{
-    int i;
-    int j;
-    int color;
-
-    i = cub->p.res_l;
-    while (--i >= 0)
-    {
-        j = -1;
-        while (++j < cub->p.res_w)
-        {
-            color = *(int*)(cub->data.addr + (i * cub->data.line_length
-            + j * (cub->data.bits_per_pixel / 8)));
-            write(fd, &color, 4);
-        }
-    }
-    exit(0);
-}
-
-/*
-** screenshot: сделать скриншот.
-*/
-
-static void screenshot(t_cub *cub)
-{
-    int fd = open("screen.bmp", O_CREAT | O_RDWR, 0666);
-    int all_pix = cub->p.res_w * cub->p.res_l * 4 + 54;
-    int zero = 0;
-    int pos_pix = 54;
-    short plane = 1;
-    int size = cub->p.res_w * cub->p.res_l;
-
-    write(fd, "BM", 2);
-    write(fd, &all_pix, 4);
-    write(fd, &zero, 4);
-    write(fd, &pos_pix, 4);
-    pos_pix = 40;
-    write(fd, &pos_pix, 4);
-    write(fd, &cub->p.res_w, 4);
-    write(fd, &cub->p.res_l, 4);
-    write(fd, &plane, 2);
-    plane = 32;
-    write(fd, &plane, 2);
-    write(fd, &zero, 4);
-    write(fd, &size, 4);
-    all_pix = 1000;
-    write(fd, &all_pix, 4);
-    write(fd, &all_pix, 4);
-    write(fd, &zero, 4);
-    write(fd, &zero, 4);
-    fill_screen(fd, cub);
-}
-
 /*
 ** malloc_arrays: выделение памяти под масив спрайтов.
 */
@@ -68,7 +9,7 @@ static void malloc_arrays(t_cub *cub)
     cub->x = malloc(sizeof(float) * cub->p.coll_sprite);
     cub->y = malloc(sizeof(float) * cub->p.coll_sprite);
     cub->dist = malloc(sizeof(float) * cub->p.coll_sprite);
-    // cub->perDis = malloc(sizeof(double) * cub->p.res_w);
+    cub->close_sprite = malloc(sizeof(double) * cub->p.res_w);
 }
 
 /*
@@ -122,7 +63,7 @@ static void print_sprite(t_cub *cub)
         while (stripe < drawEndX)
         {
             int texX = (int)(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * TEXWIDTH / spriteWidth) / 256;
-            if (transformY > 0 && stripe > 0 && stripe < cub->p.res_w) //&& transformY < cub->perDis[stripe])
+            if (transformY > 0 && stripe > 0 && stripe < cub->p.res_w && transformY < cub->close_sprite[stripe])
             {
                 y = drawStartY;
                 while (y < drawEndY) //для каждого пикселя текущей полосы
@@ -223,7 +164,7 @@ static  void  print_map(t_cub *cub)
             perpWallDist = (mapX - cub->plr.y + (1 - stepX) / 2) / rayDirX;
         else
             perpWallDist = (mapY - cub->plr.x + (1 - stepY) / 2) / rayDirY;
-        // cub->perDis[x] = perpWallDist;
+        cub->close_sprite[x] = perpWallDist;
         //Вычислите высоту линии для рисования на экране
         int lineHeight = (int)(cub->p.res_l / perpWallDist);
 
@@ -263,7 +204,6 @@ static  void  print_map(t_cub *cub)
                 my_mlx_pixel_put(&cub->data, x, y, create_rgb(cub->p.ceilling_r, cub->p.ceilling_g, cub->p.ceilling_b));
             if (y >= drawStart && y <= drawEnd)
             {
-                // Приведите координату текстуры к целому числу и замаскируйте ее с помощью (TEXHEIGHT - 1) в случае переполнения
                 int texY = (int)texPos & (TEXHEIGHT - 1);
                 texPos += step;
                 if (side == 0) //N и S
@@ -324,7 +264,7 @@ void  start_cub3d(t_cub *cub, int argc)
 {
     cub->plr.y = cub->p.playr_y;
     cub->plr.x = cub->p.playr_x;
-    cub->p.coll_sprite = save_position_sprites2(cub);
+    cub->p.coll_sprite = counting_sprites(cub);
     malloc_arrays(cub);
     save_position_sprites(cub);
     set_dir_plr(cub);

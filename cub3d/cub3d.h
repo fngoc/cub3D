@@ -123,7 +123,7 @@ typedef struct		s_cub
 	float			*x;
 	float			*y;
 	float			*dist;
-	// double			*perDis;
+	double			*close_sprite;
 }					t_cub;
 
 void				check_errors_arg(int ac, char **av, t_cub *cub);
@@ -184,9 +184,11 @@ void				sort_sprite(t_cub *cub);
 
 void				save_position_sprites(t_cub *cub);
 
+void				screenshot(t_cub *cub);
+
 int					close_win(t_cub *cub);
 
-int					save_position_sprites2(t_cub *cub);
+int					counting_sprites(t_cub *cub);
 
 int					create_rgb(int r, int g, int b);
 
