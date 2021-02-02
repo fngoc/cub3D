@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:20:16 by fngoc             #+#    #+#             */
-/*   Updated: 2021/01/18 14:27:57 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/02 13:07:52 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ static	void	make_map(t_list **head, int size, t_cub *cub)
 	check_zero(size, cub);
 	check_closed_map(cub->p.playr_x, cub->p.playr_y, cub, size);
 	cub->p.size_map = size;
-	// free(*head);
 }
 
 /*

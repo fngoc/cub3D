@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 12:36:05 by fngoc             #+#    #+#             */
-/*   Updated: 2021/01/18 16:08:40 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/02 00:25:12 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 ** t_parser: структура парсера.
 */
 
-typedef	struct	s_parser
+typedef	struct		s_parser
 {
 	int				res_w;
 	int				res_l;
@@ -177,8 +177,6 @@ void				get_sprite(t_cub *cub);
 void				set_dir_plr(t_cub *cub);
 
 void				swap_sprite(t_cub *cub, int *j);
-
-// void				bubble_sort(t_cub *cub);
 
 void				sort_sprite(t_cub *cub);
 

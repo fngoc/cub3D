@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:20:29 by fngoc             #+#    #+#             */
-/*   Updated: 2021/01/18 14:29:45 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/02 00:26:34 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	main(int argc, char **argv)
 
 	check_errors_arg(argc, argv, &cub);
 	parser(argv, &cub);
-	// start_cub2d(&cub);
 	start_cub3d(&cub, argc);
 	free(&cub);
 	return (0);
