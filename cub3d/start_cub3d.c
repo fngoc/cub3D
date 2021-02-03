@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 23:54:23 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/01 23:54:24 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/03 21:21:49 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@
 
 static void malloc_arrays(t_cub *cub)
 {
-    cub->x = malloc(sizeof(float) * cub->p.coll_sprite);
-    cub->y = malloc(sizeof(float) * cub->p.coll_sprite);
-    cub->dist = malloc(sizeof(float) * cub->p.coll_sprite);
-    cub->close_sprite = malloc(sizeof(double) * cub->p.res_w);
+    if (!(cub->x = malloc(sizeof(float) * cub->p.coll_sprite)))
+        error("ERROR: No memory allocated", cub);
+    if (!(cub->y = malloc(sizeof(float) * cub->p.coll_sprite)))
+        error("ERROR: No memory allocated", cub);
+    if (!(cub->dist = malloc(sizeof(float) * cub->p.coll_sprite)))
+        error("ERROR: No memory allocated", cub);
+    if (!(cub->close_sprite = malloc(sizeof(double) * cub->p.res_w)))
+        error("ERROR: No memory allocated", cub);
 }
 
 /*
@@ -244,28 +248,25 @@ static  void  print_map(t_cub *cub)
 
 static int key_hook(int keycode, t_cub *cub)
 {
-    double moveSpeed = 0.1;
-    double rotSpeed = 0.1;
-
-    mlx_destroy_image(cub->mlx, cub->data.img);
-    if(keycode == 13)
-        move_up(cub, moveSpeed);
-    if(keycode == 1)
-        move_back(cub, moveSpeed);
-    if(keycode == 0)
-        move_left(cub, moveSpeed);
-    if(keycode == 2)
-        move_right(cub, moveSpeed);
-    if(keycode == 124)
-        turn_right(cub, rotSpeed);
-    if(keycode == 123)
-        turn_left(cub, rotSpeed);
-    if(keycode == 48)
-        system("afplay ./sounds/minecraft-death-sound.mp3 & ");
-    if (keycode == 53)
+	mlx_destroy_image(cub->mlx, cub->data.img);
+	if(keycode == 13)
+		move_up(cub, 0.1);
+	if(keycode == 1)
+		move_back(cub, 0.1);
+	if(keycode == 0)
+		move_left(cub, 0.1);
+	if(keycode == 2)
+		move_right(cub, 0.1);
+	if(keycode == 124)
+		turn_right(cub, 0.1);
+	if(keycode == 123)
+		turn_left(cub, 0.1);
+	if(keycode == 48)
+		system("afplay ./sounds/minecraft-death-sound.mp3 & ");
+	if (keycode == 53)
 		close_win(cub);
-    print_map(cub);
-    return (0);
+	print_map(cub);
+	return (0);
 }
 
 /*
@@ -274,13 +275,12 @@ static int key_hook(int keycode, t_cub *cub)
 
 void  start_cub3d(t_cub *cub, int argc)
 {
-    cub->plr.y = cub->p.playr_y;
-    cub->plr.x = cub->p.playr_x;
+    cub->plr.y = (double)cub->p.playr_y + 0.5;
+    cub->plr.x = (double)cub->p.playr_x + 0.5;
     cub->p.coll_sprite = counting_sprites(cub);
     malloc_arrays(cub);
     save_position_sprites(cub);
     set_dir_plr(cub);
-    // cub->p.res_l = cub->p.res_l - 1;
     cub->mlx = mlx_init();
     cub->mlx_win = mlx_new_window(cub->mlx, cub->p.res_w, cub->p.res_l, "cub3d");
     get_sprite(cub);

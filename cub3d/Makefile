@@ -6,7 +6,7 @@
 #    By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/18 11:30:29 by fngoc             #+#    #+#              #
-#    Updated: 2021/02/02 00:04:41 by fngoc            ###   ########.fr        #
+#    Updated: 2021/02/03 21:36:29 by fngoc            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,8 @@ SRC = main.c\
 	utils/get_sprite.c\
 	utils/set_dir_plr.c\
 	utils/sprite_utils.c\
-	utils/screenshot.c
+	utils/screenshot.c\
+	utils/free_lst_map.c
 
 OBJ = $(SRC:.c=.o)
 

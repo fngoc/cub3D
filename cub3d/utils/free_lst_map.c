@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_pixel.c                                        :+:      :+:    :+:   */
+/*   free_lst_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/30 16:45:18 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/03 16:18:14 by fngoc            ###   ########.fr       */
+/*   Created: 2021/02/03 14:22:15 by fngoc             #+#    #+#             */
+/*   Updated: 2021/02/03 18:03:07 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-/*
-** get_pixel: берет пиксель из текстуры.
-*/
-
-unsigned	int	get_pixel(t_data *data, int x, int y)
+void	free_lst_map(t_list **lst)
 {
-	unsigned int	color;
-	char			*dst;
+	t_list *p;
 
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	color = *(unsigned int*)dst;
-	return (color);
+	while (*lst)
+	{
+		p = (*lst)->next;
+		free(*lst);
+		*lst = p;
+	}
+	*lst = NULL;
 }

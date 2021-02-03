@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 12:36:05 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/02 00:25:12 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/03 16:42:36 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,13 +176,13 @@ void				get_sprite(t_cub *cub);
 
 void				set_dir_plr(t_cub *cub);
 
-void				swap_sprite(t_cub *cub, int *j);
-
 void				sort_sprite(t_cub *cub);
 
 void				save_position_sprites(t_cub *cub);
 
 void				screenshot(t_cub *cub);
+
+void				free_lst_map(t_list **lst);
 
 int					close_win(t_cub *cub);
 
