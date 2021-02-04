@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 23:54:23 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/03 21:21:49 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/04 11:25:27 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,23 +275,23 @@ static int key_hook(int keycode, t_cub *cub)
 
 void  start_cub3d(t_cub *cub, int argc)
 {
-    cub->plr.y = (double)cub->p.playr_y + 0.5;
-    cub->plr.x = (double)cub->p.playr_x + 0.5;
-    cub->p.coll_sprite = counting_sprites(cub);
-    malloc_arrays(cub);
-    save_position_sprites(cub);
-    set_dir_plr(cub);
-    cub->mlx = mlx_init();
-    cub->mlx_win = mlx_new_window(cub->mlx, cub->p.res_w, cub->p.res_l, "cub3d");
-    get_sprite(cub);
-    print_map(cub);
-    if (argc == 3)
+	cub->plr.y = (double)cub->p.playr_y + 0.5;
+	cub->plr.x = (double)cub->p.playr_x + 0.5;
+	cub->p.coll_sprite = counting_sprites(cub);
+	malloc_arrays(cub);
+	save_position_sprites(cub);
+	set_dir_plr(cub);
+	cub->mlx = mlx_init();
+	cub->mlx_win = mlx_new_window(cub->mlx, cub->p.res_w, cub->p.res_l, "cub3d");
+	get_sprite(cub);
+	print_map(cub);
+	if (argc == 3)
 		screenshot(cub);
-    else
-    {
-        system("afplay ./sounds/C418-Door.mp3 & ");
-        mlx_hook(cub->mlx_win, 2, 1L<<0, key_hook, cub);
-        mlx_hook(cub->mlx_win, 17, 1L<<0, close_win, cub);
-        mlx_loop(cub->mlx);
-    }
+	else
+	{
+		system("afplay ./sounds/C418-Door.mp3 & ");
+		mlx_hook(cub->mlx_win, 2, 1L<<0, key_hook, cub);
+		mlx_hook(cub->mlx_win, 17, 1L<<0, close_win, cub);
+		mlx_loop(cub->mlx);
+	}
 }

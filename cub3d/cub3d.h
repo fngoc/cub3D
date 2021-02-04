@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 12:36:05 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/03 16:42:36 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/04 11:43:42 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,16 @@ void				save_position_sprites(t_cub *cub);
 void				screenshot(t_cub *cub);
 
 void				free_lst_map(t_list **lst);
+
+void				print_step(t_cub *cub, int color);
+
+void				print_ray(t_cub *cub);
+
+void				print_rays(t_cub *cub);
+
+void				print_player_pix(t_cub *cub);
+
+void				print_player_cub(t_cub *cub);
 
 int					close_win(t_cub *cub);
 
