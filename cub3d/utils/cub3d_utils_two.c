@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 17:10:42 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/04 22:34:44 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/04 23:06:31 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ void	set_sprite(t_cub *cub, t_norm_print_sprite *s, int *i)
 {
 	s->sprite_x = cub->x[*i] - cub->plr.x;
 	s->sprite_y = cub->y[*i] - cub->plr.y;
-	s->inv_det = 1.0 / (cub->plr.planeX * cub->plr.dirY
-					- cub->plr.dirX * cub->plr.planeY);
-	s->transform_x = s->inv_det * (cub->plr.dirY * s->sprite_x
-								- cub->plr.dirX * s->sprite_y);
-	s->transform_y = s->inv_det * (-cub->plr.planeY * s->sprite_x
-								+ cub->plr.planeX * s->sprite_y);
+	s->inv_det = 1.0 / (cub->plr.plane_x * cub->plr.dir_y
+					- cub->plr.dir_x * cub->plr.plane_y);
+	s->transform_x = s->inv_det * (cub->plr.dir_y * s->sprite_x
+								- cub->plr.dir_x * s->sprite_y);
+	s->transform_y = s->inv_det * (-cub->plr.plane_y * s->sprite_x
+								+ cub->plr.plane_x * s->sprite_y);
 	s->sprite_screen_x = (int)((cub->p.res_w / 2)
 		* (1 + s->transform_x / s->transform_y));
 	s->sprite_height = abs((int)(cub->p.res_l / (s->transform_y)));

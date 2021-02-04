@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 17:00:10 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/02 13:07:21 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/04 23:06:49 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
 
 void	move_up(t_cub *cub, double s)
 {
-	if (cub->p.map[(int)(cub->plr.y + cub->plr.dirY * s)]
+	if (cub->p.map[(int)(cub->plr.y + cub->plr.dir_y * s)]
 								[(int)(cub->plr.x)] == '*')
-		cub->plr.y += cub->plr.dirY * s;
+		cub->plr.y += cub->plr.dir_y * s;
 	if (cub->p.map[(int)(cub->plr.y)]
-			[(int)(cub->plr.x + cub->plr.dirX * s)] == '*')
-		cub->plr.x += cub->plr.dirX * s;
+			[(int)(cub->plr.x + cub->plr.dir_x * s)] == '*')
+		cub->plr.x += cub->plr.dir_x * s;
 }
 
 /*
@@ -32,12 +32,12 @@ void	move_up(t_cub *cub, double s)
 
 void	move_back(t_cub *cub, double s)
 {
-	if (cub->p.map[(int)(cub->plr.y - cub->plr.dirY * s)]
+	if (cub->p.map[(int)(cub->plr.y - cub->plr.dir_y * s)]
 								[(int)(cub->plr.x)] == '*')
-		cub->plr.y -= cub->plr.dirY * s;
+		cub->plr.y -= cub->plr.dir_y * s;
 	if (cub->p.map[(int)(cub->plr.y)]
-			[(int)(cub->plr.x - cub->plr.dirX * s)] == '*')
-		cub->plr.x -= cub->plr.dirX * s;
+			[(int)(cub->plr.x - cub->plr.dir_x * s)] == '*')
+		cub->plr.x -= cub->plr.dir_x * s;
 }
 
 /*
@@ -46,12 +46,12 @@ void	move_back(t_cub *cub, double s)
 
 void	move_left(t_cub *cub, double s)
 {
-	if (cub->p.map[(int)(cub->plr.y - cub->plr.dirX * s)]
+	if (cub->p.map[(int)(cub->plr.y - cub->plr.dir_x * s)]
 								[(int)(cub->plr.x)] == '*')
-		cub->plr.y -= cub->plr.dirX * s;
+		cub->plr.y -= cub->plr.dir_x * s;
 	if (cub->p.map[(int)(cub->plr.y)]
-			[(int)(cub->plr.x + cub->plr.dirY * s)] == '*')
-		cub->plr.x += cub->plr.dirY * s;
+			[(int)(cub->plr.x + cub->plr.dir_y * s)] == '*')
+		cub->plr.x += cub->plr.dir_y * s;
 }
 
 /*
@@ -60,12 +60,12 @@ void	move_left(t_cub *cub, double s)
 
 void	move_right(t_cub *cub, double s)
 {
-	if (cub->p.map[(int)(cub->plr.y + cub->plr.dirX * s)]
+	if (cub->p.map[(int)(cub->plr.y + cub->plr.dir_x * s)]
 								[(int)(cub->plr.x)] == '*')
-		cub->plr.y += cub->plr.dirX * s;
+		cub->plr.y += cub->plr.dir_x * s;
 	if (cub->p.map[(int)(cub->plr.y)]
-			[(int)(cub->plr.x - cub->plr.dirY * s)] == '*')
-		cub->plr.x -= cub->plr.dirY * s;
+			[(int)(cub->plr.x - cub->plr.dir_y * s)] == '*')
+		cub->plr.x -= cub->plr.dir_y * s;
 }
 
 /*
@@ -77,10 +77,10 @@ void	turn_right(t_cub *cub, double r)
 	double	old_dir_x;
 	double	old_plane_x;
 
-	old_dir_x = cub->plr.dirY;
-	old_plane_x = cub->plr.planeY;
-	cub->plr.dirY = cub->plr.dirY * cos(-r) - cub->plr.dirX * sin(-r);
-	cub->plr.dirX = old_dir_x * sin(-r) + cub->plr.dirX * cos(-r);
-	cub->plr.planeY = cub->plr.planeY * cos(-r) - cub->plr.planeX * sin(-r);
-	cub->plr.planeX = old_plane_x * sin(-r) + cub->plr.planeX * cos(-r);
+	old_dir_x = cub->plr.dir_y;
+	old_plane_x = cub->plr.plane_y;
+	cub->plr.dir_y = cub->plr.dir_y * cos(-r) - cub->plr.dir_x * sin(-r);
+	cub->plr.dir_x = old_dir_x * sin(-r) + cub->plr.dir_x * cos(-r);
+	cub->plr.plane_y = cub->plr.plane_y * cos(-r) - cub->plr.plane_x * sin(-r);
+	cub->plr.plane_x = old_plane_x * sin(-r) + cub->plr.plane_x * cos(-r);
 }

@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 17:09:31 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/04 17:10:28 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/04 23:06:14 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ void	calc_step_start(t_norm_print_map *n, t_cub *cub)
 void	set_cam_ray_mapxy(t_norm_print_map *n, int *x, t_cub *cub)
 {
 	n->camera_x = 2 * *x / (double)cub->p.res_w - 1;
-	n->ray_dir_x = cub->plr.dirY + cub->plr.planeY * n->camera_x;
-	n->ray_dir_y = cub->plr.dirX + cub->plr.planeX * n->camera_x;
+	n->ray_dir_x = cub->plr.dir_y + cub->plr.plane_y * n->camera_x;
+	n->ray_dir_y = cub->plr.dir_x + cub->plr.plane_x * n->camera_x;
 	n->map_x = (int)(cub->plr.y);
 	n->map_y = (int)(cub->plr.x);
 	n->delta_dist_x = sqrt(1 + (n->ray_dir_y * n->ray_dir_y)

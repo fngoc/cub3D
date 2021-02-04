@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 12:36:05 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/04 22:37:00 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/04 23:05:49 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,10 @@ typedef struct		s_plr
 	double			y;
 	double			dir;
 	char			dir_symbol;
-	double			dirX;
-	double			dirY;
-	double			planeX;
-	double			planeY;
+	double			dir_x;
+	double			dir_y;
+	double			plane_x;
+	double			plane_y;
 	double			start;
 	double			end;
 }					t_plr;
