@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 12:36:05 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/04 13:12:59 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/04 22:37:00 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@
 
 # include "libs/libft/libft.h"
 # include "libs/minilibx_mms/mlx.h"
-# include <math.h> /* Для sin и cos */
-# include <fcntl.h> /* Для open */
-# include <stdio.h> /* Для printf */
+# include <math.h>
+# include <fcntl.h>
 
 # define SCALE 16
 # define PI 3.14159265359
@@ -39,7 +38,7 @@ typedef	struct		s_parser
 	char			*wes_tex;
 	char			*eas_tex;
 
-	char			*spr_tex; 
+	char			*spr_tex;
 
 	int				floore_r;
 	int				floore_g;
@@ -96,15 +95,39 @@ typedef struct		s_plr
 
 typedef	struct		s_data
 {
-    void			*img;
-    char			*addr;
-    int				bits_per_pixel;
-    int				line_length;
-    int				endian;
+	void			*img;
+	char			*addr;
+	int				bits_per_pixel;
+	int				line_length;
+	int				endian;
 }					t_data;
 
 /*
-** t_norm: структура в которой находится все.
+** t_norm_print_sprite: структура для нормы.
+*/
+
+typedef struct		s_norm_print_sprite
+{
+	double			sprite_x;
+	double			sprite_y;
+	double			inv_det;
+	double			transform_x;
+	double			transform_y;
+	int				sprite_screen_x;
+	int				sprite_height;
+	int				draw_start_y;
+	int				draw_end_y;
+	int				sprite_width;
+	int				draw_start_x;
+	int				draw_end_x;
+	int				tex_x;
+	int				d;
+	int				tex_y;
+	int				color;
+}					t_norm_print_sprite;
+
+/*
+** t_norm_print_map: структура для нормы.
 */
 
 typedef struct		s_norm_print_map
@@ -115,14 +138,14 @@ typedef struct		s_norm_print_map
 	int				map_x;
 	int				map_y;
 	double			side_dist_x;
-    double			side_dist_y;
+	double			side_dist_y;
 	double			delta_dist_x;
 	double			delta_dist_y;
 	double			perp_wall_dist;
 	int				step_x;
-    int				step_y;
+	int				step_y;
 	int				hit;
-    int				side;
+	int				side;
 	int				line_height;
 	int				draw_start;
 	int				draw_end;
@@ -223,6 +246,24 @@ void				print_rays(t_cub *cub);
 void				print_player_pix(t_cub *cub);
 
 void				print_player_cub(t_cub *cub);
+
+void				set_cam_ray_mapxy(t_norm_print_map *n, int *x, t_cub *cub);
+
+void				calc_step_start(t_norm_print_map *n, t_cub *cub);
+
+void				check_hit(t_norm_print_map *n, t_cub *cub);
+
+void				calc_more(t_norm_print_map *n, t_cub *cub, int *x);
+
+void				side_world(t_norm_print_map *n, t_cub *cub, int *x, int *y);
+
+void				side_world_norm(t_norm_print_map *n, t_cub *cub,
+													int *x, int *y);
+
+void				print_sprite_norm(t_cub *cub, t_norm_print_sprite *s,
+													int *y, int *stripe);
+
+void				set_sprite(t_cub *cub, t_norm_print_sprite *s, int *i);
 
 int					close_win(t_cub *cub);
 

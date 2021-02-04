@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:23:42 by fngoc             #+#    #+#             */
-/*   Updated: 2021/01/18 11:23:59 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/04 22:21:09 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,5 @@ void	error(char *str, t_cub *cub)
 {
 	(void)cub;
 	ft_putendl_fd(str, 1);
-	// free(&cub);
 	exit(1);
 }

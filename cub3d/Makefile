@@ -6,7 +6,7 @@
 #    By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/18 11:30:29 by fngoc             #+#    #+#              #
-#    Updated: 2021/02/04 11:44:38 by fngoc            ###   ########.fr        #
+#    Updated: 2021/02/04 17:13:51 by fngoc            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,9 @@ SRC = main.c\
 	utils/sprite_utils.c\
 	utils/screenshot.c\
 	utils/free_lst_map.c\
-	utils/cub2d_utils.c
+	utils/cub2d_utils.c\
+	utils/cub3d_utils_one.c\
+	utils/cub3d_utils_two.c\
 
 OBJ = $(SRC:.c=.o)
 

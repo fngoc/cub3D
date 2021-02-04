@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:20:16 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/03 18:08:51 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/04 22:29:37 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ static	void	check_zero(int size, t_cub *cub)
 		{
 			if ((i == 0 && cub->p.map[i][j] == '0')
 			|| (i == size - 1 && cub->p.map[i][j] == '0'))
-				error("ERROR: There is an empty space next to zero", cub);
+				error("ERROR\nThere is an empty space next to zero", cub);
 			else if (cub->p.map[i][j] == '0')
 			{
 				if (cub->p.map[i][j + 1] == ' ' || cub->p.map[i][j + 1] == '\0'
 				|| cub->p.map[i][j - 1] == ' ' || cub->p.map[i][j - 1] == '\0'
 				|| cub->p.map[i + 1][j] == ' ' || cub->p.map[i + 1][j] == '\0'
 				|| cub->p.map[i - 1][j] == ' ' || cub->p.map[i - 1][j] == '\0')
-					error("ERROR: There is an empty space next to zero", cub);
+					error("ERROR\nThere is an empty space next to zero", cub);
 			}
 			++j;
 		}
@@ -79,7 +79,7 @@ static	void	set_dir(int x, int y, t_cub *cub)
 static	void	check_closed_map(int x, int y, t_cub *cub, int size_map)
 {
 	if (x < 0 || y < 0 || y >= size_map || x >= (int)ft_strlen(cub->p.map[y]))
-		error("ERROR: The player is not surrounded by walls", cub);
+		error("ERROR\nThe player is not surrounded by walls", cub);
 	if (ft_strchr(" 02NWES", cub->p.map[y][x]))
 	{
 		if (cub->p.map[y][x] == 'N' || cub->p.map[y][x] == 'W'
