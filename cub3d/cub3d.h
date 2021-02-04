@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 12:36:05 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/04 11:43:42 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/04 13:12:59 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,36 @@ typedef	struct		s_data
     int				line_length;
     int				endian;
 }					t_data;
+
+/*
+** t_norm: структура в которой находится все.
+*/
+
+typedef struct		s_norm_print_map
+{
+	double			camera_x;
+	double			ray_dir_x;
+	double			ray_dir_y;
+	int				map_x;
+	int				map_y;
+	double			side_dist_x;
+    double			side_dist_y;
+	double			delta_dist_x;
+	double			delta_dist_y;
+	double			perp_wall_dist;
+	int				step_x;
+    int				step_y;
+	int				hit;
+    int				side;
+	int				line_height;
+	int				draw_start;
+	int				draw_end;
+	double			wall_x;
+	int				tex_x;
+	double			step;
+	double			tex_pos;
+	int				tex_y;
+}					t_norm_print_map;
 
 /*
 ** t_cub: структура в которой находится все.
