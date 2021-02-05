@@ -6,7 +6,7 @@
 #    By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/18 11:30:29 by fngoc             #+#    #+#              #
-#    Updated: 2021/02/04 17:13:51 by fngoc            ###   ########.fr        #
+#    Updated: 2021/02/05 14:28:47 by fngoc            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,7 +86,6 @@ $(NAME): $(OBJ) $(LIBFT) $(LIBMLX)
 	@$(CC) $(FLAG) $(OBJ) -L. -lmlx -lft $(FLAGSMLX) $(OPTIONOBJ) $(NAME)
 	@echo ${YELLOW}"Step 3 is done!"
 	@echo $(GREEN)"Start!"${WHITE}
-	@./cub3d map.cub
 
 $(LIBFT):
 	@cd $(LIBFT_DIR) && $(MAKE)

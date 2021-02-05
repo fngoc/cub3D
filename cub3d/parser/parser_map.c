@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:20:16 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/04 22:29:37 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/05 13:35:44 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,5 +134,7 @@ void			parser_map(int fd, t_cub *cub)
 	while (get_next_line(fd, &line))
 		ft_lstadd_back(&head, ft_lstnew(line));
 	ft_lstadd_back(&head, ft_lstnew(line));
+	if (close(fd) == -1)
+		error("ERROR\nCouldn't close the file", cub);
 	make_map(&head, ft_lstsize(head), cub);
 }

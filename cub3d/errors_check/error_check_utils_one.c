@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:16:24 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/04 22:23:41 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/05 14:38:59 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	check_all_data(t_cub *cub)
 	|| ft_strlen(cub->p.eas_tex) == 0 || ft_strlen(cub->p.spr_tex) == 0
 	|| cub->p.floore_flag != 1 || cub->p.ceilling_flag != 1)
 	{
-		ft_putendl_fd("ERROR\nWas set not all edificatory or ", 1);
+		ft_putstr_fd("ERROR\nWas set not all edificatory or ", 1);
 		error("are there repetitions", cub);
 	}
 }
