@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:20:23 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/04 22:29:47 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/06 10:54:32 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,10 @@ void			parser(char **argv, t_cub *cub)
 			check_tab(line, cub);
 			parser_data(line, cub);
 			if (coll_line == 8)
-			{
 				check_all_data(cub);
-				parser_map(fd, cub);
-			}
 		}
 		free(line);
 	}
 	free(line);
+	parser_map(fd, cub);
 }
