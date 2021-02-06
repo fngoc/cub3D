@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:16:09 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/04 22:24:42 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/06 20:08:18 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,21 @@ void			check_errors_arg(int ac, char **av, t_cub *cub)
 {
 	if (ac != 2 && ac != 3)
 		error("ERROR\nNo more than 2 or 3 arguments were submitted", cub);
-	else if (ft_strncmp(av[1], "map.cub", ft_strlen(av[1])))
+	else if (ac == 2 && ft_strlen(av[1]) == 7)
 	{
-		ft_putstr_fd("ERROR\nThe map is not called 'map.cub' ", 1);
-		error("or it is called from another folder'", cub);
+		if (check_av_one(av[1]))
+			error("ERROR\nMap is not called 'map.cub'", cub);
 	}
+	else if (ac == 2 && ft_strlen(av[1]) > 7)
+	{
+		if (check_av_two(av[1]))
+			error("ERROR\nMap is not called 'map.cub'", cub);
+	}
+	else if (ac == 2 && ft_strlen(av[1]) < 7)
+		error("ERROR\nMap is not called 'map.cub'", cub);
 	else if (ac == 3)
 	{
-		if (ft_strncmp(av[2], "--save", ft_strlen(av[2])))
+		if (ft_strlen(av[2]) != 6 || check_av_tree(av[2]))
 			error("ERROR\n3 the argument is not '--save'", cub);
 	}
 }

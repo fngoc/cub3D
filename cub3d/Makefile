@@ -6,7 +6,7 @@
 #    By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/18 11:30:29 by fngoc             #+#    #+#              #
-#    Updated: 2021/02/05 14:28:47 by fngoc            ###   ########.fr        #
+#    Updated: 2021/02/06 20:06:37 by fngoc            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRC = main.c\
 	errors_check/error.c\
 	errors_check/error_check_utils_one.c\
 	errors_check/error_check_utils_two.c\
+	errors_check/error_check_utils_tree.c\
 	utils/get_inf_utils.c\
 	utils/close_win.c\
 	utils/my_mlx_pixel_put.c\

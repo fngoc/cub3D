@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:20:23 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/06 10:54:32 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/06 20:03:10 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void			parser(char **argv, t_cub *cub)
 	char	*line;
 
 	coll_line = 0;
-	if (!(fd = open(argv[1], O_RDONLY)))
+	if ((fd = open(argv[1], O_RDONLY)) && fd == -1)
 		error("ERROR\nFile not found or not open", cub);
 	while (get_next_line(fd, &line) && coll_line++ != 8)
 	{
@@ -118,7 +118,10 @@ void			parser(char **argv, t_cub *cub)
 			check_tab(line, cub);
 			parser_data(line, cub);
 			if (coll_line == 8)
+			{
 				check_all_data(cub);
+				break ;
+			}
 		}
 		free(line);
 	}

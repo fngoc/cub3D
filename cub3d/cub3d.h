@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 12:36:05 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/04 23:05:49 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/06 20:05:44 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,6 +270,12 @@ int					close_win(t_cub *cub);
 int					counting_sprites(t_cub *cub);
 
 int					create_rgb(int r, int g, int b);
+
+int					check_av_one(char *av);
+
+int					check_av_two(char *av);
+
+int					check_av_tree(char *av);
 
 unsigned int		get_pixel(t_data *data, int x, int y);
 
