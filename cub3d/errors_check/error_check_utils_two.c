@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:16:09 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/06 20:08:18 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/06 20:32:11 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,23 @@
 void			check_errors_arg(int ac, char **av, t_cub *cub)
 {
 	if (ac != 2 && ac != 3)
-		error("ERROR\nNo more than 2 or 3 arguments were submitted", cub);
+		error("Error\nNo more than 2 or 3 arguments were submitted", cub);
 	else if (ac == 2 && ft_strlen(av[1]) == 7)
 	{
 		if (check_av_one(av[1]))
-			error("ERROR\nMap is not called 'map.cub'", cub);
+			error("Error\nMap is not called 'map.cub'", cub);
 	}
 	else if (ac == 2 && ft_strlen(av[1]) > 7)
 	{
 		if (check_av_two(av[1]))
-			error("ERROR\nMap is not called 'map.cub'", cub);
+			error("Error\nMap is not called 'map.cub'", cub);
 	}
 	else if (ac == 2 && ft_strlen(av[1]) < 7)
-		error("ERROR\nMap is not called 'map.cub'", cub);
+		error("Error\nMap is not called 'map.cub'", cub);
 	else if (ac == 3)
 	{
 		if (ft_strlen(av[2]) != 6 || check_av_tree(av[2]))
-			error("ERROR\n3 the argument is not '--save'", cub);
+			error("Error\n3 the argument is not '--save'", cub);
 	}
 }
 
@@ -46,7 +46,7 @@ void			check_errors_arg(int ac, char **av, t_cub *cub)
 void			check_tab(char *line, t_cub *cub)
 {
 	if (line[ft_strlen(line) - 1] == ' ')
-		error("ERROR\nA space was found after the indexer", cub);
+		error("Error\nA space was found after the indexer", cub);
 }
 
 /*
@@ -64,7 +64,7 @@ void			all_tab_in_line(char *str, t_cub *cub)
 			return ;
 		++i;
 	}
-	ft_putstr_fd("ERROR\nThere is an empty line ", 1);
+	ft_putstr_fd("Error\nThere is an empty line ", 1);
 	error("with spaces at the end of the map", cub);
 }
 
@@ -85,7 +85,7 @@ static	void	check_symbols_map_norm(int *flag, int *i, int *j, t_cub *cub)
 			cub->p.playr_x = *j;
 		}
 		else
-			error("ERROR\nThe player meets more than 1 time", cub);
+			error("Error\nThe player meets more than 1 time", cub);
 	}
 }
 
@@ -113,9 +113,9 @@ void			check_symbols_map(int size, t_cub *cub)
 			|| cub->p.map[i][j] == 'E' || cub->p.map[i][j] == 'W')
 				++j;
 			else
-				error("ERROR\nWrong symbol in the map", cub);
+				error("Error\nWrong symbol in the map", cub);
 		}
 	}
 	if (flag == 0)
-		error("ERROR\nThe player never meets", cub);
+		error("Error\nThe player never meets", cub);
 }

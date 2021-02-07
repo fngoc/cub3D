@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 23:54:23 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/04 22:51:50 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/06 20:31:32 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 static	void		malloc_arrays(t_cub *cub)
 {
 	if (!(cub->x = malloc(sizeof(float) * cub->p.coll_sprite)))
-		error("ERROR\nNo memory allocated", cub);
+		error("Error\nNo memory allocated", cub);
 	if (!(cub->y = malloc(sizeof(float) * cub->p.coll_sprite)))
-		error("ERROR\nNo memory allocated", cub);
+		error("Error\nNo memory allocated", cub);
 	if (!(cub->dist = malloc(sizeof(float) * cub->p.coll_sprite)))
-		error("ERROR\nNo memory allocated", cub);
+		error("Error\nNo memory allocated", cub);
 	if (!(cub->close_sprite = malloc(sizeof(double) * cub->p.res_w)))
-		error("ERROR\nNo memory allocated", cub);
+		error("Error\nNo memory allocated", cub);
 }
 
 /*

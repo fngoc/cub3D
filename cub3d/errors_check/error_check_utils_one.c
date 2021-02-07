@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:16:24 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/06 10:47:58 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/06 20:31:49 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	check_all_data(t_cub *cub)
 	|| ft_strlen(cub->p.eas_tex) == 0 || ft_strlen(cub->p.spr_tex) == 0
 	|| cub->p.floore_flag != 1 || cub->p.ceilling_flag != 1)
 	{
-		ft_putstr_fd("ERROR\nWas set not all edificatory or ", 1);
+		ft_putstr_fd("Error\nWas set not all edificatory or ", 1);
 		error("are there repetitions", cub);
 	}
 }
@@ -42,7 +42,7 @@ void	check_tab_in_r_f(char *line, t_cub *cub)
 	while (line[i] != '\0')
 	{
 		if (line[i] == ' ')
-			error("ERROR\nA space was found in color", cub);
+			error("Error\nA space was found in color", cub);
 		++i;
 	}
 }
@@ -56,7 +56,7 @@ void	check_c(t_cub *cub)
 	if ((cub->p.ceilling_r > 255 || cub->p.ceilling_r < 0) ||
 	(cub->p.ceilling_g > 255 || cub->p.ceilling_g < 0) ||
 	(cub->p.ceilling_b > 255 || cub->p.ceilling_b < 0))
-		error("ERROR\nNot a valid ceilling color", cub);
+		error("Error\nNot a valid ceilling color", cub);
 	cub->p.ceilling_flag = 1;
 }
 
@@ -69,7 +69,7 @@ void	check_f(t_cub *cub)
 	if ((cub->p.floore_r > 255 || cub->p.floore_r < 0) ||
 	(cub->p.floore_g > 255 || cub->p.floore_g < 0) ||
 	(cub->p.floore_b > 255 || cub->p.floore_b < 0))
-		error("ERROR\nNot a valid floor color", cub);
+		error("Error\nNot a valid floor color", cub);
 	cub->p.floore_flag = 1;
 }
 
@@ -84,7 +84,7 @@ void	check_r(t_cub *cub)
 
 	mlx_get_screen_size(&cub->mlx, &width, &height);
 	if (cub->p.res_w < 0 || cub->p.res_l < 0)
-		error("ERROR\nNot a valid resolution", cub);
+		error("Error\nNot a valid resolution", cub);
 	if (cub->p.res_w > width || cub->p.res_l > height)
-		error("ERROR\nThe screen resolution is too high", cub);
+		error("Error\nThe screen resolution is too high", cub);
 }
