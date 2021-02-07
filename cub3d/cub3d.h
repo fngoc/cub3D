@@ -271,11 +271,9 @@ int					counting_sprites(t_cub *cub);
 
 int					create_rgb(int r, int g, int b);
 
-int					check_av_one(char *av);
+int					check_av_map(char *av);
 
-int					check_av_two(char *av);
-
-int					check_av_tree(char *av);
+int					check_av_save(char *av);
 
 unsigned int		get_pixel(t_data *data, int x, int y);
 
