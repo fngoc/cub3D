@@ -12,6 +12,10 @@
 
 #include "../cub3d.h"
 
+/*
+** check_av_tree: проверка на название '--save'.
+*/
+
 int			check_av_tree(char *av)
 {
 	if (av[0] == '-' && av[1] == '-' && av[2] == 's' &&
@@ -20,6 +24,10 @@ int			check_av_tree(char *av)
 	else
 		return (1);
 }
+
+/*
+** check_av_two: проверка на название 'map.cub'.
+*/
 
 int			check_av_two(char *av)
 {
@@ -31,6 +39,10 @@ int			check_av_two(char *av)
 	else
 		return (1);
 }
+
+/*
+** check_av_one: проверка на название 'map.cub'.
+*/
 
 int			check_av_one(char *av)
 {
