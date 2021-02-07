@@ -20,21 +20,14 @@ void			check_errors_arg(int ac, char **av, t_cub *cub)
 {
 	if (ac != 2 && ac != 3)
 		error("Error\nNo more than 2 or 3 arguments were submitted", cub);
-	else if (ac == 2 && ft_strlen(av[1]) == 7)
+	else if (ac == 2)
 	{
-		if (check_av_one(av[1]))
+		if (check_av_map(av[1]))
 			error("Error\nMap is not called 'map.cub'", cub);
 	}
-	else if (ac == 2 && ft_strlen(av[1]) > 7)
-	{
-		if (check_av_two(av[1]))
-			error("Error\nMap is not called 'map.cub'", cub);
-	}
-	else if (ac == 2 && ft_strlen(av[1]) < 7)
-		error("Error\nMap is not called 'map.cub'", cub);
 	else if (ac == 3)
 	{
-		if (ft_strlen(av[2]) != 6 || check_av_tree(av[2]))
+		if (ft_strlen(av[2]) != 6 || check_av_save(av[2]))
 			error("Error\n3 the argument is not '--save'", cub);
 	}
 }
