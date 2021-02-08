@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 20:04:24 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/06 20:04:26 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/08 11:00:32 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int			check_av_save(char *av)
 /*
 ** check_av_one: проверка на расширение '.cub'.
 */
+
 int			check_av_map(char *av)
 {
 	if (av[ft_strlen(av) - 1] == 'b' && av[ft_strlen(av) - 2] == 'u'
