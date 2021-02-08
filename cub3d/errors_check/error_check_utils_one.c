@@ -86,5 +86,8 @@ void	check_r(t_cub *cub)
 	if (cub->p.res_w < 0 || cub->p.res_l < 0)
 		error("Error\nNot a valid resolution", cub);
 	if (cub->p.res_w > width || cub->p.res_l > height)
-		error("Error\nThe screen resolution is too high", cub);
+	{
+		cub->p.res_w = width;
+		cub->p.res_l = height;
+	}
 }
