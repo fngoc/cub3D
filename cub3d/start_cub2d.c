@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 12:24:31 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/04 11:46:00 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/09 21:46:52 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void			start_cub2d(t_cub *cub)
 	cub->plr.x = cub->p.playr_x * SCALE;
 	cub->mlx = mlx_init();
 	cub->mlx_win = mlx_new_window(cub->mlx, cub->p.res_w,
-									cub->p.res_l, "cub2d");
+									cub->p.res_l, "cub2D");
 	print_map(cub);
 	print_player_cub(cub);
 	print_player_pix(cub);

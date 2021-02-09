@@ -6,7 +6,7 @@
 /*   By: fngoc <fngoc@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 23:54:23 by fngoc             #+#    #+#             */
-/*   Updated: 2021/02/06 20:31:32 by fngoc            ###   ########.fr       */
+/*   Updated: 2021/02/09 21:42:41 by fngoc            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void				start_cub3d(t_cub *cub, int argc)
 	set_dir_plr(cub);
 	cub->mlx = mlx_init();
 	cub->mlx_win = mlx_new_window(cub->mlx, cub->p.res_w,
-									cub->p.res_l, "cub3d");
+									cub->p.res_l, "cub3D");
 	get_sprite(cub);
 	print_map(cub);
 	if (argc == 3)
