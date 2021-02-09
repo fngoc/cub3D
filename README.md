@@ -4,3 +4,7 @@ cub3D - шестой проект в School 21. Этот проект вдохн
 Компилирование было выполнено следующем образом: ``gcc -Wall -Wextra -Werror *.o -L. -lmlx -lft -framework OpenGL -framework AppKit -o cub3d``.
 
 Все файлы проходят на ``Norminette``.
+
+## Оценка
+
+![alt tag](media/appraisal_cub3D.png "Оценка проекта cub3D")
