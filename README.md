@@ -9,7 +9,7 @@
 Все файлы проходят на ``Norminette``.
 
 <p align="center">
-  <img src="media/screenshot_from_the_game.png"/>
+  <img src="media/screenshot_from_the_game.png" title="Скриншот из игры cub3D"/>
 </p>
 
 ## Использование
