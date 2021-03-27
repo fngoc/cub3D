@@ -8,6 +8,10 @@
 
 Все файлы проходят на ``Norminette``.
 
+<p align="center">
+  <img src="media/screenshot_from_the_game.png"/>
+</p>
+
 ## Использование
 
 ``make`` и ``make all`` компилируют библиотеку ``libfе.a`` и ``libmlx.dylib``, помещая их в корневую папку.
