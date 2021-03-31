@@ -41,6 +41,10 @@ This file is given as first argument to a program and contains info about:
 
 If any misconfiguration of any kind is encountered in the file, the program must exit properly and return "Error\n" followed by an explicit error message. Some of requirements are subjective.
 
+## --save
+
+Program is saving the first rendered image in ``bmp`` format when its second argument is ``--save``.
+
 ## my_test
 
 Insert the code from ``tests.c`` in ``main.c``, compile and look at the result.
