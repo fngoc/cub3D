@@ -28,6 +28,19 @@ Starting the program: ``./cub3D [map.cub]``.
 
 Take a screenshot: ``./cub3D [map.cub] --save``.
 
+## Configuration file map.cub
+
+This file is given as first argument to a program and contains info about:
+
+* Screen resolution
+* Notrh, South, East, West textrures for walls and sprite in .xpm files
+* Ceiling and floor color in RGB format
+* Map where 1 - wall, 0 - empty space, N/W/E/S - initial direction of a player, 2 - sprite
+
+## Checking the validity of map.cub
+
+If any misconfiguration of any kind is encountered in the file, the program must exit properly and return "Error\n" followed by an explicit error message. Some of requirements are subjective.
+
 ## my_test
 
 Insert the code from ``tests.c`` in ``main.c``, compile and look at the result.
