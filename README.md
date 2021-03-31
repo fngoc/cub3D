@@ -4,6 +4,8 @@
 
 Repeat raycasting in Wolfenstein 3D, using the miniLibX library. The main task: to explore the path of the rays, to make a dynamic view inside the maze.
 
+In this project, we use some functions from [my libft library](https://github.com/VitMarKha/libft), as well as some functions we modify.
+
 The compilation was performed as follows: ``gcc -Wall -Wextra -Werror *.o -L. -lmlx -lft -framework OpenGL -framework AppKit -o cub3d``.
 
 All files pass to ``Norminette``.
