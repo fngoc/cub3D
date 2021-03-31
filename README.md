@@ -1,35 +1,37 @@
 # cub3D
 
-## Описание
+## Description
 
-Этот проект вдохновлен первой FPS в истории - Wolfenstein 3D. Наша цель: исследовать проброс лучей, сделать динамический вид внутри лабиринта, в котором мы должны будем найти свой путь.
+Repeat raycasting in Wolfenstein 3D, using the miniLibX library. The main task: to explore the path of the rays, to make a dynamic view inside the maze.
 
-Компилирование было выполнено следующем образом: ``gcc -Wall -Wextra -Werror *.o -L. -lmlx -lft -framework OpenGL -framework AppKit -o cub3d``.
+The compilation was performed as follows: ``gcc -Wall -Wextra -Werror *.o -L. -lmlx -lft -framework OpenGL -framework AppKit -o cub3d``.
 
-Все файлы проходят на ``Norminette``.
+All files pass to ``Norminette``.
+
+No memory leaks.
 
 <p align="center">
-  <img src="media/screenshot_from_the_game.png" title="Скриншот из игры cub3D"/>
+  <img src="media/screenshot_from_the_game.png" title="Screenshot from the game cub3D"/>
 </p>
 
-## Использование
+## Using
 
-``make`` и ``make all`` компилируют библиотеку ``libfе.a`` и ``libmlx.dylib``, помещая их в корневую папку.
+``make`` and ``make all`` compile the library ``libfе.a`` and ``libmlx.dylib``, placing them in the root folder.
 
-``make re`` удаляет все ``.o`` файлы, удаляет ``libfе.a`` и ``libmlx.dylib``, пересобирает проект.
+``make re`` deletes all ``.o`` files, deletes ``libfе.a`` and ``libmlx.dylib``, rebuilds the project.
 
-``make clean`` удаляет все ``.o`` файлы.
+``make clean`` deletes all ``.o`` files.
 
-``make fclean`` удаляет все ``.o`` файлы, так же удаляет ``libfе.a`` и ``libmlx.dylib``.
+``make fclean`` deletes all ``.o`` files, also deletes ``libfе.a`` and ``libmlx.dylib``.
 
-Запуск программы: ``./cub3D [карта]``.
+Starting the program: ``./cub3D [map.cub]``.
 
-Сделать скриншот: ``./cub3D [карта] --save``.
-
-## Оценка
-
-![alt tag](media/appraisal_cub3D.png "Оценка проекта cub3D")
+Take a screenshot: ``./cub3D [map.cub] --save``.
 
 ## my_test
 
-Вставляем код из ``tests.c`` в ``main.c``, компилируем, смотрим на результат.
+Insert the code from ``tests.c`` in ``main.c``, compile and look at the result.
+
+## Evaluation
+
+![alt tag](media/appraisal_cub3D.png "Appraisal cub3D")
