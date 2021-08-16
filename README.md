@@ -50,7 +50,3 @@ Program is saving the first rendered image in ``bmp`` format when its second arg
 ## my_test
 
 Insert the code from ``tests.c`` in ``main.c``, compile and look at the result.
-
-## Evaluation
-
-![alt tag](media/appraisal_cub3D.png "Appraisal cub3D")
