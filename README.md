@@ -16,7 +16,7 @@ No memory leaks.
   <img src="media/screenshot_from_the_game.png" title="Screenshot from the game cub3D"/>
 </p>
 
-## Using
+## Usage
 
 ``make`` and ``make all`` compile the library ``libfе.a`` and ``libmlx.dylib``, placing them in the root folder.
 
